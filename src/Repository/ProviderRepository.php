@@ -1,27 +1,27 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Fournisseur;
+use App\Entity\Provider;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Fournisseur>
+ * @extends ServiceEntityRepository<Provider>
  *
- * @method Fournisseur|null find($id, $lockMode = null, $lockVersion = null)
- * @method Fournisseur|null findOneBy(array $criteria, array $orderBy = null)
- * @method Fournisseur[]    findAll()
- * @method Fournisseur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Provider|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Provider|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Provider[]    findAll()
+ * @method Provider[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class FournisseurRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Fournisseur::class);
+        parent::__construct($registry, Provider::class);
     }
 
-    public function save(Fournisseur $entity, bool $flush = false): void
+    public function save(Provider $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class FournisseurRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Fournisseur $entity, bool $flush = false): void
+    public function remove(Provider $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class FournisseurRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Fournisseur[] Returns an array of Fournisseur objects
+//     * @return Provider[] Returns an array of Provider objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class FournisseurRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Fournisseur
+//    public function findOneBySomeField($value): ?Provider
 //    {
 //        return $this->createQueryBuilder('f')
 //            ->andWhere('f.exampleField = :val')
