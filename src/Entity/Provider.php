@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\FournisseurRepository;
+use App\Repository\ProviderRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FournisseurRepository::class)]
-class Fournisseur
+#[ORM\Entity(repositoryClass: ProviderRepository::class)]
+class Provider
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -111,7 +111,7 @@ class Fournisseur
 
     // To do : constant
 	// /**
-	//  * liaison entre les id de fournisseur et leur classe spécifique
+	//  * liaison entre les id de Provider et leur classe spécifique
 	//  * @var array
 	//  */
 	// const classeDeFournisseur = array(
@@ -123,22 +123,22 @@ class Fournisseur
 	// 	FournisseurIgraphy::ID_FOUR						 => 'FournisseurIgraphy',
 	// 	FournisseurAvisVerifies::ID_FOUR				 => 'FournisseurAvisVerifies',
 	// 	FournisseurOVH::ID_FOUR							 => 'FournisseurOVH',
-	// 	fournisseur::ID_SUPPLIER_ADESA					 => 'FournisseurAdesa',
-	// 	fournisseur::ID_SUPPLIER_ETAC					 => '\Supplier\Etac',
-	// 	fournisseur::ID_SUPPLIER_EXAPRINT				 => 'FournisseurExaprint',
-	// 	fournisseur::ID_SUPPLIER_GOOGLE_ADS				 => '\Supplier\GoogleAds',
-	// 	fournisseur::ID_SUPPLIER_IMPRESSIONENLIGNE_COM	 => '\Supplier\ImpressionsenligneCom',
-	// 	Fournisseur::ID_SUPPLIER_LA_POSTE				 => 'FournisseurLaPoste',
-	// 	Fournisseur::ID_SUPPLIER_LABELPRINT24			 => 'FournisseurLabelPrint24',
-	// 	fournisseur::ID_SUPPLIER_MONEXT					 => '\Supplier\Monext',
-	// 	Fournisseur::ID_SUPPLIER_ONLINE_PRINTERS		 => 'FournisseurOnline',
-	// 	fournisseur::ID_SUPPLIER_PIXART					 => 'FournisseurPixart',
-	// 	fournisseur::ID_SUPPLIER_PRINTFORYOU			 => '\Supplier\PrintForYou',
-	// 	Fournisseur::ID_SUPPLIER_REALISAPRINT			 => 'FournisseurRealisaprint',
-	// 	fournisseur::ID_SUPPLIER_SAXO					 => '\Supplier\Saxoprint',
-	// 	fournisseur::ID_SUPPLIER_STAMPAPRINT			 => '\Supplier\Stampaprint',
-	// 	fournisseur::ID_SUPPLIER_YESPRINT				 => 'FournisseurYesprint',
-	// 	Fournisseur::ID_SUPPLIER_ZOPIM					 => 'FournisseurZopim',
+	// 	Provider::ID_SUPPLIER_ADESA					 => 'FournisseurAdesa',
+	// 	Provider::ID_SUPPLIER_ETAC					 => '\Supplier\Etac',
+	// 	Provider::ID_SUPPLIER_EXAPRINT				 => 'FournisseurExaprint',
+	// 	Provider::ID_SUPPLIER_GOOGLE_ADS				 => '\Supplier\GoogleAds',
+	// 	Provider::ID_SUPPLIER_IMPRESSIONENLIGNE_COM	 => '\Supplier\ImpressionsenligneCom',
+	// 	Provider::ID_SUPPLIER_LA_POSTE				 => 'FournisseurLaPoste',
+	// 	Provider::ID_SUPPLIER_LABELPRINT24			 => 'FournisseurLabelPrint24',
+	// 	Provider::ID_SUPPLIER_MONEXT					 => '\Supplier\Monext',
+	// 	Provider::ID_SUPPLIER_ONLINE_PRINTERS		 => 'FournisseurOnline',
+	// 	Provider::ID_SUPPLIER_PIXART					 => 'FournisseurPixart',
+	// 	Provider::ID_SUPPLIER_PRINTFORYOU			 => '\Supplier\PrintForYou',
+	// 	Provider::ID_SUPPLIER_REALISAPRINT			 => 'FournisseurRealisaprint',
+	// 	Provider::ID_SUPPLIER_SAXO					 => '\Supplier\Saxoprint',
+	// 	Provider::ID_SUPPLIER_STAMPAPRINT			 => '\Supplier\Stampaprint',
+	// 	Provider::ID_SUPPLIER_YESPRINT				 => 'FournisseurYesprint',
+	// 	Provider::ID_SUPPLIER_ZOPIM					 => 'FournisseurZopim',
 	// );
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -150,25 +150,25 @@ class Fournisseur
 	 * *************************************************************************
 	 */ 
 	// /**
-	//  * objet de la monnaie du fournisseur
+	//  * objet de la monnaie du Provider
 	//  * @var TCurrencies
 	//  */
 	// private $_tcurrencies;
 
 	// /**
-	//  * TLog éventuellement associé à ce fournisseur
+	//  * TLog éventuellement associé à ce Provider
 	//  * @var TLog
 	//  */
 	// public $log;
 
     // /**
-	//  * sous objet du type de réglement fournisseur
+	//  * sous objet du type de réglement Provider
 	//  * @var TReglementFournisseurType
 	//  */
 	// private $_reglementFournisseurType = NULL;
 
 	// /**
-	//  * renvoi l'objet tcurrencies de ce fournisseur
+	//  * renvoi l'objet tcurrencies de ce Provider
 	//  * @return TCurrencies 
 	//  */
 	// public function getTcurrencies()
@@ -185,7 +185,7 @@ class Fournisseur
 
     // /**
 	//  * Retourne tout les fournisseurs qui ont besoin d'une DEB
-	//  * @return fournisseur
+	//  * @return Provider
 	//  */
 	// public static function findAllForDeb()
 	// {
@@ -253,7 +253,7 @@ class Fournisseur
 
     public function getNumberTva(): ?int
     {
-        return $this->numeroTva;
+        return $this->numberTva;
     }
 
     public function setNumberTva(int $numberTva): static
@@ -474,7 +474,7 @@ class Fournisseur
 
     public function setCustomerId(?string $customerId): static
     {
-        $this->fcustomerId = $customerId;
+        $this->customerId = $customerId;
 
         return $this;
     }
@@ -571,7 +571,7 @@ class Fournisseur
 	// /**
 	//  * setteur du log
 	//  * @param TLog $log
-	//  * @return fournisseur notre objet
+	//  * @return Provider notre objet
 	//  */
 	// public function setLog(TLog $log)
 	// {
@@ -605,20 +605,20 @@ class Fournisseur
         return $this;
     }
 
-    /**
-	 * getteur du sous objet de type de fournisseur
-	 * @return TReglementFournisseurType
-	 */
-	public function getReglementFournisseurType()
-	{
-		// si on a pas encore récupéré l'objet
-		if($this->_reglementFournisseurType == NULL)
-		{
-			$this->_reglementFournisseurType = TReglementFournisseurType::findById($this->getFouPayment());
-		}
+    // /**
+	//  * getteur du sous objet de type de Provider
+	//  * @return TReglementFournisseurType
+	//  */
+	// public function getReglementFournisseurType()
+	// {
+	// 	// si on a pas encore récupéré l'objet
+	// 	if($this->_reglementFournisseurType == NULL)
+	// 	{
+	// 		$this->_reglementFournisseurType = TReglementFournisseurType::findById($this->getFouPayment());
+	// 	}
 
-		return $this->_reglementFournisseurType;
-	}
+	// 	return $this->_reglementFournisseurType;
+	// }
 
      /*
 	 * *************************************************************************
@@ -626,9 +626,9 @@ class Fournisseur
 	 * *************************************************************************
 	 */ 
     // /**
-	//  * renvoi un tableau d'objet fournisseur pour lesquelles on peux faire une selection
-	//  * cette fonction renvoi uniquement des objet de type fournisseur et pas un objet fournisseurPrint24 pour p24
-	//  * @return fournisseur
+	//  * renvoi un tableau d'objet Provider pour lesquelles on peux faire une selection
+	//  * cette fonction renvoi uniquement des objet de type Provider et pas un objet fournisseurPrint24 pour p24
+	//  * @return Provider
 	//  */
 	// public static function findAllForSelection()
 	// {
@@ -637,13 +637,13 @@ class Fournisseur
 
 
 	// /**
-	//  * fait un findById mais renvoi l'objet spécifique du fournisseur comme fournisseurPrint24 pour p24 ou renvoi un objet fournisseur par défaut
-	//  * @param int $idFour type de fournisseur
-	//  * @return fournisseur|fournisseurPrint24|FournisseurLgi|FournisseurOnline et de nombreux autres
+	//  * fait un findById mais renvoi l'objet spécifique du Provider comme fournisseurPrint24 pour p24 ou renvoi un objet Provider par défaut
+	//  * @param int $idFour type de Provider
+	//  * @return Provider|fournisseurPrint24|FournisseurLgi|FournisseurOnline et de nombreux autres
 	//  */
 	// public static function findByIdWithChildObject($idFour)
 	// {
-	// 	// si ce fournisseur à sa propre classe
+	// 	// si ce Provider à sa propre classe
 	// 	if(isset(self::$_classeDeFournisseur[$idFour]))
 	// 	{
 	// 		// on renverra un objet de cette classe
@@ -652,7 +652,7 @@ class Fournisseur
 	// 	// pas de classe spécifique
 	// 	else
 	// 	{
-	// 		// on renvoi un objet fournisseur
+	// 		// on renvoi un objet Provider
 	// 		$classeName = __CLASS__;
 	// 	}
 
@@ -662,8 +662,8 @@ class Fournisseur
 
 
 	// /**
-	//  * renvoi tous les fournisseur avec un login pour l'accés fournisseur
-	//  * @return fournisseur[]
+	//  * renvoi tous les Provider avec un login pour l'accés Provider
+	//  * @return Provider[]
 	//  */
 	// public static function findAllWithAccésLogin()
 	// {
@@ -671,12 +671,12 @@ class Fournisseur
 	// }
 
     // /**
-	//  * renvoi tous les fournisseur actif classé par ordre de séléction en premier
-	//  * @return fournisseur
+	//  * renvoi tous les Provider actif classé par ordre de séléction en premier
+	//  * @return Provider
 	//  */
 	// public static function findAllActif()
 	// {
-	// 	// on commence par récupéré tous les fournisseur actif classé par ordre_selection
+	// 	// on commence par récupéré tous les Provider actif classé par ordre_selection
 	// 	$allFournisseurs = self::findAllBy(array('fou_actif'), array(1), array('ordre_selection', 'nom_four'));
 
 	// 	// on renvoi le tableau trier
@@ -685,12 +685,12 @@ class Fournisseur
 
 
 	// /**
-	//  * renvoi tous les fournisseur actif classé par ordre de séléction en premier
-	//  * @return fournisseur
+	//  * renvoi tous les Provider actif classé par ordre de séléction en premier
+	//  * @return Provider
 	//  */
 	// public static function findAllActifWithMail()
 	// {
-	// 	// on commence par récupéré tous les fournisseur actif classé par ordre_selection
+	// 	// on commence par récupéré tous les Provider actif classé par ordre_selection
 	// 	$allFournisseurs = self::findAllBy(array('fou_actif', 'email'), array(1, array('', '<>')), array('ordre_selection', 'nom_four'));
 
 	// 	// on renvoi le tableau trier
@@ -699,26 +699,26 @@ class Fournisseur
 
 
 	// /**
-	//  * renvoi tous les fournisseur actif classé par ordre de séléction en premier
-	//  * @return fournisseur
+	//  * renvoi tous les Provider actif classé par ordre de séléction en premier
+	//  * @return Provider
 	//  */
 	// public static function findAllActifWithChildObject()
 	// {
 	// 	$return = array();
 
 	// 	// paramétre de la requête
-	// 	$aTable	 = fournisseur::$_SQL_TABLE_NAME;
+	// 	$aTable	 = Provider::$_SQL_TABLE_NAME;
 	// 	$champs	 = array('id_four');
 	// 	$where	 = array(array('fou_actif', 1, 'd'));
 	// 	$order	 = array('ordre_selection', 'nom_four');
 
-	// 	// on récupére tous les id de fournisseur classé correctement
+	// 	// on récupére tous les id de Provider classé correctement
 	// 	$allData = DB::prepareSelectAndExecuteAndFetchAll($aTable, $champs, $where, 0, $order);
 
 	// 	// pour chaque id
 	// 	foreach($allData as $key => $data)
 	// 	{
-	// 		// si ce fournisseur à sa propre classe
+	// 		// si ce Provider à sa propre classe
 	// 		if(isset(self::$_classeDeFournisseur[$data['id_four']]))
 	// 		{
 	// 			// on renverra un objet de cette classe
@@ -727,7 +727,7 @@ class Fournisseur
 	// 		// pas de classe spécifique
 	// 		else
 	// 		{
-	// 			// on renvoi un objet fournisseur
+	// 			// on renvoi un objet Provider
 	// 			$classeName = __CLASS__;
 	// 		}
 
@@ -740,19 +740,19 @@ class Fournisseur
 	// }
 
     // /**
-	//  * retourne un fournisseur à partir de la variable $_SERVER['REMOTE_USER'] et dans le cas d'un admin de la variable $_GET['idFournisseur']
-	//  * @return fournisseur
+	//  * retourne un Provider à partir de la variable $_SERVER['REMOTE_USER'] et dans le cas d'un admin de la variable $_GET['idFournisseur']
+	//  * @return Provider
 	//  */
 	// public static function findByRemoteUser()
 	// {
 	// 	// on recherche par access login
-	// 	$fournisseur = fournisseur::findBy(array('fou_access_login'), array(System::getRemoteUser()));
+	// 	$Provider = Provider::findBy(array('fou_access_login'), array(System::getRemoteUser()));
 
-	// 	// si on a trouvé un fournisseur
-	// 	if($fournisseur != NULL)
+	// 	// si on a trouvé un Provider
+	// 	if($Provider != NULL)
 	// 	{
 	// 		// on le renvoi avec son objet
-	// 		return fournisseur::findByIdWithChildObject($fournisseur->getIdFour());
+	// 		return Provider::findByIdWithChildObject($Provider->getIdFour());
 	// 	}
 
 	// 	// si on n'est pas loggé en admin
@@ -761,18 +761,18 @@ class Fournisseur
 	// 		return FALSE;
 	// 	}
 
-	// 	// on récupére en get l'id du fournisseur
+	// 	// on récupére en get l'id du Provider
 	// 	$idFournisseur = filter_input(INPUT_GET, 'idFournisseur', FILTER_VALIDATE_INT);
 
-	// 	// on a pas d'id de fournisseur en get
+	// 	// on a pas d'id de Provider en get
 	// 	if($idFournisseur == NULL)
 	// 	{
-	// 		// on prend un fournisseur par défaut
+	// 		// on prend un Provider par défaut
 	// 		$idFournisseur = 67;
 	// 	}
 
-	// 	// création du fournisseur
-	// 	return fournisseur::findByIdWithChildObject($idFournisseur);
+	// 	// création du Provider
+	// 	return Provider::findByIdWithChildObject($idFournisseur);
 	// }
 
     /*
@@ -789,7 +789,7 @@ class Fournisseur
 	 * *************************************************************************
 	 */
 	// /**
-	//  * renvoi le chemin pour le ftp ou NULL si on n'a pas de login d'accés fournisseur
+	//  * renvoi le chemin pour le ftp ou NULL si on n'a pas de login d'accés Provider
 	//  * @return string|NULL
 	//  */
 	// public function getDirFtp($nomFournisseur = null)
@@ -798,7 +798,7 @@ class Fournisseur
 	// 		return '/data/ftpdossier/' . Tools::slugify($nomFournisseur) . '/';
 	// 	}
 
-	// 	// si on n'a pas de login d'accés fournisseur
+	// 	// si on n'a pas de login d'accés Provider
 	// 	if($this->getFouAccessLogin() == NULL)
 	// 	{
 	// 		// on renvoi NULL
@@ -810,13 +810,13 @@ class Fournisseur
 	// }
 
 	// /**
-	//  * indique si le fournisseur est actif
-	//  * @return boolean true si le fournisseur est actif et false sinon
+	//  * indique si le Provider est actif
+	//  * @return boolean true si le Provider est actif et false sinon
 	//  */
 	// public function isActive()
 	// {
-	// 	// fournisseur inactif
-	// 	if($this->getFouActif() < fournisseur::SUPPLIER_ACTIVE)
+	// 	// Provider inactif
+	// 	if($this->getFouActif() < Provider::SUPPLIER_ACTIVE)
 	// 	{
 	// 		return false;
 	// 	}
@@ -826,13 +826,13 @@ class Fournisseur
 
 
 	// /**
-	//  * indique si le fournisseur affiche une date de livraison
-	//  * @return boolean true si le fournisseur affiche une date de livraison et false sinon
+	//  * indique si le Provider affiche une date de livraison
+	//  * @return boolean true si le Provider affiche une date de livraison et false sinon
 	//  */
 	// public function showDelivzery()
 	// {
-	// 	// fournisseur inactif
-	// 	if($this->getFouActif() != fournisseur::SUPPLIER_INACTIVE_WITHOUT_DELIVERY)
+	// 	// Provider inactif
+	// 	if($this->getFouActif() != Provider::SUPPLIER_INACTIVE_WITHOUT_DELIVERY)
 	// 	{
 	// 		return true;
 	// 	}
@@ -858,7 +858,7 @@ class Fournisseur
 	//  */
 	// public function selectionRealisee($supplierOrder, $checkSelection)
 	// {
-	// 	// suppression paramétre inutilisé pour ce fournisseur
+	// 	// suppression paramétre inutilisé pour ce Provider
 	// 	unset($checkSelection);
 
 	// 	return nl2br($supplierOrder->getSupplierSelection()->getSelection());
@@ -873,7 +873,7 @@ class Fournisseur
 	//  */
 	// protected function _selectionToHuman($selectionData, $checkSelection)
 	// {
-	// 	// suppression paramétre inutilisé pour ce fournisseur
+	// 	// suppression paramétre inutilisé pour ce Provider
 	// 	unset($checkSelection);
 
 	// 	// on ajoute le libellé du produit
@@ -1037,7 +1037,7 @@ class Fournisseur
 
 
 	// /**
-	//  * copie le fichier depuis le serveur depart fab vers le ftp fournisseur
+	//  * copie le fichier depuis le serveur depart fab vers le ftp Provider
 	//  * @param order $order la commande
 	//  * @param string $commentaire Commentaire à ajouter dans l'historique
 	//  * @param string|null $fileName [=null] le nom du fichier. si NULL on prendra le numéro de commande .zip
@@ -1057,7 +1057,7 @@ class Fournisseur
 	// 		$user = '';
 	// 	}
 
-	// 	// récupération du fichier departFab pour le mettre dans le ftp du fournisseur
+	// 	// récupération du fichier departFab pour le mettre dans le ftp du Provider
 	// 	if($this->downloadProductionFile($order->getOrdersId(), $this->getDirFtp(), false, $fileName))
 	// 	{
 	// 		// si on veux un historique
@@ -1088,7 +1088,7 @@ class Fournisseur
 
 
 	// /**
-	//  * verifie si le fichier de la commande est disponible sur le ftp du fournisseur
+	//  * verifie si le fichier de la commande est disponible sur le ftp du Provider
 	//  * @param int $idOrder id de la commande
 	//  * @return boolean TRUE si le fichier est disponible et FALSE si il ne l'est pas
 	//  */
@@ -1098,7 +1098,7 @@ class Fournisseur
 	// }
 
 	// /**
-	//  * le fournisseur a-t-il accés aux commandes disponibles .
+	//  * le Provider a-t-il accés aux commandes disponibles .
 	//  * @return boolean
 	//  */
 	// public function accesCommandesDisponibles()
@@ -1220,18 +1220,18 @@ class Fournisseur
 	// }
 
     // /**
-	//  * renvoi le chemin du cookie curl de ce fournisseur
+	//  * renvoi le chemin du cookie curl de ce Provider
 	//  * @param string $suffix [=''] suffixe eventuel à ajouter à notre cookie
 	//  * @return string
 	//  */
 	// public function curlCookiePath($suffix = '')
 	// {
-	// 	// si on a pas de nom de fournisseur
+	// 	// si on a pas de nom de Provider
 	// 	if($this->getNomFour() === NULL)
 	// 	{
-	// 		return '/tmp/curl_cookie/fournisseur' . $suffix . '.txt';
+	// 		return '/tmp/curl_cookie/Provider' . $suffix . '.txt';
 	// 	}
-	// 	// si on a un nom de fournisseur
+	// 	// si on a un nom de Provider
 	// 	else
 	// 	{
 	// 		return '/tmp/curl_cookie/' . str_replace(' ', '_', ToolsHTML::retireAccents(strtolower($this->getNomFour()))) . $suffix . '.txt';
@@ -1299,27 +1299,27 @@ class Fournisseur
 	// }
 
     // /**
-	//  * tri les fournisseur avec les fournisseur de selection en premier. le tableau doit être trié par ordre_selection
-	//  * @param fournisseur[] $allFournisseurs notre tableau à trier
-	//  * @return fournisseur[] notre tableau trié
+	//  * tri les Provider avec les Provider de selection en premier. le tableau doit être trié par ordre_selection
+	//  * @param Provider[] $allFournisseurs notre tableau à trier
+	//  * @return Provider[] notre tableau trié
 	//  */
 	// private static function triFournisseur($allFournisseurs)
 	// {
-	// 	// pour chaque fournisseur
-	// 	foreach($allFournisseurs AS $key => $fournisseur)
+	// 	// pour chaque Provider
+	// 	foreach($allFournisseurs AS $key => $Provider)
 	// 	{
-	// 		// si on a atteint les fournisseur avec selection
-	// 		if($fournisseur->getOrdreSelection() > 0)
+	// 		// si on a atteint les Provider avec selection
+	// 		if($Provider->getOrdreSelection() > 0)
 	// 		{
 	// 			// on quitte la boucle
 	// 			break;
 	// 		}
 
-	// 		// on supprime le fournisseur du tableau
+	// 		// on supprime le Provider du tableau
 	// 		unset($allFournisseurs[$key]);
 
-	// 		// on ajoute notre fournisseur à la fin
-	// 		$allFournisseurs[$key] = $fournisseur;
+	// 		// on ajoute notre Provider à la fin
+	// 		$allFournisseurs[$key] = $Provider;
 	// 	}
 
 	// 	return $allFournisseurs;
@@ -1381,7 +1381,7 @@ class Fournisseur
 	// 	// récupération des valeurs de variables
 	// 	$data['aVariableValuesJson'] = json_encode(\Supplier\Message::getAVariableValues());
 
-	// 	// si il manque trop de donnée (cas de site fournisseur inaccessible
+	// 	// si il manque trop de donnée (cas de site Provider inaccessible
 	// 	if(!isset($data['selection']))
 	// 	{
 	// 		// on mettra une chaune vide
@@ -1466,7 +1466,7 @@ class Fournisseur
 	// }
 
 	// /**
-	//  * renvoi la selection fournisseur et le fournisseur pour la sauvegarde de la selection
+	//  * renvoi la selection Provider et le Provider pour la sauvegarde de la selection
 	//  * @param string$selection				la selection
 	//  * @param \TProduitHost $tProduitHost	le produit host
 	//  * @param int $idDelay					id du délai
@@ -1483,19 +1483,19 @@ class Fournisseur
 	// 	unset($idDelay);
 	// 	unset($selectionTxt);
 
-	// 	// par défaut pas de selection fournisseur
+	// 	// par défaut pas de selection Provider
 	// 	$return['selection_fournisseur'] = NULL;
 
-	// 	// on ajoute le fournisseur dans la variable de retour
-	// 	$return['fournisseur'] = $this;
+	// 	// on ajoute le Provider dans la variable de retour
+	// 	$return['Provider'] = $this;
 
 	// 	return $return;
 	// }
 
 
 	// /**
-	//  * indique si le fournisseur dispose d'un systéme de Passage d'une commande fournisseur automatiquement chez ce fournisseur
-	//  * @return bool true si le fournisseur dispose du systéme et false sinon
+	//  * indique si le Provider dispose d'un systéme de Passage d'une commande Provider automatiquement chez ce Provider
+	//  * @return bool true si le Provider dispose du systéme et false sinon
 	//  */
 	// public function haveSupplierOrderAutoLaunch()
 	// {
@@ -1504,8 +1504,8 @@ class Fournisseur
 
 
 	// /**
-	//  * indique si le fournisseur dispose d'un systéme de Gestion des mails
-	//  * @return bool true si le fournisseur dispose du systéme et false sinon
+	//  * indique si le Provider dispose d'un systéme de Gestion des mails
+	//  * @return bool true si le Provider dispose du systéme et false sinon
 	//  */
 	// public function haveManageMail()
 	// {
@@ -1513,14 +1513,14 @@ class Fournisseur
 	// }
 
 	// /**
-	//  * finalisation de la commande chez le fournisseur
+	//  * finalisation de la commande chez le Provider
 	//  * @param TLockProcess $lockProcess le lockprocess pour mettre à jour l'étape
 	//  * @param order $order la commande
-	//  * @param array $supplierPrice un tableau avec le prix TTC et le prix HT payé au fournisseur
-	//  * @param type $supplierOrderId id de la commande chez le fournisseur
+	//  * @param array $supplierPrice un tableau avec le prix TTC et le prix HT payé au Provider
+	//  * @param type $supplierOrderId id de la commande chez le Provider
 	//  * @param DateHeure|NULL $deliveryDate [=''] la date de livraison prévu ou '' si on ne veux pas changer
-	//  * @param TSupplierOrder|null $supplierOrder [=null] la commande fournisseur si on l'a sinon null pour la chercher ou la créé
-	//  * @param int|null $jobId [=null] id du job dans la commande fournisseur ou null si non applicable
+	//  * @param TSupplierOrder|null $supplierOrder [=null] la commande Provider si on l'a sinon null pour la chercher ou la créé
+	//  * @param int|null $jobId [=null] id du job dans la commande Provider ou null si non applicable
 	//  * @return bool renvoi true
 	//  */
 	// public function finalisationCommandeSite(TLockProcess $lockProcess, order $order, $supplierPrice, $supplierOrderId, $deliveryDate = '', $supplierOrder = null, $jobId = null)
@@ -1532,17 +1532,17 @@ class Fournisseur
 	// 		$deliveryDate = $deliveryDate->format(DateHeure::DATEMYSQL);
 	// 	}
 
-	// 	$lockProcess->getLog()->addLogContent('Création du reglement fournisseur');
+	// 	$lockProcess->getLog()->addLogContent('Création du reglement Provider');
 	// 	$order->addRegFour($this->getIdFour(), $this->getFouPayment(), $supplierPrice['ttc'], $supplierOrderId);
 
-	// 	$lockProcess->updateStage('Création de la commande fournisseur.');
+	// 	$lockProcess->updateStage('Création de la commande Provider.');
 	// 	TSupplierOrder::updatePreOrderOrCreateNew($order->getOrdersId(), $deliveryDate, $this->getIdFour(), $supplierPrice['ht'], $supplierOrderId, TSupplierOrderStatus::ID_STATUS_FILE_WAITING, $jobId, '', $supplierOrder);
 
 	// 	// maj du statut de la commande
 	// 	$lockProcess->updateStage('Mise à jour du statut de la commande et envoi des mails');
 	// 	$commentaire = '--- Informations ---
 	// 			Prix d achat : ' . $supplierPrice['ht'] . ' &euro;
-	// 			Fournisseur : ' . $this->getNomFour() . '
+	// 			Provider : ' . $this->getNomFour() . '
 	// 			Livraison : ' . $deliveryDate;
 	// 	$order->updateStatus(OrdersStatus::STATUS_FABRICATION, $commentaire, OrdersStatusHistory::TYPE_ENVOI_MAIL_MAIL_DU_STATUT, '', '', 'robot lgi', str_replace("'", " ", $supplierOrderId));
 
@@ -1594,7 +1594,7 @@ class Fournisseur
 	//  */
 	// public function filesListFromSelection(SelectionFournisseur $selection, $idOrder)
 	// {
-	// 	// selection non utilisé pour ce fournisseur
+	// 	// selection non utilisé pour ce Provider
 	// 	unset($selection);
 
 	// 	// par défaut fichier pdf
@@ -1615,11 +1615,11 @@ class Fournisseur
 	//  * Renvoi les information bancaire sur une transaction
 	//  * @param string $idTransaction id de la transaction
 	//  * @param \DateHeure $dateTransaction date de la transaction
-	//  * @return array|null|false null si ce fournisseur ne dispose pas d'information
+	//  * @return array|null|false null si ce Provider ne dispose pas d'information
 	//  */
 	// public function bankTransaction($idTransaction, \DateHeure $dateTransaction)
 	// {
-	// 	// pas besoin des paramétres pour les fournisseur générique
+	// 	// pas besoin des paramétres pour les Provider générique
 	// 	unset($idTransaction);
 	// 	unset($dateTransaction);
 
@@ -1643,7 +1643,7 @@ class Fournisseur
 	// }
 
 	// /**
-	//  * Recherche un id fournisseur par rapport a son nom
+	//  * Recherche un id Provider par rapport a son nom
 	//  * @param string $supplierInformation
 	//  * @return int|false on renvoi l'id ou false si on ne trouve pas
 	//  */
@@ -1653,14 +1653,14 @@ class Fournisseur
 	// 	$matches = array();
 
 	// 	// si on a une url
-	// 	if(preg_match(fournisseur::_pcreSiteNameFromUrl(), $supplierInformation, $matches))
+	// 	if(preg_match(Provider::_pcreSiteNameFromUrl(), $supplierInformation, $matches))
 	// 	{
-	// 		// on ajoute le nom du fournisseur aux information pour le trouver aprés.
+	// 		// on ajoute le nom du Provider aux information pour le trouver aprés.
 	// 		$supplierInformation .= "\n" . $matches[1];
 	// 	}
 
 	// 	// recherche de tous les fournisseurs on tri par nom inversé pour chercher "print 24 belgique" avant "print 24"
-	// 	$allSupplier = fournisseur::findAll(array('nom_four DESC'));
+	// 	$allSupplier = Provider::findAll(array('nom_four DESC'));
 
 	// 	// on sépare chaque ligne
 	// 	$allSupplierInformationLineRaw = explode("\n", $supplierInformation);
@@ -1678,7 +1678,7 @@ class Fournisseur
 	// 			continue;
 	// 		}
 
-	// 		// on recherche parmis les fournisseur supplémentaire
+	// 		// on recherche parmis les Provider supplémentaire
 	// 		foreach(self::$_ADDITIONAL_SUPPLIER as $supplierName => $supplierId)
 	// 		{
 	// 			// si on n'a pas trouvé
@@ -1701,7 +1701,7 @@ class Fournisseur
 	// 			return $return;
 	// 		}
 
-	// 		// pour chaque fournisseur
+	// 		// pour chaque Provider
 	// 		foreach($allSupplier as $supplier)
 	// 		{
 	// 			// si on n'a pas trouvé
@@ -1725,7 +1725,7 @@ class Fournisseur
 	// 		}
 	// 	}
 
-	// 	// on recherche parmis les fournisseur supplémentaire
+	// 	// on recherche parmis les Provider supplémentaire
 	// 	foreach(self::$_ADDITIONAL_SUPPLIER as $supplierName => $supplierId)
 	// 	{
 	// 		// si on n'a pas trouvé
@@ -1739,14 +1739,14 @@ class Fournisseur
 	// 		// on ajoute l'id du fournissur
 	// 		$return['idSupplier'] = $supplierId;
 
-	// 		// on renvoi les informations en supprimant le fournisseur
+	// 		// on renvoi les informations en supprimant le Provider
 	// 		$return['supplierInformation'] = trim(str_replace(mb_strtolower($supplierName), '', mb_strtolower($supplierInformation)));
 
 	// 		// on renvoi le résultat
 	// 		return $return;
 	// 	}
 
-	// 	// on recherche parmis les fournisseur
+	// 	// on recherche parmis les Provider
 	// 	foreach($allSupplier as $supplier)
 	// 	{
 	// 		// si on n'a pas trouvé
@@ -1760,7 +1760,7 @@ class Fournisseur
 	// 		// on ajoute l'id du fournissur
 	// 		$return['idSupplier'] = $supplier->getIdFour();
 
-	// 		// on renvoi les informations en supprimant le fournisseur
+	// 		// on renvoi les informations en supprimant le Provider
 	// 		$return['supplierInformation'] = trim(str_replace(mb_strtolower($supplier->getNomFour()), '', mb_strtolower($supplierInformation)));
 
 	// 		// on renvoi le résultat
@@ -1772,15 +1772,15 @@ class Fournisseur
 	// }
 
 	// /**
-	//  * Récupére la commande fournisseur ou la créé si elle n'existe pas
-	//  * @param string $supplierOrderId id de la commande chez le fournisseur
+	//  * Récupére la commande Provider ou la créé si elle n'existe pas
+	//  * @param string $supplierOrderId id de la commande chez le Provider
 	//  * @param AchattodbEmail|null $achattodbEmail [=null] si on fournit un mail il sera mis à retraité
 	//  * @param int|int[] $idOrder [=null] id de la commande ou des commandes si on a un array (pour une eventuelle création)
-	//  * @param int $idSupplierOrderStatus [=TSupplierOrderStatus::ID_STATUS_PRODUCTION] statut de la commande fournisseur (pour une eventuelle création)
-	//  * @param date $deliveryDate [=null] date de livraison de la commande fournisseur (pour une eventuelle création)
-	//  * @param float $ordSupOrdPriceWithoutTax [=null] prix d'achat HT TOTAL de la commande fournisseur (pour une eventuelle création)
+	//  * @param int $idSupplierOrderStatus [=TSupplierOrderStatus::ID_STATUS_PRODUCTION] statut de la commande Provider (pour une eventuelle création)
+	//  * @param date $deliveryDate [=null] date de livraison de la commande Provider (pour une eventuelle création)
+	//  * @param float $ordSupOrdPriceWithoutTax [=null] prix d'achat HT TOTAL de la commande Provider (pour une eventuelle création)
 	//  * @param type $jobId [=null] id du job (pour une eventuelle création)
-	//  * @return TSupplierOrder|false la commande fournisseur ou FALSE si rien ne correspond
+	//  * @return TSupplierOrder|false la commande Provider ou FALSE si rien ne correspond
 	//  */
 	// public function orderSupplier($supplierOrderId, $achattodbEmail = null, $idOrder = null, $idSupplierOrderStatus = TSupplierOrderStatus::ID_STATUS_PRODUCTION, $deliveryDate = null, $ordSupOrdPriceWithoutTax = null, $jobId = null)
 	// {
@@ -1804,10 +1804,10 @@ class Fournisseur
 	// 		$aIdOrder[0] = null;
 	// 	}
 
-	// 	// on recherche la commande fournisseur
+	// 	// on recherche la commande Provider
 	// 	$supplierOrder = TSupplierOrder::findBySupplierId($supplierOrderId, $this->getIdFour(), $jobId, $idOrder);
 
-	// 	// si on a trouvé la commande fournisseur
+	// 	// si on a trouvé la commande Provider
 	// 	if($supplierOrder != null)
 	// 	{
 	// 		// tout est bon
@@ -1821,7 +1821,7 @@ class Fournisseur
 	// 	if(!$order->exist())
 	// 	{
 	// 		// on créé un log d'erreur
-	// 		$log = TLog::initLog('commande fournisseur introuvable');
+	// 		$log = TLog::initLog('commande Provider introuvable');
 	// 		$log->Erreur($this->getNomFour());
 	// 		$log->Erreur(var_export($supplierOrderId, TRUE));
 	// 		$log->Erreur('Commande "' . $aIdOrder[0] . '" introuvable.');
@@ -1850,7 +1850,7 @@ class Fournisseur
 	// 		$ordSupOrdPriceWithoutTax = 0;
 	// 	}
 
-	// 	// on va créé la commande fournisseur ou récupérer une pré commande
+	// 	// on va créé la commande Provider ou récupérer une pré commande
 	// 	$newSupplierOrder = TSupplierOrder::updatePreOrderOrCreateNew($aIdOrder[0], $deliveryDate, $this->getIdFour(), $ordSupOrdPriceWithoutTax, $supplierOrderId, $idSupplierOrderStatus, $jobId);
 
 	// 	// pour chaque commande
@@ -1859,11 +1859,11 @@ class Fournisseur
 	// 		// si on est sur la 1er commande
 	// 		if($key == 0)
 	// 		{
-	// 			// on ne fait rien car elle est lié à notre commande fournisseur
+	// 			// on ne fait rien car elle est lié à notre commande Provider
 	// 			continue;
 	// 		}
 
-	// 		// on va lié la commande et la commande fournisseur
+	// 		// on va lié la commande et la commande Provider
 	// 		TAOrderSupplierOrder::createNew($idOrder, $newSupplierOrder->getIdSupplierOrder(), $deliveryDate, $ordSupOrdPriceWithoutTax, $jobId);
 	// 	}
 
@@ -1872,32 +1872,32 @@ class Fournisseur
 	// }
 
 	// /**
-	//  * Récupére la commande fournisseur ou la créé si elle n'existe pas puis la met à jour
-	//  * @param string $supplierOrderId id de la commande chez le fournisseur
-	//  * @param int $idSupplierOrderStatus [=TSupplierOrderStatus::ID_STATUS_PRODUCTION] statut de la commande fournisseur
+	//  * Récupére la commande Provider ou la créé si elle n'existe pas puis la met à jour
+	//  * @param string $supplierOrderId id de la commande chez le Provider
+	//  * @param int $idSupplierOrderStatus [=TSupplierOrderStatus::ID_STATUS_PRODUCTION] statut de la commande Provider
 	//  * @param AchattodbEmail|null $achattodbEmail [=null] si on fournit un mail il sera mis à retraité en cas de probléme
 	//  * @param int|int[] $idOrder [=null] id de la commande ou des commandes si on a un array (pour une eventuelle création)
-	//  * @param date $deliveryDate [=null] date de livraison de la commande fournisseur ou null pour ne pas la mettre à jour
-	//  * @param float $ordSupOrdPriceWithoutTax [=null] prix d'achat HT de la commande fournisseur (pour une eventuelle création)
+	//  * @param date $deliveryDate [=null] date de livraison de la commande Provider ou null pour ne pas la mettre à jour
+	//  * @param float $ordSupOrdPriceWithoutTax [=null] prix d'achat HT de la commande Provider (pour une eventuelle création)
 	//  * @param string|null $jobId [=null] id du job ou null si non applicable
 	//  * @param string $additionnalComment [=''] commentaire additionnel à ajouter dans l'historique de la commande
 	//  * @param int|null $idOrderStatus [=null] id du statut pour notre commande si on souhaite le changer. mettre null pour avoir un commentaire
 	//  * @param array|null $aDeliveryInformation [=null] tableau des informations colis pour le passage de commande en livraison ou null si non applicable
-	//  * @return TSupplierOrder|false la commande fournisseur ou FALSE si rien ne correspond
+	//  * @return TSupplierOrder|false la commande Provider ou FALSE si rien ne correspond
 	//  */
 	// public function updateOrderSupplier($supplierOrderId, $idSupplierOrderStatus = TSupplierOrderStatus::ID_STATUS_PRODUCTION, $achattodbEmail = null, $idOrder = null, $deliveryDate = null, $ordSupOrdPriceWithoutTax = null, $jobId = null, $additionnalComment = '', $idOrderStatus = null, $aDeliveryInformation = null)
 	// {
-	// 	// on recherche la commande fournisseur
+	// 	// on recherche la commande Provider
 	// 	$supplierOrder = $this->orderSupplier($supplierOrderId, $achattodbEmail, $idOrder, $idSupplierOrderStatus, $deliveryDate, $ordSupOrdPriceWithoutTax, $jobId);
 
-	// 	// si on n'a pas trouvé la commande fournisseur
+	// 	// si on n'a pas trouvé la commande Provider
 	// 	if($supplierOrder == false)
 	// 	{
 	// 		// on quitte la fonction
 	// 		return false;
 	// 	}
 
-	// 	// relie la commande fournisseur à toutes les commandes nécessaire
+	// 	// relie la commande Provider à toutes les commandes nécessaire
 	// 	$supplierOrder->linkWithAllOrder($idOrder);
 
 	// 	// récupération du statut de la commande
@@ -1923,7 +1923,7 @@ class Fournisseur
 	// 		$comment .= $additionnalComment . '<br>';
 	// 	}
 
-	// 	// on vériei si il y a bien des commande lié à notre commande fournisseur
+	// 	// on vériei si il y a bien des commande lié à notre commande Provider
 	// 	if(!$this->checkOrderLinkedToSupplierOrderWithJob($supplierOrder, $jobId, $achattodbEmail))
 	// 	{
 	// 		// on quitte la fonction
@@ -1978,8 +1978,8 @@ class Fournisseur
 	// }
 
 	// /**
-	//  * Vérifie qu'il y a bien des commandes lié à une commande fournisseur et un job
-	//  * @param TSupplierOrder $supplierOrder la commande fournisseur
+	//  * Vérifie qu'il y a bien des commandes lié à une commande Provider et un job
+	//  * @param TSupplierOrder $supplierOrder la commande Provider
 	//  * @param string $jobId [=null] id du job
 	//  * @param AchattodbEmail|null $achattodbEmail [=null] si on fournit un mail il sera mis à retraité
 	//  * @return boolean true si tout va bien et false si rien ne correspond
@@ -1990,7 +1990,7 @@ class Fournisseur
 	// 	if(count($supplierOrder->getAOrderSupplierOrder($jobId)) == 0)
 	// 	{
 	// 		// on envoi un log
-	// 		$log = TLog::initLog('commande fournisseur avec job introuvable');
+	// 		$log = TLog::initLog('commande Provider avec job introuvable');
 	// 		$log->Erreur($this->getNomFour());
 	// 		$log->Erreur(var_export($supplierOrder, true));
 	// 		$log->Erreur(var_export($jobId, true));
