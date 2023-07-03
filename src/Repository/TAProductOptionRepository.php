@@ -39,28 +39,20 @@ class TAProductOptionRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return TAProductOption[] Returns an array of TAProductOption objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return TAProductOption[] Returns an array of TAProductOption objects
+     */
+    public function findById($idProduct,$idOption,$idHost): array
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.idProduct= :idproduct')
+            ->andWhere('t.idOption= :idoption')
+            ->andWhere('t.idHost= :idhost')
+            ->setParameter('idproduct', $idProduct)
+            ->setParameter('idoption', $idOption)
+            ->setParameter('idhost', $idHost)
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?TAProductOption
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
