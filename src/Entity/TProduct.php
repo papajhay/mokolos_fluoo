@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TProductRepository::class)]
@@ -43,6 +45,14 @@ class TProduct
     /* indique si le produit autorise les quantité personnalisé. (utilisé par l'API smartlabel)*/
     #[ORM\Column]
     private ?int $specialQuantity = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: TAProductOption::class)]
+    private Collection $tAProductOptions;
+
+    public function __construct()
+    {
+        $this->tAProductOptions = new ArrayCollection();
+    }
 
     //TODO relation
     /*
@@ -100,6 +110,38 @@ class TProduct
     public function setSpecialQuantity(int $specialQuantity): static
     {
         $this->specialQuantity = $specialQuantity;
+
+        return $this;
+    }
+
+    
+
+    /**
+     * @return Collection<int, TAProductOption>
+     */
+    public function getTAProductOptions(): Collection
+    {
+        return $this->tAProductOptions;
+    }
+
+    public function addTAProductOption(TAProductOption $tAProductOption): static
+    {
+        if (!$this->tAProductOptions->contains($tAProductOption)) {
+            $this->tAProductOptions->add($tAProductOption);
+            $tAProductOption->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOption(TAProductOption $tAProductOption): static
+    {
+        if ($this->tAProductOptions->removeElement($tAProductOption)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOption->getProduct() === $this) {
+                $tAProductOption->setProduct(null);
+            }
+        }
 
         return $this;
     }

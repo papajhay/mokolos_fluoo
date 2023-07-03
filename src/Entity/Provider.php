@@ -146,12 +146,46 @@ class Provider
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateHourValidCachePrice = null;
 
-    #[ORM\OneToMany(mappedBy: 'provider', targetEntity: TAOptionValueProvider::class)]
+	#[ORM\OneToMany(mappedBy: 'provider', targetEntity: TAOptionValueProvider::class)]
     private Collection $taOptionValueProviders;
 
-    public function __construct()
+	#[ORM\OneToMany(mappedBy: 'provider', targetEntity: TAOptionProvider::class)]
+    private Collection $tAOptionProviders;
+
+	 public function __construct()
     {
         $this->taOptionValueProviders = new ArrayCollection();
+		$this->tAOptionProviders = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, TAOptionProvider>
+     */
+    public function getTAOptionProviders(): Collection
+    {
+        return $this->tAOptionProviders;
+    }
+
+    public function addTAOptionProvider(TAOptionProvider $tAOptionProvider): static
+    {
+        if (!$this->tAOptionProviders->contains($tAOptionProvider)) {
+            $this->tAOptionProviders->add($tAOptionProvider);
+            $tAOptionProvider->setProvider($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAOptionProvider(TAOptionProvider $tAOptionProvider): static
+    {
+        if ($this->tAOptionProviders->removeElement($tAOptionProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($tAOptionProvider->getProvider() === $this) {
+                $tAOptionProvider->setProvider(null);
+            }
+        }
+
+        return $this;
     }
 
     /*
@@ -2090,13 +2124,13 @@ class Provider
 	 * END TO DO : SERVICE
 	 * *************************************************************************
 	 */
-
+	
     /**
      * @return Collection<int, TAOptionValueProvider>
      */
     public function getTaOptionValueProviders(): Collection
     {
-        return $this->TtOptionValueProviders;
+        return $this->taOptionValueProviders;
     }
 
     public function addTaOptionValueProviders(TAOptionValueProvider $taOptionValueProviders): static
