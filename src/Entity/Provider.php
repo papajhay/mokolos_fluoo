@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProviderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -143,6 +145,14 @@ class Provider
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateHourValidCachePrice = null;
+
+    #[ORM\OneToMany(mappedBy: 'provider', targetEntity: TAOptionValueProvider::class)]
+    private Collection $taOptionValueProviders;
+
+    public function __construct()
+    {
+        $this->taOptionValueProviders = new ArrayCollection();
+    }
 
     /*
 	 * *************************************************************************
@@ -2080,4 +2090,34 @@ class Provider
 	 * END TO DO : SERVICE
 	 * *************************************************************************
 	 */
+
+    /**
+     * @return Collection<int, TAOptionValueProvider>
+     */
+    public function getTaOptionValueProviders(): Collection
+    {
+        return $this->TtOptionValueProviders;
+    }
+
+    public function addTaOptionValueProviders(TAOptionValueProvider $taOptionValueProviders): static
+    {
+        if (!$this->taOptionValueProviders->contains($taOptionValueProviders)) {
+            $this->taOptionValueProviders->add($taOptionValueProviders);
+            $taOptionValueProviders->setProvider($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaOptionValueProviders(TAOptionValueProvider $taOptionValueProviders): static
+    {
+        if ($this->taOptionValueProviders->removeElement($taOptionValueProviders)) {
+            // set the owning side to null (unless already changed)
+            if ($taOptionValueProviders->getProvider() === $this) {
+                $taOptionValueProviders->setProvider(null);
+            }
+        }
+
+        return $this;
+    }
 }
