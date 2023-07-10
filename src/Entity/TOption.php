@@ -24,7 +24,7 @@ class TOption
     /**
      * type d'option : menu déroulant
      */
-    //const TYPE_OPTION_SELECT = 0;
+    const TYPE_OPTION_SELECT = 0;
 
     /**
      * type d'option : text
@@ -69,12 +69,12 @@ class TOption
     /**
      * option spécial : option des format
      */
-    //const SPECIAL_OPTION_FORMAT = 6;
+    const SPECIAL_OPTION_FORMAT = 6;
 
     /**
      * option spécial : option des supports (type de papier)
      */
-    //const SPECIAL_OPTION_SUPPORT = 7;
+    const SPECIAL_OPTION_SUPPORT = 7;
 
     /**
      * option spécial : option de largeur
