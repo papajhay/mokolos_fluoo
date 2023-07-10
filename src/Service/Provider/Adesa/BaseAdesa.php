@@ -2,6 +2,9 @@
 
 namespace App\Service\Provider\Adesa;
 
+use App\Entity\TOption;
+use Psr\Log\LoggerInterface;
+
 class BaseAdesa
 {
     /**
@@ -39,6 +42,12 @@ class BaseAdesa
 	 */
 	const MAX_QUANTITY_RUSH = 5000;
 
+	public function __construct(
+	  private LoggerInterface $logger
+	)
+	{
+	}
+
 
 	/**
 	 * renvoi le type d'API séléctionné entre prod et dev
@@ -55,7 +64,7 @@ class BaseAdesa
 	 * renvoi l'adresse de l'api
 	 * @return string
 	 */
-	private function _apiUrl()
+	protected function _apiUrl()
 	{
 		// si on est sur l'API PROD
 		if($this->_apiTypeSelected() == self::API_TYPE_PROD)
@@ -239,38 +248,38 @@ class BaseAdesa
 
     /**
 	 * renvoi les dépendances
-	 * @param TProduit $produit le produit
+	 * @param TProduct $produit le produit
 	 * @param string $idHost le site
 	 * @return string les dépendance en string
 	 */
-	// private function _dependencies($produit, $idHost)
-	// {
-	// 	$aDependance = array();
+	 protected function _dependencies($produit, $idHost)
+	{
+		$aDependance = [];
 
 		// on récupére toutes les options values de ce produit
-		// $allOptionsData = $produit->getOptionsAndValues($idHost);
+		$allOptionsData = $produit->getOptionsAndValues($idHost);
 
 		// pour chaque option
-		// foreach($allOptionsData AS $optionData)
-		// {
+		foreach($allOptionsData AS $optionData)
+		{
 			// si on n'est pas sur une option de type select
-			// if($optionData['opt_type_option'] != TOption::TYPE_OPTION_SELECT)
-			// {
+			if($optionData['opt_type_option'] != TOption::TYPE_OPTION_SELECT)
+			{
 				// on passe à l'option suivante
-			// 	continue;
-			// }
+				continue;
+			}
 
 			// pour chaque option value
-			// foreach($optionData['paramProduitOptionValue'] AS $optionValue)
-			// {
+			foreach($optionData['paramProduitOptionValue'] AS $optionValue)
+			{
 				// on ajoute cette option value à notre tableau des dépendance
-		// 		$aDependance[] = $optionValue->getIdOptionValue();
-		// 	}
-		// }
+				$aDependance[] = $optionValue->getIdOptionValue();
+			}
+		}
 
 		// on renvoi nos dépendance concaténer
-	// 	return implode('-', $aDependance);
-	// }
+		return implode('-', $aDependance);
+	}
 
     /**
 	 * Vérifie la quantité spécial pour savoir si il est dans les limittes du fournisseur
@@ -282,51 +291,52 @@ class BaseAdesa
 	 * @param int $quantityByRoll	[=null] le nombre d'étiquette par rouleau si applicable)
 	 * @return bool true en cas de succés et false en cas de probléme
 	 */
-	// private function _checkSpecialQuantity($quantityByModel, $nbModels, $minQuantity, $maxQuantity, $quantityByRoll = null)
-	// {
+	 protected function _checkSpecialQuantity($quantityByModel, $nbModels, $minQuantity, $maxQuantity, $quantityByRoll = null)
+	 {
 		// calcul de la quantité total
-		// $quantity = $quantityByModel * $nbModels;
+		 $quantity = $quantityByModel * $nbModels;
 
 		// si on a un soucis avec la quantité
-		// if($quantity < $minQuantity || $quantity > $maxQuantity)
-		// {
+		if($quantity < $minQuantity || $quantity > $maxQuantity)
+		{
 			// on ajoute un message d'erreur
-			// \Supplier\Message::addError('La quantité totale doit être comprise ente ' . $minQuantity . ' exemplaires et ' . $maxQuantity . ' exemplaires');
+			// channel supplier
+			 $this->logger->error('La quantité totale doit être comprise ente ' . $minQuantity . ' exemplaires et ' . $maxQuantity . ' exemplaires');
 
 			// et on ne va pas plus loin
-		// 	return false;
-		// }
+			return false;
+		}
 
 		// si on n'a pas de quantité par rouleaux
-		// if($quantityByRoll == null)
-		// {
+		if($quantityByRoll == null)
+		{
 			// tout est bon
-		// 	return true;
-		// }
+			return true;
+		}
 
 		// si on a un soucis avec la quantité
-		// if($quantityByRoll < $minQuantity || $quantityByRoll > $quantityByModel)
-		// {
+		if($quantityByRoll < $minQuantity || $quantityByRoll > $quantityByModel)
+		{
 			// on ajoute un message d'erreur
-			// \Supplier\Message::addError('La quantité doit être comprise ente ' . $minQuantity . ' exemplaires et le nombre d\'exemplaires par modèle');
+			$this->logger->error('La quantité doit être comprise ente ' . $minQuantity . ' exemplaires et le nombre d\'exemplaires par modèle');
 
 			// et on ne va pas plus loin
-		// 	return false;
-		// }
+			return false;
+		}
 
 		// tout est bon
-	// 	return true;
-	// }
+		return true;
+	}
 
     /**
 	 * ajout des paramétre pour se loger sur l'API de Smartlabel
 	 * @param Curl $curl
 	 */
-	// private function _curlParameterForLogin($curl)
-	// {
+	protected function _curlParameterForLogin($curl)
+	{
 		// ajout du bearer token et des paramétre de version d'API
-	// 	$curl->setOpt(CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $this->_apiBearerToken(), 'accept: application/json;version=1.0'));
-	// }
+		$curl->setOpt(CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $this->_apiBearerToken(), 'accept: application/json;version=1.0'));
+	}
 
 
 	/**
