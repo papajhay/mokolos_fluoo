@@ -3,6 +3,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TSupplierOrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 //$_SQL_TABLE_NAME = 'lesgrand.t_supplier_order';
@@ -58,9 +60,19 @@ class TSupplierOrder
      */
     private $_status = null;
 
+    #[ORM\OneToMany(mappedBy: 'tSupplierOrder', targetEntity: TAOrderSupplierOrder::class)]
+    private Collection $taOrderSupplierOrders;
+
+    public function __construct()
+    {
+        $this->taOrderSupplierOrders = new ArrayCollection();
+    }
+
     /**
-     * tableau des sous objet TSupplierOrderStatus lié à notre objet
-     * @var TSupplierOrderStatus
+     * tableau des sous objet TAOrderSupplierOrder lié à notre objet
+     * @var TAOrderSupplierOrder
+     *
+     *
      */
     //private $_aOrderSupplierOrder = null;
 
@@ -186,6 +198,37 @@ class TSupplierOrder
 
         return $this->_status;
     }
+
+    /**
+     * @return Collection<int, TAOrderSupplierOrder>
+     */
+    public function getTaOrderSupplierOrders(): Collection
+    {
+        return $this->taOrderSupplierOrders;
+    }
+
+    public function addTaOrderSupplierOrder(TAOrderSupplierOrder $taOrderSupplierOrder): static
+    {
+        if (!$this->taOrderSupplierOrders->contains($taOrderSupplierOrder)) {
+            $this->taOrderSupplierOrders->add($taOrderSupplierOrder);
+            $taOrderSupplierOrder->setTSupplierOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaOrderSupplierOrder(TAOrderSupplierOrder $taOrderSupplierOrder): static
+    {
+        if ($this->taOrderSupplierOrders->removeElement($taOrderSupplierOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($taOrderSupplierOrder->getTSupplierOrder() === $this) {
+                $taOrderSupplierOrder->setTSupplierOrder(null);
+            }
+        }
+
+        return $this;
+    }
+
 
     //TODO Repository
 
@@ -1061,6 +1104,7 @@ class TSupplierOrder
 //
 //        return true;
 //    }
+
 
 
 }

@@ -40,16 +40,16 @@ class TSupplierOrderRepository extends ServiceEntityRepository
         }
     }
 
-    public function findBySupplierId($supplierOrderId ,$idProvider): ?TSupplierOrder
+    public function findAllBySupplierOrderIdAndIdProvider($supplierOrderId ,$idProvider): array
     {
         return $this->createQueryBuilder('t')
             ->where('t.idProvider = :idprovider')
-            ->andWhere('t.supplierOrderId = :idsupplierOrderId')
+            ->andWhere('t.supplierOrderId = :supplierOrderId')
             ->setParameter('idprovider', $idProvider)
             ->setParameter('supplierOrderId', $supplierOrderId)
             ->getQuery()
-            ->getOneOrNullResult()
-            ;
+            ->getResult();
     }
+
 
 }

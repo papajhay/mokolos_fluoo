@@ -11,6 +11,171 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProviderRepository::class)]
 class Provider
 {
+    /**
+     * liste des fournisseurs supplémentaire
+     * @var int[]
+     */
+    protected $_ADDITIONAL_SUPPLIER = array('ALIAS PIXART'			 => Provider::ID_SUPPLIER_PIXART,
+        'ALIAS REDUC'			 => fournisseurPrint24::ID_FOUR_FR,
+        'AUDRY'					 => 67,
+        'AVL'					 => 45,
+        'colissimo'				 => Provider::ID_SUPPLIER_LA_POSTE,
+        'cusin'					 => 5,
+        'crea'					 => Provider::ID_SUPPLIER_FLUOO_CREATION,
+        'digit'					 => 17,
+        'exa'					 => Provider::ID_SUPPLIER_EXAPRINT,
+        'exeprint'				 => Provider::ID_SUPPLIER_EXAPRINT,
+        'envelcolor.fr'			 => 71,
+        'igraphy'				 => 73,
+        'impressionsenligne'	 => 103,
+        'indexit'				 => 20,
+        'le-sac-publicitaire'	 => 75,
+        'max'					 => 11,
+        'magenta'				 => 45,
+        'mursdimages'			 => Provider::ID_SUPPLIER_PIXART,
+        'onelineprinters'		 => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+        'onlinp'				 => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+        'oneline'				 => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+        'online'				 => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+        'onlin'					 => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+        'p24'					 => fournisseurPrint24::ID_FOUR_FR,
+        'p24 be'				 => fournisseurPrint24::ID_FOUR_BE,
+        'pixartprinting'		 => Provider::ID_SUPPLIER_PIXART,
+        'pix'					 => Provider::ID_SUPPLIER_PIXART,
+        'MULTISIGNE'			 => Provider::ID_SUPPLIER_PIXART,
+        'Print 24 be'			 => fournisseurPrint24::ID_FOUR_BE,
+        'Print 24 lu'			 => fournisseurPrint24::ID_FOUR_LU,
+        'Print 24be'			 => fournisseurPrint24::ID_FOUR_BE,
+        'print24'				 => fournisseurPrint24::ID_FOUR_FR,
+        'print 27'				 => fournisseurPrint24::ID_FOUR_FR,
+        'print 30'				 => fournisseurPrint24::ID_FOUR_FR,
+        'print 31'				 => fournisseurPrint24::ID_FOUR_FR,
+        'pc'					 => 1,
+        'printoclok'			 => 29,
+        'printforyou'			 => Provider::ID_SUPPLIER_PRINTFORYOU,
+        'Printconcept (ex Aud'	 => 67,
+        'carnet -liasse.com'	 => Provider::ID_SUPPLIER_REALISAPRINT,
+        'realisa'				 => Provider::ID_SUPPLIER_REALISAPRINT,
+        'smartlabel'			 => Provider::ID_SUPPLIER_ADESA,
+        'saxo'					 => Provider::ID_SUPPLIER_SAXO,
+        'ud'					 => Provider::ID_SUPPLIER_UD,
+        'yp'					 => Provider::ID_SUPPLIER_YESPRINT);
+
+    /**
+     * *************************************************************************
+     * Constantes
+     * *************************************************************************
+     */
+
+    /**
+     * constante pour l'id du fournisseur Inconnu
+     */
+    const ID_SUPPLIER_UNKNOWN = 0;
+
+    /**
+     * constante pour l'id du fournisseur Adesa 'ex Smartlabel)
+     */
+    const ID_SUPPLIER_ADESA = 126;
+
+    /**
+     * constante pour l'id du fournisseur Etac
+     */
+    const ID_SUPPLIER_ETAC = 6;
+
+    /**
+     * constante pour l'id du fournisseur Exaprint
+     */
+    const ID_SUPPLIER_EXAPRINT = 7;
+
+    /**
+     * constante pour l'id du fournisseur création graphique Fluoo
+     */
+    const ID_SUPPLIER_FLUOO_CREATION = 85;
+
+    /**
+     * constante pour l'id du fournisseur de publicité sur Google
+     */
+    const ID_SUPPLIER_GOOGLE_ADS = 132;
+
+    /**
+     * constante pour l'id du fournisseur Realisaprint
+     */
+    const ID_SUPPLIER_IMPRESSIONENLIGNE_COM = 103;
+
+    /**
+     * constante pour l'id du fournisseur La poste
+     */
+    const ID_SUPPLIER_LA_POSTE = 109;
+
+    /**
+     * constante pour l'id du fournisseur Labelprint24
+     */
+    const ID_SUPPLIER_LABELPRINT24 = 127;
+
+    /**
+     * constante pour l'id du fournisseur de la solution de paiment CB Monext (anciennement Payline)
+     */
+    const ID_SUPPLIER_MONEXT = 107;
+
+    /**
+     * constante pour l'id du fournisseur online printers
+     */
+    const ID_SUPPLIER_ONLINE_PRINTERS = 42;
+
+    /**
+     * constante pour l'id du fournisseur Pixart
+     */
+    const ID_SUPPLIER_PIXART = 13;
+
+    /**
+     * constante pour l'id du fournisseur PrintForYou
+     */
+    const ID_SUPPLIER_PRINTFORYOU = 101;
+
+    /**
+     * constante pour l'id du fournisseur Realisaprint
+     */
+    const ID_SUPPLIER_REALISAPRINT = 27;
+
+    /**
+     * constante pour l'id du fournisseur Saxoprint
+     */
+    const ID_SUPPLIER_SAXO = 15;
+
+    /**
+     * constante pour l'id du fournisseur Stampaprint
+     */
+    const ID_SUPPLIER_STAMPAPRINT = 128;
+
+    /**
+     * constante pour l'id du fournisseur Univers Design
+     */
+    const ID_SUPPLIER_UD = 131;
+
+    /**
+     * constante pour l'id du fournisseur Yesprint
+     */
+    const ID_SUPPLIER_YESPRINT = 2;
+
+    /**
+     * constante pour l'id du fournisseur du chat : ZOPIM
+     */
+    const ID_SUPPLIER_ZOPIM = 124;
+
+    /**
+     * constante pour le fournisseur actif
+     */
+    //const SUPPLIER_ACTIVE = 1;
+
+    /**
+     * constante pour le fournisseur inactif
+     */
+    //const SUPPLIER_INACTIVE = 0;
+
+    /**
+     * constante pour le fournisseur actif
+     */
+    //const SUPPLIER_INACTIVE_WITHOUT_DELIVERY = -1;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -13,7 +13,7 @@ class AchattodbEmail
     /**
      * statut du mail : mail non traité
      */
-    //const STATUS_NOT_PROCESSED = 0;
+    const STATUS_NOT_PROCESSED = 0;
 
     /**
      * statut du mail : mail traité
@@ -23,22 +23,22 @@ class AchattodbEmail
     /**
      * statut du mail : mail nécessitant un nouveau traitement (1er essai)
      */
-    //const STATUS_NEED_REPROCESSED_1 = 10;
+    const STATUS_NEED_REPROCESSED_1 = 10;
 
     /**
      * statut du mail : mail nécessitant un nouveau traitement (2e essai)
      */
-    //const STATUS_NEED_REPROCESSED_2 = 11;
+    const STATUS_NEED_REPROCESSED_2 = 11;
 
     /**
      * statut du mail : mail nécessitant un nouveau traitement (3e essai)
      */
-    //const STATUS_NEED_REPROCESSED_3 = 12;
+    const STATUS_NEED_REPROCESSED_3 = 12;
 
     /**
      * statut du mail : mail nécessitant un nouveau traitement, echec de tous les traitements
      */
-    //const STATUS_NEED_REPROCESSED_ERROR = 20;
+    const STATUS_NEED_REPROCESSED_ERROR = 20;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -351,11 +351,11 @@ class AchattodbEmail
 //    }
 
 
-    /**
-     * indique que ce mail doit être retraité
-     * @return boolean
-     */
-//    public function needReprocess()
+//    /**
+//     * indique que ce mail doit être retraité
+//     * @return boolean
+//     */
+//    public function needReprocess(): bool
 //    {
 //        // suivant le statut du mail
 //        switch($this->getStatus())

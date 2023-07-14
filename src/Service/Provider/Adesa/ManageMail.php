@@ -2,15 +2,18 @@
 declare(strict_types=1);
 namespace App\Service\Provider\Adesa;
 
+use App\Entity\AchattodbEmail;
+use App\Entity\Provider;
+use App\Entity\TLockProcess;
 use App\Entity\TSupplierOrder;
 use App\Repository\TSupplierOrderRepository;
 use App\Service\Provider\SupplierOrderService;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ManageMail extends BaseAdesa
 {
     public function __construct(
-        private AchattodbEmail $achattodbEmail,
-        private TLockProcess $lockProcess,
+        private EntityManagerInterface $entityManager,
         private TSupplierOrderRepository $TSupplierOrderRepository,
         private SupplierOrderService $supplierOrderService
     ){}
@@ -20,69 +23,71 @@ class ManageMail extends BaseAdesa
      * @param AchattodbEmail $achattodbEmail objet de notre mail à traiter
      * @param TLockProcess $lockProcess
      */
-       public function manageMail()
+       public function manageMail(AchattodbEmail $achattodbEmail,TLockProcess $lockProcess,Provider $provider): bool
        {
             $matchesSubject	 = array();
             $matchesBody	 = array();
 
-            $this->lockProcess->updateStage('Traitement de l\'email ' . $this->achattodbEmail->getId() . ' de ' . $this->getName());
+            $lockProcess->updateStage('Traitement de l\'email ' . $achattodbEmail->getId() . ' de ' . $provider>getName());
 
             // on récupére le log du lockprocess
             //$this->setLog($lockProcess->getLog());
 
             // traitement email de fichier reçu
-            if(preg_match($this->_pcreMailOrderConfirmationBody(), $this->achattodbEmail->getMessageHtml(), $matchesBody))
+            if(preg_match($this->_pcreMailOrderConfirmationBody(), $achattodbEmail->getMessageHtml(), $matchesBody))
             {
-                $this->lockProcess->updateStage('Traitement de l\'email ' . $this->achattodbEmail->getId() . ' de confirmation de commande ' . $this->getName() . ' pour la commande fournisseur ' . $matchesBody[1]);
+                $lockProcess->updateStage('Traitement de l\'email ' . $achattodbEmail->getId() . ' de confirmation de commande ' . $provider->getName() . ' pour la commande fournisseur ' . $matchesBody[1]);
 
                 // traitement du mail
-                return $this->_manageMailOrderConfirmation($this->achattodbEmail, $matchesBody[1], $matchesBody[2]);
+                return $this->_manageMailOrderConfirmation($achattodbEmail, $matchesBody[1], $matchesBody[2]);
             }
 
             // traitement email de BAT validé
-            if(preg_match($this->_pcreMailProofOk(), $this->achattodbEmail->getSubject(), $matchesSubject))
+            if(preg_match($this->_pcreMailProofOk(), $achattodbEmail->getSubject(), $matchesSubject))
             {
-                $this->lockProcess->updateStage('Traitement de l\'email ' . $this->achattodbEmail->getId() . ' de BAT validé ' . $this->getName() . ' pour la commande fournisseur ' . $matchesSubject[1]);
+                $lockProcess->updateStage('Traitement de l\'email ' . $achattodbEmail->getId() . ' de BAT validé ' . $provider->getName() . ' pour la commande fournisseur ' . $matchesSubject[1]);
 
                 // traitement du mail
-                return $this->_manageMailProofOk($this->achattodbEmail, $matchesSubject[1]);
+                return $this->_manageMailProofOk($achattodbEmail, $matchesSubject[1]);
             }
 
             // traitement email de BAT refusé
-            if(preg_match($this->_pcreMailProofRefused(), $this->achattodbEmail->getSubject(), $matchesSubject))
+            if(preg_match($this->_pcreMailProofRefused(), $achattodbEmail->getSubject(), $matchesSubject))
             {
-                $this->lockProcess->updateStage('Traitement de l\'email ' . $this->achattodbEmail->getId() . ' de BAT refusé ' . $this->getName() . ' pour la commande fournisseur ' . $matchesSubject[1]);
+                $lockProcess->updateStage('Traitement de l\'email ' . $achattodbEmail->getId() . ' de BAT refusé ' . $provider->getName() . ' pour la commande fournisseur ' . $matchesSubject[1]);
 
                 // traitement du mail
-                return $this->_manageMailProofRefused($this->achattodbEmail, $matchesSubject[1]);
+                return $this->_manageMailProofRefused($achattodbEmail, $matchesSubject[1]);
             }
 
             // traitement email d'expedition
-            if(preg_match($this->_pcreMailShippingSubject(), $this->achattodbEmail->getSubject()) && preg_match($this->_pcreMailShippingBody(), $this->achattodbEmail->getMessage(), $matchesBody))
+            if(preg_match($this->_pcreMailShippingSubject(), $achattodbEmail->getSubject()) && preg_match($this->_pcreMailShippingBody(), $achattodbEmail->getMessage(), $matchesBody))
             {
-                $this->lockProcess->updateStage('Traitement de l\'email ' . $this->achattodbEmail->getId() . ' d\'expédition ' . $this->getName() . ' pour la commande fournisseur ' . $matchesBody[1]);
+                $lockProcess->updateStage('Traitement de l\'email ' . $achattodbEmail->getId() . ' d\'expédition ' . $provider->getName() . ' pour la commande fournisseur ' . $matchesBody[1]);
 
                 // traitement du mail
-                return $this->_manageMailExpedition($this->achattodbEmail, $matchesBody[1]);
+                return $this->_manageMailExpedition($achattodbEmail, $matchesBody[1]);
             }
 
             // traitement mail de facture
-            if(preg_match($this->_pcreMailInvoiceSubject(), $this->achattodbEmail->getSubject(), $matchesSubject))
+            if(preg_match($this->_pcreMailInvoiceSubject(), $achattodbEmail->getSubject(), $matchesSubject))
             {
-                $this->lockProcess->updateStage('Traitement de l\'email ' . $this->achattodbEmail->getId() . ' de facture ' . $this->getName() . ' pour la commande fournisseur ' . $matchesSubject[1]);
+                $lockProcess->updateStage('Traitement de l\'email ' . $achattodbEmail->getId() . ' de facture ' . $provider->getName() . ' pour la commande fournisseur ' . $matchesSubject[1]);
 
                 // on traite le mail
-                return $this->_manageMailInvoice($this->achattodbEmail, $matchesSubject[1]);
+                return $this->_manageMailInvoice($achattodbEmail,$matchesSubject[1],$provider);
             }
 
             // mail de devis
-            if(preg_match($this->_pcreMailQuote(), $this->achattodbEmail->getSubject()) || preg_match($this->_pcreMailQuoteAmount(), $this->achattodbEmail->getSubject()))
+            if(preg_match($this->_pcreMailQuote(), $achattodbEmail->getSubject()) || preg_match($this->_pcreMailQuoteAmount(), $achattodbEmail->getSubject()))
             {
-                $this->lockProcess->updateStage('Traitement de l\'email ' . $this->achattodbEmail->getId() . ' de devis ' . $this->getName() . '.');
+                $lockProcess->updateStage('Traitement de l\'email ' . $achattodbEmail->getId() . ' de devis ' . $provider->getName() . '.');
 
                 // on passe juste le mail en traité
-                $this->achattodbEmail->setStatus(AchattodbEmail::STATUS_PROCESSED)
-                    ->save();
+                $achattodbEmail->setStatus(AchattodbEmail::STATUS_PROCESSED);
+                $this->entityManager->persist($achattodbEmail);
+                $this->entityManager->flush();
+
 
                 // on quitte la fonction
                 return true;
@@ -100,9 +105,10 @@ class ManageMail extends BaseAdesa
     /**
      * traite un email d'expédition
      * @param int $supplierOrderId numéro de la commande chez le fournisseur
+     * @param  AchattodbEmail $achattodbEmail
      * @return boolean true si on a réussi à récupérer les infos et false si on a un probléme
      */
-    private function _manageMailExpedition($supplierOrderId)
+    private function _manageMailExpedition(AchattodbEmail $achattodbEmail,int $supplierOrderId,Provider $provider): bool
     {
         $matches	 = array();
         $matchesUrl	 = array();
@@ -111,7 +117,7 @@ class ManageMail extends BaseAdesa
         $atexteColis = array();
 
         // on recherche la commande fournisseur
-        $supplierOrder = $this->TSupplierOrderRepository->findBySupplierId($supplierOrderId, $this->getId());
+        $supplierOrder = $this->TSupplierOrderRepository->findBySupplierId($supplierOrderId, $provider->getId());
 
         // si on n'a pas trouvé la commande fournisseur
         if($supplierOrder == null)
@@ -140,7 +146,7 @@ class ManageMail extends BaseAdesa
         }
 
         // Si on ne trouve pas les infos de colis dans le mail
-        if(!preg_match($this->_pcreMailShippingDetail(), $this->achattodbEmail->getMessage(), $matches))
+        if(!preg_match($this->_pcreMailShippingDetail(), $achattodbEmail->getMessage(), $matches))
         {
             // on renvoi une erreur
 //            $this->getLog()->Erreur('Info d\'expédition non trouvé.');
@@ -182,11 +188,12 @@ class ManageMail extends BaseAdesa
                     return false;
             }
 
+            //TODO service TTransporter
             // récupération du transporteur
             $carrier = TTransporteur::findByIdWithChildObject($idTransporteur);
 
             // ajout d'info au log
-            $this->getLog()->addLogContent('Livré par ' . $carrier->getNameComplet());
+            //$this->getLog()->addLogContent('Livré par ' . $carrier->getNameComplet());
 
             // création du texte du colis :
             $atexteColis['idTransporteur']	 = $carrier->getId();
@@ -207,26 +214,67 @@ class ManageMail extends BaseAdesa
         // pour chaque commande correspondant à notre job
         foreach($aOrderSupplierOrder as $orderSupplierOrder)
         {
+            //TODO Service Order
             // on change le statut de la commande et on envoi l'email
-            $orderSupplierOrder->getOrder()->setAsLivraison($this->getName(), $atexteColis);
+            $orderSupplierOrder->getOrder()->setAsLivraison($provider->getName(), $atexteColis);
         }
 
         // passage du mail en traité
-        $this->achattodbEmail->setStatus(AchattodbEmail::STATUS_PROCESSED)
-            ->save();
+        $achattodbEmail->setStatus(AchattodbEmail::STATUS_PROCESSED);
+        $this->entityManager->persist($achattodbEmail);
+        $this->entityManager->flush();
 
         return true;
     }
 
     /**
      * gestion des mail de facture
-     * @param string $supplierOrderId numéro de la commande chez le fournisseur
+     * @param int $supplierOrderId numéro de la commande chez le fournisseur
      * @return bool true en cas de succés et false en cas de probléme
      */
-    protected function _manageMailInvoice($supplierOrderId)
+    protected function _manageMailInvoice(AchattodbEmail $achattodbEmail,int $supplierOrderId,Provider $provider): bool
     {
         // on met à jour la commande fournisseur ou la créé au besoin. On passe la commande en exépdié au cas ou elle n'y soit pas déjà
-        return $this->updateOrderSupplier($supplierOrderId, TSupplierOrderStatus::ID_STATUS_DISPATCHED, $this->achattodbEmail, null, null, null, null, $this->getName() . ' a généré une facture.');
+        return $this->supplierOrderService->updateOrderSupplier($supplierOrderId, TSupplierOrderStatus::ID_STATUS_DISPATCHED, $achattodbEmail, null, null, null, null, $provider->getName() . ' a généré une facture.');
+    }
+
+    /**
+     * Traitement du mail de confirmation de commande
+     * @param AchattodbEmail $achattodbEmail	Objet AchattodbEmail
+     * @param int $supplierOrderId numéro de la commande chez le fournisseur
+     * @param int $orderIdRaw numéro de la commande ou des commandes
+     * @return bool true si tout se passe bien et false en cas de probléme
+     */
+    private function _manageMailOrderConfirmation(AchattodbEmail $achattodbEmail,int $supplierOrderId, int $orderIdRaw):bool
+    {
+        // on recherche la commande fournisseur ou la créé au besoin
+        return $this->updateOrderSupplier($supplierOrderId, TSupplierOrderStatus::ID_STATUS_PRODUCTION, $achattodbEmail, $this->multipleOrderNumberStringToArray($orderIdRaw));
+    }
+
+
+    /**
+     * Traitement du mail de BAT validé
+     * @param AchattodbEmail $achattodbEmail	Objet AchattodbEmail
+     * @param int $supplierOrderId numéro de la commande chez le fournisseur
+     * @return bool true si tout se passe bien et false en cas de probléme
+     */
+    private function _manageMailProofOk(AchattodbEmail $achattodbEmail, int $supplierOrderId): bool
+    {
+        // on recherche la commande fournisseur ou la créé au besoin
+        return $this->updateOrderSupplier($supplierOrderId, TSupplierOrderStatus::ID_STATUS_PRODUCTION, $achattodbEmail, null, null, null, null, 'BAT Validé');
+    }
+
+
+    /**
+     * Traitement du mail de BAT refusé
+     * @param AchattodbEmail $achattodbEmail	Objet AchattodbEmail
+     * @param int $supplierOrderId numéro de la commande chez le fournisseur
+     * @return bool true si tout se passe bien et false en cas de probléme
+     */
+    private function _manageMailProofRefused(AchattodbEmail $achattodbEmail, int $supplierOrderId): bool
+    {
+        // on recherche la commande fournisseur ou la créé au besoin
+        return $this->updateOrderSupplier($supplierOrderId, TSupplierOrderStatus::ID_STATUS_ERROR, $achattodbEmail, null, null, null, null, 'BAT Refusé par '. $this->provider->getName(), OrdersStatus::STATUS_DEPART_FAB_RETOUR);
     }
 
 }
