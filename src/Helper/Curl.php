@@ -3,17 +3,12 @@
 namespace App\Helper;
 
 use CurlHandle;
+use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpClient\CurlHttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class Curl
 {
-    /**
-	 * Curl
-	 * @var resource curl
-	 */
-	 protected $_connection = null;
-
 	/**
 	 * url utilisé pour la requête curl
 	 * @var string
@@ -251,7 +246,13 @@ class Curl
 	 */
 	public function hasFailed()
 	{
-		return curl_errno($this->curlHandle, $this->_connection);
+		// return curl_errno($this->curlHandle, $this->_connection);
+		try {
+			 throw new Exception();
+
+		} catch (TransportExceptionInterface $e) {
+			 echo "L'appel a échoué";
+		}
 	}
 
 
@@ -264,8 +265,9 @@ class Curl
 		try {
 			$response = $this->client->request('POST', $this->url);
 			$this->error = $response->getInfo('error');
+			
 		} catch (TransportExceptionInterface $e) {
-			 echo $e->getMessage();
+			 return $e->getMessage();
 		}
 	}
 
@@ -418,7 +420,7 @@ class Curl
 		if($enable == 0)
 		{
 			// on repasse en méthode get
-			$this->curlOptions[CURLOPT_HTTPGET] = TRUE;
+			$this->getCurlOptions();
 		}
 
 		return $this;
@@ -452,9 +454,9 @@ class Curl
 	 * @param string $url
 	 * @return Curl
 	 */
-	public function setOptUrl($url)
+	public function setOptUrl()
 	{
-		$this->curlOptions[CURLOPT_URL] = $url;
+		$this->curlOptions[CURLOPT_URL] = $this->url;
 
 		return $this;
 	}
@@ -513,8 +515,28 @@ class Curl
 	/**
 	 * Destructeur, clot la connection curl
 	 */
-	public function __destruct()
-	{
-		curl_close($this->curlHandle, $this->_connection);
-	}
+	// public function __destruct()
+	// {
+	// 	curl_close($this->curlHandle, $this->_connection);
+	// }
+
+    /**
+     * Get the value of curlOptions
+     */ 
+    public function getCurlOptions()
+    {
+        return $this->curlOptions;
+    }
+
+    /**
+     * Set the value of curlOptions
+     *
+     * @return  self
+     */ 
+    public function setCurlOptions($curlOptions)
+    {
+        $this->curlOptions = $curlOptions;
+
+        return $this;
+    }
 }
