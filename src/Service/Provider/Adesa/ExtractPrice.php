@@ -20,6 +20,14 @@ class ExtractPrice extends BaseAdesa
 	{
 	}
 
+    /**
+     * Recupere les prix pour les afficher
+     * Insere les options/optionsValues qui n'existent pas en base
+     * @param TProduitHost|TProduit $produit	L'objet de produit
+     * @param array $aIdOptionValue				un tableau des options values
+     * @param string $idHost					Id du site
+     * @return array un tableau avec beaucoup de trucs dedans
+     */
     public function price($product, $idHost, $aIdOptionValue, $taOptionProvider, $optionValueProvider)
     {
         // initialisation des variables nécessaire
@@ -65,9 +73,9 @@ class ExtractPrice extends BaseAdesa
 			{
 				// on ajoute un log d'erreur
 				// $this->monolog->channels(['Erreur de récupération de prix du fournisseur ' . $this->prov->getName()]);
-				$this->logger->error('Erreur de récupération de prix du fournisseur ' . $this->provider->getName());
-				$this->logger->error('L\'option ' . $idOption . ' ne semble pas éxisté chez le fournisseur ' . $this->provider->getName());
-				$this->logger->error('Vérifier la configuration du produit ' . $product->getLibelle());
+//				$this->logger->error('Erreur de récupération de prix du fournisseur ' . $this->provider->getName());
+//				$this->logger->error('L\'option ' . $idOption . ' ne semble pas éxisté chez le fournisseur ' . $this->provider->getName());
+//				$this->logger->error('Vérifier la configuration du produit ' . $product->getLibelle());
 
 				// on tente de passer à l'option suivante
 				continue;

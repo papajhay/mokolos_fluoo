@@ -39,20 +39,17 @@ class ProviderRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Provider[] Returns an array of Provider objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Provider[] Returns an array of Provider objects
+     */
+    public function findAllByNameDesc(): array
+    {
+        return $this->createQueryBuilder('f')
+            ->orderBy('f.name', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Provider
 //    {

@@ -59,7 +59,7 @@ class TAOptionProvider
 	 * *************************************************************************
 	 */
     /**
-	 * opion à laquelle est lié notre option fournisseur
+	 * option à laquelle est lié notre option fournisseur
 	 * @var \TOption
 	 */
 	// private $_option = null;
