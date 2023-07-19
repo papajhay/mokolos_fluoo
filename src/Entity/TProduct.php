@@ -12,37 +12,35 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TProductRepository::class)]
 class TProduct
 {
-
+    /**
+     * id pour les quantité personnalisé quand on a que les quantité standard.
+     */
+    // const ID_SPECIAL_QUANTITY_ONLY_STANDARD = 0;
 
     /**
-     * id pour les quantité personnalisé quand on a que les quantité standard
+     * id pour les quantité personnalisé quand la quantité est géré en tant qu'option standard.
      */
-    //const ID_SPECIAL_QUANTITY_ONLY_STANDARD = 0;
-
-    /**
-     * id pour les quantité personnalisé quand la quantité est géré en tant qu'option standard
-     */
-	//const ID_SPECIAL_QUANTITY_IN_OPTION = 3;
+    // const ID_SPECIAL_QUANTITY_IN_OPTION = 3;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    /* clef primaire de la table*/
+    /* clef primaire de la table */
     private ?int $id = null;
 
-    /*libellé du produit*/
+    /* libellé du produit */
     #[ORM\Column(length: 255)]
     private ?string $libelle = null;
 
-    /*Id du produit auquel ce produit est rattaché*/
+    /* Id du produit auquel ce produit est rattaché */
     #[ORM\Column]
     private ?int $rattachement = null;
 
-    /* indique si le produit autorise les format personnalisé. (utilisé par l'API p24)*/
+    /* indique si le produit autorise les format personnalisé. (utilisé par l'API p24) */
     #[ORM\Column]
     private ?int $specialFormat = null;
 
-    /* indique si le produit autorise les quantité personnalisé. (utilisé par l'API smartlabel)*/
+    /* indique si le produit autorise les quantité personnalisé. (utilisé par l'API smartlabel) */
     #[ORM\Column]
     private ?int $specialQuantity = null;
 
@@ -54,12 +52,12 @@ class TProduct
         $this->tAProductOptions = new ArrayCollection();
     }
 
-    //TODO relation
+    // TODO relation
     /*
      * un objet TAProduitFournisseur lié à notre objet
      * @var TAProduitFournisseur
      */
-    //private $_produitFournisseur;
+    // private $_produitFournisseur;
 
     public function getId(): ?int
     {
@@ -114,8 +112,6 @@ class TProduct
         return $this;
     }
 
-    
-
     /**
      * @return Collection<int, TAProductOption>
      */
@@ -146,9 +142,9 @@ class TProduct
         return $this;
     }
 
-    //TODO Repository
+    // TODO Repository
 
-    /**
+    /*
      * Retourne la requete sql tout les produits ordonnées par le champs ordres
      * @param string $idHhost Id du site
      * @param boolean $withInactif Est ce que l'on prend les produits inactifs?
@@ -187,7 +183,7 @@ class TProduct
 
         $sql .= 'JOIN ' . TProduitHost::$_SQL_TABLE_NAME . ' t ON ' .
             self::$_SQL_TABLE_NAME . '.id_produit = t.id_produit AND
-						(t.id_host = "' . $idHhost . '" OR t.id_host is null) ';
+                        (t.id_host = "' . $idHhost . '" OR t.id_host is null) ';
 
         $sql .= 'JOIN ' . TProduitHost::$_SQL_LOCALIZATION_TABLE_NAME . ' tl ON ' . $sqlProduiHost['JoinCondition'];
 
@@ -207,7 +203,7 @@ class TProduct
             if(!is_null($idHostForACL) && !($proHosAclInactif))
             { // on prend les produits acl actifs
                 $sql .= 'AND (' . TProduitHostAcl::$_SQL_TABLE_NAME . '.pro_hos_acl_actif = 1
-				OR ' . TProduitHostAcl::$_SQL_TABLE_NAME . '.pro_hos_acl_actif IS null) ';
+                OR ' . TProduitHostAcl::$_SQL_TABLE_NAME . '.pro_hos_acl_actif IS null) ';
             }
         }
 
@@ -247,7 +243,7 @@ class TProduct
         return $sql;
     }*/
 
-    /**
+    /*
      * Retourne un tableau avec toutes les options et les valeurs dispo pour celle ci en fonction de l'objet en cour
      * @param string $idHost id du site
      * @param type $dependance
@@ -489,7 +485,7 @@ class TProduct
         // on ajoute les option de type texte
         return $this->getOptionsText($idHost, $withFournisseurData, $opt, $getOnLyActif);
     }*/
-    /**
+    /*
      * Retourne un tableau avec toutes les options de type text
      * @param string $idHost id du site
      * @param bool $withFournisseurData =false mettre true pour avoir les information de fournisseur
@@ -595,7 +591,7 @@ class TProduct
         return $opt;
     }*/
 
-    /**
+    /*
      * Retourne une selection par defaut pour le produit en cour (une liste d'id value avec les clée print 24)
      * @param string $idHost id du site
      * @param bool $idProduitHostForVariant =null id de produit host si il s'agit d'un variant
@@ -714,7 +710,7 @@ class TProduct
         return implode('-', $return);
     }*/
 
-    /**
+    /*
      * Retourne le produit via un id chez le fournisseur et un fournisseur
      * @param string $supplierId id chez le fournisseur
      * @param int $idFour id du fournisseur
@@ -741,54 +737,51 @@ class TProduct
         return array_values($allProduct)[0];
     }*/
 
-
-    /**
+    /*
      * renvoi la liste des produits qui posséde des fiches techniques
      * @return TProduit[]
      */
     /*static public function findAllWithFicheTech()
     {
         $sql = 'SELECT p.*
-			FROM ' . self::$_SQL_TABLE_NAME . ' p
-			JOIN ' . TFicheTechnique::$_SQL_TABLE_NAME . ' ft
-			ON p.id_produit = ft.id_produit
-			GROUP BY p.id_produit
-			ORDER BY pro_libelle';
+            FROM ' . self::$_SQL_TABLE_NAME . ' p
+            JOIN ' . TFicheTechnique::$_SQL_TABLE_NAME . ' ft
+            ON p.id_produit = ft.id_produit
+            GROUP BY p.id_produit
+            ORDER BY pro_libelle';
 
         return TProduit::findAllSql($sql, true);
     }*/
 
-
-    /**
+    /*
      * renvoi la liste des produits qui ne posséde pas de fiche technique
      * @return TProduit[]
      */
     /*static public function findAllWithoutFicheTech()
     {
         $sql = 'SELECT *
-			FROM ' . self::$_SQL_TABLE_NAME . ' p
-			WHERE p.id_produit NOT IN (
-				SELECT id_produit
-				FROM ' . TFicheTechnique::$_SQL_TABLE_NAME . ' ft
-				GROUP BY ft.id_produit)
-			ORDER BY pro_libelle';
+            FROM ' . self::$_SQL_TABLE_NAME . ' p
+            WHERE p.id_produit NOT IN (
+                SELECT id_produit
+                FROM ' . TFicheTechnique::$_SQL_TABLE_NAME . ' ft
+                GROUP BY ft.id_produit)
+            ORDER BY pro_libelle';
 
         return TProduit::findAllSql($sql, true);
     }*/
 
-
-    /**
+    /*
      * renvoi la liste des produits de Produit Option Value selon une Site Hoste
      * @return TProduit[]
      */
     /*static public function findAllProductByHost($idHost)
     {
         $sql = 'SELECT p.*
-			FROM ' . self::$_SQL_TABLE_NAME . ' p
-			JOIN ' . TAProduitOptionValue::$_SQL_TABLE_NAME . ' pov ON p.id_produit = pov.id_produit
-			WHERE pov.id_host =  "' . $idHost . '"
-			GROUP BY p.id_produit
-			ORDER BY pro_libelle';
+            FROM ' . self::$_SQL_TABLE_NAME . ' p
+            JOIN ' . TAProduitOptionValue::$_SQL_TABLE_NAME . ' pov ON p.id_produit = pov.id_produit
+            WHERE pov.id_host =  "' . $idHost . '"
+            GROUP BY p.id_produit
+            ORDER BY pro_libelle';
 
         $req = DB::req($sql);
 
@@ -805,18 +798,17 @@ class TProduct
         return $rep;
     }*/
 
-
-    /**
+    /*
      * renvoi la liste des produits de Produit Option selon une Site Hoste
      * @return TProduit[]
      */
     /*static public function findAllProductFromProduitOptionByHost($idHost)
     {
         $sql = 'SELECT p.*
-			FROM ' . self::$_SQL_TABLE_NAME . ' p
-			JOIN ' . TAProduitOption::$_SQL_TABLE_NAME . ' ov ON p.id_produit = ov.id_produit
-			WHERE  	ov.id_host =  "' . $idHost . '"
-			GROUP BY p.pro_libelle';
+            FROM ' . self::$_SQL_TABLE_NAME . ' p
+            JOIN ' . TAProduitOption::$_SQL_TABLE_NAME . ' ov ON p.id_produit = ov.id_produit
+            WHERE  	ov.id_host =  "' . $idHost . '"
+            GROUP BY p.pro_libelle';
 
         $req = DB::req($sql);
 
@@ -832,8 +824,7 @@ class TProduct
         return $rep;
     }*/
 
-
-    /**
+    /*
      * supprime tous les vieux produits qui ne sont plus relié à aucun produit host
      * @param TLockProcess $lockProcess		Objet lockProcess pour les etapes
      */
@@ -843,19 +834,19 @@ class TProduct
 
         // récupération des produit ne correspondant plus à rien
         $sql = 'SELECT *
-			FROM ' . self::$_SQL_TABLE_NAME . '
-			WHERE id_produit NOT IN (
-			SELECT id_produit
-			FROM ' . TProduitHost::$_SQL_TABLE_NAME . '
-			GROUP BY id_produit)
-			AND id_produit NOT IN (
-			SELECT pro_hos_rattachement
-			FROM ' . TProduitHost::$_SQL_TABLE_NAME . '
-			GROUP BY pro_hos_rattachement)
-			AND id_produit NOT IN (
-			SELECT pro_rattachement
-			FROM ' . self::$_SQL_TABLE_NAME . '
-			GROUP BY pro_rattachement)';
+            FROM ' . self::$_SQL_TABLE_NAME . '
+            WHERE id_produit NOT IN (
+            SELECT id_produit
+            FROM ' . TProduitHost::$_SQL_TABLE_NAME . '
+            GROUP BY id_produit)
+            AND id_produit NOT IN (
+            SELECT pro_hos_rattachement
+            FROM ' . TProduitHost::$_SQL_TABLE_NAME . '
+            GROUP BY pro_hos_rattachement)
+            AND id_produit NOT IN (
+            SELECT pro_rattachement
+            FROM ' . self::$_SQL_TABLE_NAME . '
+            GROUP BY pro_rattachement)';
 
         // pour chaque produit
         foreach(self::findAllSql($sql) AS $produit)
@@ -867,10 +858,8 @@ class TProduct
         }
     }*/
 
-
-
-    //todo Service
-    /**
+    // todo Service
+    /*
      *  renvoi un objet TAProduitFournisseur correspondant à un fournisseur de ce produit
      * @return TAProduitFournisseur
      */
@@ -886,7 +875,7 @@ class TProduct
         return $this->_produitFournisseur;
     }*/
 
-    /**
+    /*
      * Retourne l'id fournisseur du produit en cour
      *
      * @return int
@@ -897,8 +886,7 @@ class TProduct
         return $this->getProduitFournisseur()->getProFouIdSource();
     }*/
 
-
-    /**
+    /*
      * Retourne l'id Group du fournisseur du produit en cour
      *
      * @return int
@@ -909,8 +897,7 @@ class TProduct
         return $this->getProduitFournisseur()->getProFouIdGroup();
     }*/
 
-
-    /**
+    /*
      * renvoi le nom du fournisseur ou meta produit
      * @return string
      */
@@ -928,7 +915,7 @@ class TProduct
         }
     }*/
 
-    /**
+    /*
      * Lors de la duplication d'un objet, on detruit son id
      */
     /*function __clone()
@@ -938,8 +925,7 @@ class TProduct
         $this->_primaryValue = array();
     }*/
 
-
-    /**
+    /*
      * renvoi le zip contenant les gabarit de ce produit par rapport à la selection ou renvoi null si elle n'xiste pas
      * @param string $selection la selection
      * @param string $idHost id du site pour les urls
@@ -950,8 +936,7 @@ class TProduct
         return $this->_chercheFicheTechEtMaquette($selection, 'gabarits', $idHost, 'zip');
     }*/
 
-
-    /**
+    /*
      * renvoi la fiche Technique de ce produit par rapport à la selection ou renvoi null si elle n'xiste pas
      * @param string $selection la selection
      * @param string $idHost id du site pour les urls
@@ -962,8 +947,7 @@ class TProduct
         return $this->_chercheFicheTechEtMaquette($selection, 'fiches_techniques', $idHost, 'jpg');
     }*/
 
-
-    /**
+    /*
      * renvoi la maquette de ce produit par rapport à la selection ou renvoi null si elle n'xiste pas
      * @param string $selection la selection
      * @param string $idHost id du site pour les urls
@@ -974,7 +958,7 @@ class TProduct
         return $this->_chercheFicheTechEtMaquette($selection, 'maquettes', $idHost, 'jpg');
     }*/
 
-    /**
+    /*
      * renvoi la fiche technique ou la maquette de ce produit par rapport à la selection ou renvoi null si elle n'xiste pas
      * @param string $selection la selection
      * @param string $type fichTech pour la fiche technique et maquette pour la maquette
@@ -1043,8 +1027,7 @@ class TProduct
         return $fichier;
     }*/
 
-
-    /**
+    /*
      * renvoi la fiche technique de ce produit par rapport à la selection ou renvoi null si elle n'xiste pas
      * @param string $selection la selection
      * @param int $idProduit id du produit dont on cherche la fiche technique
@@ -1111,7 +1094,7 @@ class TProduct
         return null;
     }*/
 
-    /**
+    /*
      * force le pays de livraison en ne renvoyant que celui de notre site
      * @param array $optionCountry le tableau des pays de livraison
      * @return array le tableau réordonné
@@ -1136,7 +1119,7 @@ class TProduct
         return $optionCountry;
     }*/
 
-    /**
+    /*
      * Ajoute les valeur par défaut des options de type texte à un tableau
      * @param string $idHost id du site
      * @param array $return =array() Le tableau auquel on veux ajouter nos valeurs
@@ -1156,5 +1139,4 @@ class TProduct
 
         return $return;
     }*/
-
 }
