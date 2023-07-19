@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Repository;
 
-use App\Entity\TAOptionProvider;
 use App\Entity\TSupplierOrder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -40,7 +40,7 @@ class TSupplierOrderRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAllBySupplierOrderIdAndIdProvider($supplierOrderId ,$idProvider): array
+    public function findAllBySupplierOrderIdAndIdProvider($supplierOrderId, $idProvider): array
     {
         return $this->createQueryBuilder('t')
             ->where('t.idProvider = :idprovider')
@@ -50,6 +50,4 @@ class TSupplierOrderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-
 }
