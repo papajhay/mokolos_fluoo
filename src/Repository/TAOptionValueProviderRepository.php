@@ -43,7 +43,7 @@ class TAOptionValueProviderRepository extends ServiceEntityRepository
     /**
      * @return TAOptionValueProvider[] Returns an array of TAOptionValueProvider objects
      */
-    public function findById($idProvider,$idOptionValue): array
+    public function findById($idProvider, $idOptionValue): array
     {
         return $this->createQueryBuilder('t')
             ->where('t.idProvider= :idprovider')
@@ -53,5 +53,4 @@ class TAOptionValueProviderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

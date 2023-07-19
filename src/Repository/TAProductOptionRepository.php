@@ -42,7 +42,7 @@ class TAProductOptionRepository extends ServiceEntityRepository
     /**
      * @return TAProductOption[] Returns an array of TAProductOption objects
      */
-    public function findById($idProduct,$idOption,$idHost): array
+    public function findById($idProduct, $idOption, $idHost): array
     {
         return $this->createQueryBuilder('t')
             ->where('t.idProduct= :idproduct')
@@ -54,5 +54,4 @@ class TAProductOptionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

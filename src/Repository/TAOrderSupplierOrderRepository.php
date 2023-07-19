@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\TAOptionProvider;
@@ -21,6 +22,7 @@ class TAOrderSupplierOrderRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TAOrderSupplierOrder::class);
     }
+
     public function save(TAOrderSupplierOrder $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -39,15 +41,17 @@ class TAOrderSupplierOrderRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByIdorderAndIdSupplierOrder($idOrder,$idSupplierOrder): ?TAOrderSupplierOrder
+    public function findByIdorderAndIdSupplierOrder($idOrder, $idSupplierOrder): ?TAOrderSupplierOrder
     {
         return $this->createQueryBuilder('o')
             ->where('o.idOrder = :idorder')
             ->andWhere('o.idSupplierOrder = :idsupplierorder')
             ->setParameter('idorder', $idOrder)
-            ->setParameter('idsupplierorder',$idSupplierOrder)
+            ->setParameter('idsupplierorder', $idSupplierOrder)
             ->getQuery()
             ->getOneOrNullResult()
-            ;
+        ;
     }
+
+
 }
