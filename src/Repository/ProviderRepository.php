@@ -51,13 +51,4 @@ class ProviderRepository extends ServiceEntityRepository
         ;
     }
 
-//    public function findOneBySomeField($value): ?Provider
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
