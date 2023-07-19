@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\TSupplierOrderStatusRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-//$_SQL_TABLE_NAME = 'lesgrand.t_supplier_order_status';
+// $_SQL_TABLE_NAME = 'lesgrand.t_supplier_order_status';
 
 #[ORM\Entity(repositoryClass: TSupplierOrderStatusRepository::class)]
 class TSupplierOrderStatus
@@ -13,59 +14,59 @@ class TSupplierOrderStatus
     // =================== Constantes ===================
 
     /**
-     * id du statut : inconnu
+     * id du statut : inconnu.
      */
-    const ID_STATUS_UNKNOWN = 0;
+    public const ID_STATUS_UNKNOWN = 0;
 
     /**
-     * id du statut : pré commande
+     * id du statut : pré commande.
      */
-    const ID_STATUS_PRE_ORDER = 2;
+    public const ID_STATUS_PRE_ORDER = 2;
 
     /**
-     * id du statut : erreur
+     * id du statut : erreur.
      */
-    //const ID_STATUS_ERROR = 10;
+    // const ID_STATUS_ERROR = 10;
 
     /**
-     * id du statut : lancement auto
+     * id du statut : lancement auto.
      */
-    const ID_STATUS_AUTO_LAUNCH = 11;
+    public const ID_STATUS_AUTO_LAUNCH = 11;
 
     /**
-     * id du statut : commande accépté
+     * id du statut : commande accépté.
      */
-    //const ID_STATUS_ACCEPTED = 3;
+    // const ID_STATUS_ACCEPTED = 3;
 
     /**
-     * id du statut : commande en attente de fichier
+     * id du statut : commande en attente de fichier.
      */
-    //const ID_STATUS_FILE_WAITING = 6;
+    // const ID_STATUS_FILE_WAITING = 6;
 
     /**
-     * id du statut : commande en fichier reçu
+     * id du statut : commande en fichier reçu.
      */
-    //const ID_STATUS_FILE_RECEIVED = 7;
+    // const ID_STATUS_FILE_RECEIVED = 7;
 
     /**
-     * id du statut : commande en fichier validé
+     * id du statut : commande en fichier validé.
      */
-    //const ID_STATUS_FILE_VALID = 8;
+    // const ID_STATUS_FILE_VALID = 8;
 
     /**
-     * id du statut : commande en production
+     * id du statut : commande en production.
      */
-    const ID_STATUS_PRODUCTION = 5;
+    public const ID_STATUS_PRODUCTION = 5;
 
     /**
-     * id du statut : commande expédié
+     * id du statut : commande expédié.
      */
-    const ID_STATUS_DISPATCHED = 4;
+    public const ID_STATUS_DISPATCHED = 4;
 
     /**
-     * id du statut : commande annulée
+     * id du statut : commande annulée.
      */
-    //const ID_STATUS_CANCELED = 9;
+    // const ID_STATUS_CANCELED = 9;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -77,21 +78,21 @@ class TSupplierOrderStatus
     private ?string $icon = null;
 
     #[ORM\Column(length: 255)]
-    //nom du statut
+    // nom du statut
     private ?string $name = null;
 
     #[ORM\Column]
-    //ordre du statut
+    // ordre du statut
     private ?int $supplierOrderStatusOrder = null;
 
     #[ORM\Column]
-    //indique si ce statut est actif, 2 indique un statut important
+    // indique si ce statut est actif, 2 indique un statut important
     private ?int $active = null;
 
     #[ORM\Column(length: 255)]
-    //Nom de ce statut comme il apparait dans l'accés fournisseur
+    // Nom de ce statut comme il apparait dans l'accés fournisseur
     private ?string $supplierAccessName = null;
-    //private $supOrdStaSupplierAccessName = 'Inconnu';
+    // private $supOrdStaSupplierAccessName = 'Inconnu';
 
     public function getId(): ?int
     {
@@ -158,19 +159,19 @@ class TSupplierOrderStatus
         return $this;
     }
 
-    //TODO Service
-    /**
+    // TODO Service
+    /*
      * indique si le statut est actif
      * @return boolean true si le statut est actif et false sinon
      */
-//    public function isActive()
-//    {
-//        // statut inactif
-//        if($this->getSupOrdStaActive() == 0)
-//        {
-//            return false;
-//        }
-//
-//        return true;
-//    }
+    //    public function isActive()
+    //    {
+    //        // statut inactif
+    //        if($this->getSupOrdStaActive() == 0)
+    //        {
+    //            return false;
+    //        }
+    //
+    //        return true;
+    //    }
 }

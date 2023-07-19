@@ -1,44 +1,45 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\AchattodbEmailRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-//$_SQL_TABLE_NAME = 'webmail.achattodb_email';
+// $_SQL_TABLE_NAME = 'webmail.achattodb_email';
 #[ORM\Entity(repositoryClass: AchattodbEmailRepository::class)]
 class AchattodbEmail
 {
     /**
-     * statut du mail : mail non traité
+     * statut du mail : mail non traité.
      */
-    const STATUS_NOT_PROCESSED = 0;
+    public const STATUS_NOT_PROCESSED = 0;
 
     /**
-     * statut du mail : mail traité
+     * statut du mail : mail traité.
      */
-    const STATUS_PROCESSED = 1;
+    public const STATUS_PROCESSED = 1;
 
     /**
-     * statut du mail : mail nécessitant un nouveau traitement (1er essai)
+     * statut du mail : mail nécessitant un nouveau traitement (1er essai).
      */
-    const STATUS_NEED_REPROCESSED_1 = 10;
+    public const STATUS_NEED_REPROCESSED_1 = 10;
 
     /**
-     * statut du mail : mail nécessitant un nouveau traitement (2e essai)
+     * statut du mail : mail nécessitant un nouveau traitement (2e essai).
      */
-    const STATUS_NEED_REPROCESSED_2 = 11;
+    public const STATUS_NEED_REPROCESSED_2 = 11;
 
     /**
-     * statut du mail : mail nécessitant un nouveau traitement (3e essai)
+     * statut du mail : mail nécessitant un nouveau traitement (3e essai).
      */
-    const STATUS_NEED_REPROCESSED_3 = 12;
+    public const STATUS_NEED_REPROCESSED_3 = 12;
 
     /**
-     * statut du mail : mail nécessitant un nouveau traitement, echec de tous les traitements
+     * statut du mail : mail nécessitant un nouveau traitement, echec de tous les traitements.
      */
-    const STATUS_NEED_REPROCESSED_ERROR = 20;
+    public const STATUS_NEED_REPROCESSED_ERROR = 20;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -79,14 +80,14 @@ class AchattodbEmail
     private ?int $messageSize = null;
 
     #[ORM\Column]
-    //sous objet DateHeure de la date d'emission du mail
+    // sous objet DateHeure de la date d'emission du mail
     private ?\DateTimeImmutable $datetimeSend = null;
 
     /**
-     * tableau des piéce jointes des mails
+     * tableau des piéce jointes des mails.
      * @var AchattodbAttach[]
      */
-    //private $_aAttach = null;
+    // private $_aAttach = null;
 
     public function getId(): ?int
     {
@@ -237,54 +238,53 @@ class AchattodbEmail
         return $this;
     }
 
-    //TODO Repository
-    /**
+    // TODO Repository
+    /*
      * Renvoi tous les mail dont le staut demande un retraitement
      * @return AchattodbEmail
      */
-//    public static function findAllInStatusToReprocess()
-//    {
-//        // construction des paramétres de la requête
-//        $param = self::makeFieldAndValueArrayForFindAll('status', array(AchattodbEmail::STATUS_NEED_REPROCESSED_1, AchattodbEmail::STATUS_NEED_REPROCESSED_2, AchattodbEmail::STATUS_NEED_REPROCESSED_3), 'IN');
-//
-//        // execution de la requête
-//        return AchattodbEmail::findAllBy($param['aChamp'], $param['aValue']);
-//    }
-//
+    //    public static function findAllInStatusToReprocess()
+    //    {
+    //        // construction des paramétres de la requête
+    //        $param = self::makeFieldAndValueArrayForFindAll('status', array(AchattodbEmail::STATUS_NEED_REPROCESSED_1, AchattodbEmail::STATUS_NEED_REPROCESSED_2, AchattodbEmail::STATUS_NEED_REPROCESSED_3), 'IN');
+    //
+    //        // execution de la requête
+    //        return AchattodbEmail::findAllBy($param['aChamp'], $param['aValue']);
+    //    }
+    //
 
-
-    //TODO Service
-    /**
+    // TODO Service
+    /*
      * renvoi toutes les piéce jointe lié à notre mails
      * @return AchattodbAttach
      */
-//    public function getAAttach()
-//    {
-//        // si on a pas encore cherché
-//        if($this->_aAttach == null)
-//        {
-//            // on récupére les piéce jointe
-//            $this->_aAttach = AchattodbAttach::findAllByIdEmail($this->getId());
-//        }
-//
-//        return $this->_aAttach;
-//    }
-    /**
+    //    public function getAAttach()
+    //    {
+    //        // si on a pas encore cherché
+    //        if($this->_aAttach == null)
+    //        {
+    //            // on récupére les piéce jointe
+    //            $this->_aAttach = AchattodbAttach::findAllByIdEmail($this->getId());
+    //        }
+    //
+    //        return $this->_aAttach;
+    //    }
+    /*
      * getteur du sous objet DateHeure de la date d'emission du mail
      * @return DateHeure
      */
-//    public function getDateHeureSend(): DateHeure
-//    {
-//        // si on a pas encore cherché
-//        if($this->_dateHeureSend == null)
-//        {
-//            // on récupére les piéce jointe
-//            $this->_dateHeureSend = new DateHeure($this->getDateE());
-//        }
-//
-//        return $this->_dateHeureSend;
-//    }
-    /**
+    //    public function getDateHeureSend(): DateHeure
+    //    {
+    //        // si on a pas encore cherché
+    //        if($this->_dateHeureSend == null)
+    //        {
+    //            // on récupére les piéce jointe
+    //            $this->_dateHeureSend = new DateHeure($this->getDateE());
+    //        }
+    //
+    //        return $this->_dateHeureSend;
+    //    }
+    /*
      * Crée un nouvel objet "AchattodbEmail" et le retourne
      * @param string $emailFrom
      * @param string $emailFromP
@@ -298,26 +298,26 @@ class AchattodbEmail
      * @param int $del
      * @return AchattodbEmail Nouvel Objet inserer un base
      */
-//    public static function createNew($emailFrom, $emailFromP, $emailTo, $dateE, $subject, $msgSize, $message = '', $messageHtml = '', $status = 0, $del = 0)
-//    {
-//        // création de l'objet
-//        $achattodbEmail = new AchattodbEmail();
-//        $achattodbEmail->setEmailFrom($emailFrom)
-//            ->setEmailFromP($emailFromP)
-//            ->setEmailTo($emailTo)
-//            ->setDateE($dateE)
-//            ->setDateDb(System::today()->format(DateHeure::DATETIMEMYSQL))
-//            ->setStatus($status)
-//            ->setDel($del)
-//            ->setSubject($subject)
-//            ->setMessage($message)
-//            ->setMessageHtml($messageHtml)
-//            ->setMsgSize($msgSize)
-//            ->save();
-//
-//        return $achattodbEmail;
-//    }
-    /**
+    //    public static function createNew($emailFrom, $emailFromP, $emailTo, $dateE, $subject, $msgSize, $message = '', $messageHtml = '', $status = 0, $del = 0)
+    //    {
+    //        // création de l'objet
+    //        $achattodbEmail = new AchattodbEmail();
+    //        $achattodbEmail->setEmailFrom($emailFrom)
+    //            ->setEmailFromP($emailFromP)
+    //            ->setEmailTo($emailTo)
+    //            ->setDateE($dateE)
+    //            ->setDateDb(System::today()->format(DateHeure::DATETIMEMYSQL))
+    //            ->setStatus($status)
+    //            ->setDel($del)
+    //            ->setSubject($subject)
+    //            ->setMessage($message)
+    //            ->setMessageHtml($messageHtml)
+    //            ->setMsgSize($msgSize)
+    //            ->save();
+    //
+    //        return $achattodbEmail;
+    //    }
+    /*
      * vérifie l'existence en base par rapport à un mail d'expéditeur, une date d'émission, une taille de mail et un sujet
      * @param string $from le mail de l'expéditeur
      * @param string $date la date d'émission du mail
@@ -325,81 +325,79 @@ class AchattodbEmail
      * @param string $subject le sujet du mail
      * @return bool TRUE si le mail existe en base
      */
-//    public static function existByFromDateSizeSubjet($from, $date, $size, $subject)
-//    {
-//        return self::existBy(array('email_from', 'date_e', 'msg_size', 'subject'), array($from, $date, $size, $subject));
-//    }
-    /**
+    //    public static function existByFromDateSizeSubjet($from, $date, $size, $subject)
+    //    {
+    //        return self::existBy(array('email_from', 'date_e', 'msg_size', 'subject'), array($from, $date, $size, $subject));
+    //    }
+    /*
      * ajoute du contenu au body HTML du mail
      * @param string $html le code html
      */
-//    public function addHtmlBody($html)
-//    {
-//        $this->setMessageHtml($this->getMessageHtml() . $html)
-//            ->save();
-//    }
+    //    public function addHtmlBody($html)
+    //    {
+    //        $this->setMessageHtml($this->getMessageHtml() . $html)
+    //            ->save();
+    //    }
 
-
-    /**
+    /*
      * ajoute du contenu au body texte brut du mail
      * @param string $texte le message
      */
-//    public function addTextBody($texte)
-//    {
-//        $this->setMessage($this->getMessage() . $texte)
-//            ->save();
-//    }
+    //    public function addTextBody($texte)
+    //    {
+    //        $this->setMessage($this->getMessage() . $texte)
+    //            ->save();
+    //    }
 
-
-//    /**
-//     * indique que ce mail doit être retraité
-//     * @return boolean
-//     */
-//    public function needReprocess(): bool
-//    {
-//        // suivant le statut du mail
-//        switch($this->getStatus())
-//        {
-//            // on est au premier traitement
-//            case AchattodbEmail::STATUS_NOT_PROCESSED:
-//                // on change le statut du mail pour le retraiter
-//                $this->setStatus(AchattodbEmail::STATUS_NEED_REPROCESSED_1)
-//                    ->save();
-//
-//                // on indique que l'on va retraité le mail
-//                return true;
-//
-//            // on est au 1er reretraitement
-//            case AchattodbEmail::STATUS_NEED_REPROCESSED_1:
-//                // on change le statut du mail pour le retraiter
-//                $this->setStatus(AchattodbEmail::STATUS_NEED_REPROCESSED_2)
-//                    ->save();
-//
-//                // on indique que l'on va retraité le mail
-//                return true;
-//
-//            // on est au 2e retraitement
-//            case AchattodbEmail::STATUS_NEED_REPROCESSED_2:
-//                // on change le statut du mail pour le retraiter
-//                $this->setStatus(AchattodbEmail::STATUS_NEED_REPROCESSED_3)
-//                    ->save();
-//
-//                // on indique que l'on va retraité le mail
-//                return true;
-//
-//            // on est au 3e retraitement
-//            case AchattodbEmail::STATUS_NEED_REPROCESSED_3:
-//                // on change le statut du mai pour le mettre en erreur
-//                $this->setStatus(AchattodbEmail::STATUS_NEED_REPROCESSED_ERROR)
-//                    ->save();
-//
-//                // on indique que l'on ne peux plus retraiter le mail
-//                return false;
-//
-//            // autre cas (en théorie impossible)
-//            default:
-//                // on quitte la fonction
-//                return false;
-//        }
-//    }
+    //    /**
+    //     * indique que ce mail doit être retraité
+    //     * @return boolean
+    //     */
+    //    public function needReprocess(): bool
+    //    {
+    //        // suivant le statut du mail
+    //        switch($this->getStatus())
+    //        {
+    //            // on est au premier traitement
+    //            case AchattodbEmail::STATUS_NOT_PROCESSED:
+    //                // on change le statut du mail pour le retraiter
+    //                $this->setStatus(AchattodbEmail::STATUS_NEED_REPROCESSED_1)
+    //                    ->save();
+    //
+    //                // on indique que l'on va retraité le mail
+    //                return true;
+    //
+    //            // on est au 1er reretraitement
+    //            case AchattodbEmail::STATUS_NEED_REPROCESSED_1:
+    //                // on change le statut du mail pour le retraiter
+    //                $this->setStatus(AchattodbEmail::STATUS_NEED_REPROCESSED_2)
+    //                    ->save();
+    //
+    //                // on indique que l'on va retraité le mail
+    //                return true;
+    //
+    //            // on est au 2e retraitement
+    //            case AchattodbEmail::STATUS_NEED_REPROCESSED_2:
+    //                // on change le statut du mail pour le retraiter
+    //                $this->setStatus(AchattodbEmail::STATUS_NEED_REPROCESSED_3)
+    //                    ->save();
+    //
+    //                // on indique que l'on va retraité le mail
+    //                return true;
+    //
+    //            // on est au 3e retraitement
+    //            case AchattodbEmail::STATUS_NEED_REPROCESSED_3:
+    //                // on change le statut du mai pour le mettre en erreur
+    //                $this->setStatus(AchattodbEmail::STATUS_NEED_REPROCESSED_ERROR)
+    //                    ->save();
+    //
+    //                // on indique que l'on ne peux plus retraiter le mail
+    //                return false;
+    //
+    //            // autre cas (en théorie impossible)
+    //            default:
+    //                // on quitte la fonction
+    //                return false;
+    //        }
+    //    }
 }
