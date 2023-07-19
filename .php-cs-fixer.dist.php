@@ -1,14 +1,14 @@
 <?php
 
-$finder = (new PhpCsFixer\Finder())
+$finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/src')
 ;
 
 return (new PhpCsFixer\Config())
+    ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,
         '@PSR12' => true,
-        '@symfony:risky' => true,
         'declare_strict_types' => true,
         'blank_line_after_opening_tag' => false,
         'linebreak_after_opening_tag' => false,
