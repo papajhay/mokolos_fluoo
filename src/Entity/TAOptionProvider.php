@@ -8,22 +8,21 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TAOptionProviderRepository::class)]
 class TAOptionProvider
 {
-     /*
-	 * *************************************************************************
-	 * CONSTANT
-	 * *************************************************************************
-	 */ 
+    /*
+    * *************************************************************************
+    * CONSTANT
+    * *************************************************************************
+    */
 
     /**
-	 * option spécial : option de hauteur
-	 */
-	// const OPTION_SPECIAL_WIDTH = 'fluoo_width';
+     * option spécial : option de hauteur.
+     */
+    // const OPTION_SPECIAL_WIDTH = 'fluoo_width';
 
-	/**
-	 * option spécial : option de laargeur
-	 */
-	// const OPTION_SPECIAL_HEIGHT = 'fluoo_height';
-
+    /**
+     * option spécial : option de laargeur.
+     */
+    // const OPTION_SPECIAL_HEIGHT = 'fluoo_height';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,23 +45,22 @@ class TAOptionProvider
     #[ORM\JoinColumn(nullable: false)]
     private ?Provider $provider = null;
 
-
-     /**
-	 * nom du ou des clés primaires OBLIGATOIREMENT un Array
-	 * @var array
-	 */
-	// public static $_SQL_PK = array('id_fournisseur', 'id_option', 'id_produit');
+    /**
+     * nom du ou des clés primaires OBLIGATOIREMENT un Array.
+     * @var array
+     */
+    // public static $_SQL_PK = array('id_fournisseur', 'id_option', 'id_produit');
 
     /*
-	 * *************************************************************************
-	 * TO DO : RELATION
-	 * *************************************************************************
-	 */
+     * *************************************************************************
+     * TO DO : RELATION
+     * *************************************************************************
+     */
     /**
-	 * option à laquelle est lié notre option fournisseur
-	 * @var \TOption
-	 */
-	// private $_option = null;
+     * option à laquelle est lié notre option fournisseur.
+     * @var \TOption
+     */
+    // private $_option = null;
 
     public function getIdOption(): ?int
     {
@@ -112,7 +110,7 @@ class TAOptionProvider
         return $this;
     }
 
-	 public function getProvider(): ?Provider
+    public function getProvider(): ?Provider
     {
         return $this->provider;
     }
@@ -124,107 +122,101 @@ class TAOptionProvider
         return $this;
     }
 
-   
-     /*
-	 * *************************************************************************
-	 * TO DO : REPOSITORY
-	 * *************************************************************************
-	 */ 
-    /**
-	 * Cré un nouvel objet "TAOptionFournisseur" et le retourne	 
-	 * @param int unsigned $idFournisseur id du fournisseur 
-	 * @param int unsigned $idOption id de l'option 
-	 * @param string $optFouIdSource id de l'option chez le fournisseur 
-	 * @param string $optFouDescriptionSource description de l'option chez le fournisseur 
-	 * @param int $idProduit [optional=0] id du produit si applicable ou 0 sinon
-	 * @return TAOptionFournisseur Nouvel Objet inseré en base
-	 */
-	// public static function createNew($idFournisseur, $idOption, $optFouIdSource, $optFouDescriptionSource, $idProduit = 0)
-	// {
-	// 	$optionFournisseur = new TAOptionFournisseur();
-	// 	$optionFournisseur->setIdFournisseur($idFournisseur)
-	// 			->setIdOption($idOption)
-	// 			->setOptFouIdSource($optFouIdSource)
-	// 			->setOptFouDescriptionSource($optFouDescriptionSource)
-	// 			->setIdProduit($idProduit)
-	// 			->save();
+    /*
+    * *************************************************************************
+    * TO DO : REPOSITORY
+    * *************************************************************************
+    */
+    /*
+     * Cré un nouvel objet "TAOptionFournisseur" et le retourne
+     * @param int unsigned $idFournisseur id du fournisseur
+     * @param int unsigned $idOption id de l'option
+     * @param string $optFouIdSource id de l'option chez le fournisseur
+     * @param string $optFouDescriptionSource description de l'option chez le fournisseur
+     * @param int $idProduit [optional=0] id du produit si applicable ou 0 sinon
+     * @return TAOptionFournisseur Nouvel Objet inseré en base
+     */
+    // public static function createNew($idFournisseur, $idOption, $optFouIdSource, $optFouDescriptionSource, $idProduit = 0)
+    // {
+    // 	$optionFournisseur = new TAOptionFournisseur();
+    // 	$optionFournisseur->setIdFournisseur($idFournisseur)
+    // 			->setIdOption($idOption)
+    // 			->setOptFouIdSource($optFouIdSource)
+    // 			->setOptFouDescriptionSource($optFouDescriptionSource)
+    // 			->setIdProduit($idProduit)
+    // 			->save();
 
-	// 	return $optionFournisseur;
-	// }
+    // 	return $optionFournisseur;
+    // }
 
+    /*
+     * Retourne un TAOptionFournisseur en fonction de l'id du fournissseur et de l'id de l'option chez le fournisseur ou null si rien n'a était trouvé. Certains paramétres supplémentaires existent pour certains fournisseurs.
+     * @param string $idOptionFourSrc  id de l'option chez le fournisseur
+     * @param int $idFour id du fournisseur
+     * @param int|null $idProduct [=null] id du porduit ou null si non applicable
+     * @param bool $likeSearch [=false] mettre TRUE si on veux chercher le opt_fou_id_source avec un like
+     *
+     * @return \TAOptionFournisseur|null
+     */
+    // public static function findByIdOptionSrc($idOptionFourSrc, $idFour, $idProduct = null, $likeSearch = false)
+    // {
+    // 	// paramétre de base de la requête
+    // 	$aField	 = array('id_fournisseur', 'opt_fou_id_source');
+    // 	$aValue	 = array($idFour);
 
-	/**
-	 * Retourne un TAOptionFournisseur en fonction de l'id du fournissseur et de l'id de l'option chez le fournisseur ou null si rien n'a était trouvé. Certains paramétres supplémentaires existent pour certains fournisseurs.
-	 * @param string $idOptionFourSrc  id de l'option chez le fournisseur
-	 * @param int $idFour id du fournisseur
-	 * @param int|null $idProduct [=null] id du porduit ou null si non applicable
-	 * @param bool $likeSearch [=false] mettre TRUE si on veux chercher le opt_fou_id_source avec un like
-	 * 
-	 * @return \TAOptionFournisseur|null
-	 */
-	// public static function findByIdOptionSrc($idOptionFourSrc, $idFour, $idProduct = null, $likeSearch = false)
-	// {
-	// 	// paramétre de base de la requête
-	// 	$aField	 = array('id_fournisseur', 'opt_fou_id_source');
-	// 	$aValue	 = array($idFour);
+    // 	// si on a une recherche classique
+    // 	if(!$likeSearch)
+    // 	{
+    // 		$aValue[] = $idOptionFourSrc;
+    // 	}
+    // 	// on fait une recherche like
+    // 	else
+    // 	{
+    // 		$aValue[] = array($idOptionFourSrc, 'LIKE');
+    // 	}
 
-	// 	// si on a une recherche classique
-	// 	if(!$likeSearch)
-	// 	{
-	// 		$aValue[] = $idOptionFourSrc;
-	// 	}
-	// 	// on fait une recherche like
-	// 	else
-	// 	{
-	// 		$aValue[] = array($idOptionFourSrc, 'LIKE');
-	// 	}
+    // 	// si on a id de produit
+    // 	if($idProduct !== null)
+    // 	{
+    // 		// on ajoute les paramétre
+    // 		$aField[]	 = 'id_produit';
+    // 		$aValue[]	 = $idProduct;
+    // 	}
 
-	// 	// si on a id de produit
-	// 	if($idProduct !== null)
-	// 	{
-	// 		// on ajoute les paramétre
-	// 		$aField[]	 = 'id_produit';
-	// 		$aValue[]	 = $idProduct;
-	// 	}
+    // 	// on renvoi le résultat du findBy
+    // 	return self::findBy($aField, $aValue);
+    // }
 
-	// 	// on renvoi le résultat du findBy
-	// 	return self::findBy($aField, $aValue);
-	// }
+    /*
+     * Retourne un TAOptionFournisseur en fonction de l'id du fournissseur et de l'id de l'option. Certains paramétres supplémentaires existent pour certains fournisseurs.
+     * @param int $idFour id du fournisseur
+     * @param int $idOption id de l'option
+     * @param int|null $idProduit [=null] id du porduit
+     * @return \TAOptionFournisseur|null
+     */
+    // public static function findByIdOptionAndFour($idFour, $idOption, $idProduit = 0)
+    // {
+    // 	return self::findBy(array('id_fournisseur', 'id_option', 'id_produit'), array($idFour, $idOption, $idProduit));
+    // }
 
+    /*
+     * Retourne TRUE si ce TAOptionFournisseur existe. Certains paramétres supplémentaires existent pour certains fournisseurs.
+     * @param string $idOptionFourSrc  id de l'option chez le fournisseur
+     * @param int $idFour id du fournisseur
+     * @param int|null $idProduit [=null] id du porduit
+     * @return bool
+     */
+    // public static function existByIdOptionSrc($idOptionFourSrc, $idFour, $idProduit = 0)
+    // {
+    // 	return self::existBy(array('id_fournisseur', 'opt_fou_id_source', 'id_produit'), array($idFour, $idOptionFourSrc, $idProduit));
+    // }
 
-	/**
-	 * Retourne un TAOptionFournisseur en fonction de l'id du fournissseur et de l'id de l'option. Certains paramétres supplémentaires existent pour certains fournisseurs.
-	 * @param int $idFour id du fournisseur
-	 * @param int $idOption id de l'option
-	 * @param int|null $idProduit [=null] id du porduit
-	 * @return \TAOptionFournisseur|null
-	 */
-	// public static function findByIdOptionAndFour($idFour, $idOption, $idProduit = 0)
-	// {
-	// 	return self::findBy(array('id_fournisseur', 'id_option', 'id_produit'), array($idFour, $idOption, $idProduit));
-	// }
-
-
-	/**
-	 * Retourne TRUE si ce TAOptionFournisseur existe. Certains paramétres supplémentaires existent pour certains fournisseurs.
-	 * @param string $idOptionFourSrc  id de l'option chez le fournisseur
-	 * @param int $idFour id du fournisseur
-	 * @param int|null $idProduit [=null] id du porduit
-	 * @return bool
-	 */
-	// public static function existByIdOptionSrc($idOptionFourSrc, $idFour, $idProduit = 0)
-	// {
-	// 	return self::existBy(array('id_fournisseur', 'opt_fou_id_source', 'id_produit'), array($idFour, $idOptionFourSrc, $idProduit));
-	// }
-
-
-	/**
-	 * supprime tous les enregistrement en base lié à un idOption
-	 * @param int $idOption
-	 */
-	// public static function deleteByIdOption($idOption)
-	// {
-	// 	DB::prepareDeleteAndExecute(self::$_SQL_TABLE_NAME, array(array('id_option', $idOption, 'i')));
-	// }
-
+    /*
+     * supprime tous les enregistrement en base lié à un idOption
+     * @param int $idOption
+     */
+    // public static function deleteByIdOption($idOption)
+    // {
+    // 	DB::prepareDeleteAndExecute(self::$_SQL_TABLE_NAME, array(array('id_option', $idOption, 'i')));
+    // }
 }
