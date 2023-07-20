@@ -8,4 +8,5 @@
 /var/
 /vendor/
 /.idea
+/.php-cs-fixer.cache
 ###< symfony/framework-bundle ###

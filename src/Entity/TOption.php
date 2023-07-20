@@ -40,7 +40,7 @@ class TOption
     /**
      * option spécial : option standard.
      */
-    // const SPECIAL_OPTION_STANDARD = 0;
+    public const SPECIAL_OPTION_STANDARD = 0;
 
     /**
      * option spécial : option des quantité.
