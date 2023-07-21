@@ -16,7 +16,9 @@ class Provider
      * @var int[]
      */
     protected $_ADDITIONAL_SUPPLIER = ['ALIAS PIXART' => Provider::ID_SUPPLIER_PIXART,
+
         //'ALIAS REDUC' => fournisseurPrint24::ID_FOUR_FR,
+
         'AUDRY' => 67,
         'AVL' => 45,
         'colissimo' => Provider::ID_SUPPLIER_LA_POSTE,
@@ -38,6 +40,7 @@ class Provider
         'oneline' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
         'online' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
         'onlin' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+
 //        'p24' => fournisseurPrint24::ID_FOUR_FR,
 //        'p24 be' => fournisseurPrint24::ID_FOUR_BE,
         'pixartprinting' => Provider::ID_SUPPLIER_PIXART,
@@ -50,6 +53,8 @@ class Provider
 //        'print 27' => fournisseurPrint24::ID_FOUR_FR,
 //        'print 30' => fournisseurPrint24::ID_FOUR_FR,
 //        'print 31' => fournisseurPrint24::ID_FOUR_FR,
+
+      
         'pc' => 1,
         'printoclok' => 29,
         'printforyou' => Provider::ID_SUPPLIER_PRINTFORYOU,

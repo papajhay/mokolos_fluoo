@@ -179,7 +179,9 @@ class TProductHost
      */
     // private $_sliderProductDetail = null;
 
+
     public function getId(): ?int
+
     {
         return $this->id;
     }

@@ -83,4 +83,5 @@ class TAOptionValueProviderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 }

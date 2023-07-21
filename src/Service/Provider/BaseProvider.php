@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace App\Service\Provider;
 
+use App\Entity\AchattodbEmail;
 use App\Entity\Provider;
+
 use App\Entity\TOptionValue;
+
 use App\Repository\OrderRepository;
 use App\Repository\ProviderRepository;
 use App\Repository\TSupplierOrderRepository;
@@ -23,6 +26,7 @@ class BaseProvider
         private ProviderRepository $providerRepository,
         private TSupplierOrderStatusRepository $supplierOrderStatusRepository,
         private AchattodbEmailService $achattodbEmailService,
+
         private OrderSupplierOrderService $orderSupplierOrderService,
         private TOptionService $toptionService,
         private TOptionValueService $optionValueService,
@@ -58,8 +62,7 @@ class BaseProvider
         return $option;
     }
 
-    /**
-     * créé une nouvelle option value pour ce fournisseur.
+    /** créé une nouvelle option value pour ce fournisseur.
      * @param TOption $option              l'option lié à notre option value
      * @param string  $nomOptionValue      le nom de l'option value
      * @param string  $idOptionValueSource l'id de l'option value chez le fournisseur
@@ -88,6 +91,7 @@ class BaseProvider
      */
     public function supplierIdBySupplierInformation(string $supplierInformation): ?array
     {
+
         $return = [];
         $matches = [];
 
