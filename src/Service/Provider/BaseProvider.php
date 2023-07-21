@@ -5,12 +5,16 @@ namespace App\Service\Provider;
 
 use App\Entity\AchattodbEmail;
 use App\Entity\Provider;
-use App\Entity\TSupplierOrder;
-use App\Entity\TSupplierOrderStatus;
+
+use App\Entity\TOptionValue;
+
 use App\Repository\OrderRepository;
 use App\Repository\ProviderRepository;
 use App\Repository\TSupplierOrderRepository;
 use App\Repository\TSupplierOrderStatusRepository;
+use App\Service\TAProductOptionService;
+use App\Service\TAProductOptionValueService;
+use App\Service\TOptionService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class BaseProvider
@@ -22,14 +26,14 @@ class BaseProvider
         private ProviderRepository $providerRepository,
         private TSupplierOrderStatusRepository $supplierOrderStatusRepository,
         private AchattodbEmailService $achattodbEmailService,
-        private OrderSupplierOrderService $orderSupplierOrderService
+
+        private OrderSupplierOrderService $orderSupplierOrderService,
+        private TOptionService $toptionService,
+        private TOptionValueService $optionValueService,
+        private TAProductOptionService $productOptionService,
+        private TAProductOptionValueService $productOptionValueService
     ) {
     }
-
-
-
-
-
 
     /**
      * masque pcre pour récupérer le nom du site dans une url.
@@ -40,11 +44,54 @@ class BaseProvider
     }
 
     /**
+     * créé une nouvelle option pour ce fournisseur.
+     * @param string $idOptionSource id de l'option chez le fournisseur
+     * @param string $nomOption      nom de l'option
+     * @param int    $idProduit      id du produi
+     * @param string $idHostFusion   id du site
+     */
+    public function createOption(Provider $provider, string $idOptionSource, string $nomOption, int $idProduit, string $idHostFusion): TOption
+    {
+        // on récupére l'option ou on créé l'option si elle n'existe pas
+        $option = $this->toptionService->createIfNotExist($idOptionSource, $provider->getId(), $nomOption);
+
+        // on charge notre objet produitOption ou on le créé si il n'existe pas
+        $this->productOptionService->createIfNotExist($idProduit, $option, $idHostFusion);
+
+        // on renvoi l'option
+        return $option;
+    }
+
+    /** créé une nouvelle option value pour ce fournisseur.
+     * @param TOption $option              l'option lié à notre option value
+     * @param string  $nomOptionValue      le nom de l'option value
+     * @param string  $idOptionValueSource l'id de l'option value chez le fournisseur
+     * @param string  $idHostFusion        id du site
+     */
+    public function createOptionValue(Provider $provider, TOption $option, string $nomOptionValue, string $idOptionValueSource, int $idProduct, string $idHostFusion = 'lig'): void
+    {
+        // création de l'option value si elle n'existe pas
+        $optionValue = $this->optionValueService->createIfNotExist($idOptionValueSource, $provider->getId(), $option, $nomOptionValue);
+
+        // on charge notre objet produitOption ou on le créé si il n'existe pas
+        $this->productOptionService->createIfNotExist($idProduct, $option, $idHostFusion);
+
+        // liaison de l'option value avec le produit
+        $produitOptionValue = $this->productOptionValueService->createIfNotExist($idProduct, $optionValue, $idHostFusion);
+
+        // modification de la date de derniére vue pour ne pas la supprimer automatiquement car elle n'est pas créé automatiquement
+        $futur = new \DateTimeImmutable('01/01/2050');
+        $produitOptionValue->setProOptDateLastSeen($futur)
+            ->save();
+    }
+
+    /**
      * Recherche un id Provider par rapport a son nom.
      * @return int|false on renvoi l'id ou false si on ne trouve pas
      */
     public function supplierIdBySupplierInformation(string $supplierInformation): ?array
     {
+
         $return = [];
         $matches = [];
 
