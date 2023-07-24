@@ -119,9 +119,17 @@ class TOption
     #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TAOptionValueProvider::class)]
     private Collection $taOptionValueProviders;
 
+    #[ORM\OneToMany(mappedBy: 'TOption', targetEntity: TOptionValue::class, orphanRemoval: true)]
+    private Collection $tOptionValues;
+
+    #[ORM\OneToMany(mappedBy: 'TOption', targetEntity: TAProductOption::class)]
+    private Collection $tAProductOptions;
+
     public function __construct()
     {
         $this->taOptionValueProviders = new ArrayCollection();
+        $this->tOptionValues = new ArrayCollection();
+        $this->tAProductOptions = new ArrayCollection();
     }
     // private $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD;
 
@@ -525,6 +533,66 @@ class TOption
             // set the owning side to null (unless already changed)
             if ($taOptionValueProvider->getTOption() === $this) {
                 $taOptionValueProvider->setTOption(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TOptionValue>
+     */
+    public function getTOptionValues(): Collection
+    {
+        return $this->tOptionValues;
+    }
+
+    public function addTOptionValue(TOptionValue $tOptionValue): static
+    {
+        if (!$this->tOptionValues->contains($tOptionValue)) {
+            $this->tOptionValues->add($tOptionValue);
+            $tOptionValue->setTOption($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTOptionValue(TOptionValue $tOptionValue): static
+    {
+        if ($this->tOptionValues->removeElement($tOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tOptionValue->getTOption() === $this) {
+                $tOptionValue->setTOption(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAProductOption>
+     */
+    public function getTAProductOptions(): Collection
+    {
+        return $this->tAProductOptions;
+    }
+
+    public function addTAProductOption(TAProductOption $tAProductOption): static
+    {
+        if (!$this->tAProductOptions->contains($tAProductOption)) {
+            $this->tAProductOptions->add($tAProductOption);
+            $tAProductOption->setTOption($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOption(TAProductOption $tAProductOption): static
+    {
+        if ($this->tAProductOptions->removeElement($tAProductOption)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOption->getTOption() === $this) {
+                $tAProductOption->setTOption(null);
             }
         }
 

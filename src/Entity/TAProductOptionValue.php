@@ -26,8 +26,7 @@ class TAProductOptionValue
     #[ORM\Column]
     private ?int $idProduct = null;
 
-    #[ORM\Column]
-    private ?int $idOptionValue = null;
+
 
     #[ORM\Column]
     private ?int $isActif = null;
@@ -52,6 +51,12 @@ class TAProductOptionValue
     // objet dateheure de la dernier vue de notre objet. FALSE si inconnu
     private ?\DateTime $datetimeLastSeen = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tAProductOptionValues')]
+    private ?TOptionValue $tOptionValue = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tAProductOptionValues')]
+    private ?TAProductOption $tAProductOption = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,17 +74,6 @@ class TAProductOptionValue
         return $this;
     }
 
-    public function getIdOptionValue(): ?int
-    {
-        return $this->idOptionValue;
-    }
-
-    public function setIdOptionValue(int $idOptionValue): static
-    {
-        $this->idOptionValue = $idOptionValue;
-
-        return $this;
-    }
 
     public function getIsActif(): ?int
     {
@@ -161,6 +155,30 @@ class TAProductOptionValue
     public function setDatetimeLastSeen(\DateTimeInterface $datetimeLastSeen): static
     {
         $this->datetimeLastSeen = $datetimeLastSeen;
+
+        return $this;
+    }
+
+    public function getTOptionValue(): ?TOptionValue
+    {
+        return $this->tOptionValue;
+    }
+
+    public function setTOptionValue(?TOptionValue $TOptionValue): static
+    {
+        $this->tOptionValue = $TOptionValue;
+
+        return $this;
+    }
+
+    public function getTAProductOption(): ?TAProductOption
+    {
+        return $this->tAProductOption;
+    }
+
+    public function setTAProductOption(?TAProductOption $tAProductOption): static
+    {
+        $this->tAProductOption = $tAProductOption;
 
         return $this;
     }
