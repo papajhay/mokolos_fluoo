@@ -3,12 +3,14 @@
 namespace App\Service;
 
 use App\Entity\TOption;
+use App\Repository\TAProductOptionRepository;
 
 class TOptionService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
         private TOptionRepository $OptionRepository,
+        private TAProductOptionRepository $productOptionRepository,
         private TAOptionProviderService $optionProviderService
     ) {
     }
@@ -67,7 +69,6 @@ class TOptionService
 
     /**
      * Retourne un objet TOption via l'id src et le fournisseur retourne l'id de l'option value si elle n'a pas était trouvé ou NULL si on a pas de source.
-     * @return TOption|int|null
      */
     public function findByIdOptionSrc(string $idOptionProviderSrc, int $idProvider, int $idProduct = null): TOption|int|null
     {
@@ -96,7 +97,7 @@ class TOptionService
      * créé un option et le optionfournisseur associé si il n'existe pas.
      * @return TOption
      */
-    protected function createIfNotExist(string $idOptionSource, int $idProvider, string $nomOption, int $ordre = 100, $idProduct = 0, int $typeOption = TOption::TYPE_OPTION_SELECT, $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD)
+    public function createIfNotExist(string $idOptionSource, int $idProvider, string $nomOption, int $ordre = 100, $idProduct = 0, int $typeOption = TOption::TYPE_OPTION_SELECT, $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
     {
         // on fait un trim sur l'id option value source pour éviter des bugs avec des espaces qui pourrait être ajouter
         $idOptionSourceTrim = trim($idOptionSource);
@@ -136,5 +137,66 @@ class TOptionService
 
         // on renvoi l'optionValue
         return $option;
+    }
+
+    /**
+     * indique si cette option est une option de quantité.
+     * @return bool TRUE si c'est une option de quantité et FALSE sinon
+     */
+    public function isQuantity(TOption $option): bool
+    {
+        // si il s'agit d'une option de quantité
+        if (TOption::SPECIAL_OPTION_QUANTITY === $option->getOptSpecialOption()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * indique si cette option est une option de delay.
+     * @return bool TRUE si c'est une option de délai et FALSE sinon
+     */
+    public function isDelay(TOption $option): bool
+    {
+        // si il s'agit d'une option de quantité
+        if (TOption::SPECIAL_OPTION_DELAY === $option->getSpecialOption()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Renvoi la valeur par défaut de cette option. l.
+     * @param  int         $idProduct id du produit
+     * @param  string      $idHost    id du site
+     * @return bool|string a valeur pour les options de type text et un id option value pour les options de type select
+     */
+    public function defaultValue(TOption $option, int $idProduct, string $idHost): bool|string
+    {
+        // si on a une option de type texte
+        if (TOption::TYPE_OPTION_TEXT === $this->getTypeOption()) {
+            // on récupére le produit option
+            $productOption = $this->productOptionRepository->findById($idProduct, $option->getId(), $idHost);
+
+            // on renvoi la valeur par défaut
+            return $productOption->getDefaultValue();
+        }
+
+        // TODO Repository findAllActifByIdOptionIdProductIdHost
+        // récupération de l'option value par défaut
+        $aOptionValue = TOptionValue::findAllActifByIdOptionIdProductIdHost($this->getIdOption(), $idProduct, $idHost, 1);
+
+        // si on n'a pas trouvé d'option (ca ne devrait pas arriver)
+        if (count($aOptionValue) < 1) {
+            return false;
+        }
+
+        // on supprime les clef du tableau pour récupérer notre option
+        $aOptionValueNoKey = array_values($aOptionValue);
+
+        // on renvoi l'id de l'option value
+        return $aOptionValueNoKey[0]->getIdOptionValue();
     }
 }

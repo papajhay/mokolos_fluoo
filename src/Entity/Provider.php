@@ -321,10 +321,14 @@ class Provider
     #[ORM\OneToMany(mappedBy: 'provider', targetEntity: TAOptionProvider::class)]
     private Collection $tAOptionProviders;
 
+    #[ORM\OneToMany(mappedBy: 'provider', targetEntity: TAProductProvider::class)]
+    private Collection $tAProductProviders;
+
     public function __construct()
     {
         $this->taOptionValueProviders = new ArrayCollection();
         $this->tAOptionProviders = new ArrayCollection();
+        $this->tAProductProviders = new ArrayCollection();
     }
 
     /**
@@ -2201,6 +2205,36 @@ class Provider
             // set the owning side to null (unless already changed)
             if ($taOptionValueProviders->getProvider() === $this) {
                 $taOptionValueProviders->setProvider(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAProductProvider>
+     */
+    public function getTAProductProviders(): Collection
+    {
+        return $this->tAProductProviders;
+    }
+
+    public function addTAProductProvider(TAProductProvider $tAProductProvider): static
+    {
+        if (!$this->tAProductProviders->contains($tAProductProvider)) {
+            $this->tAProductProviders->add($tAProductProvider);
+            $tAProductProvider->setProvider($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductProvider(TAProductProvider $tAProductProvider): static
+    {
+        if ($this->tAProductProviders->removeElement($tAProductProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductProvider->getProvider() === $this) {
+                $tAProductProvider->setProvider(null);
             }
         }
 

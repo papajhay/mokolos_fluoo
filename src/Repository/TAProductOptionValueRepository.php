@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\TAProductOption;
 use App\Entity\TAProductOptionValue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,28 +22,19 @@ class TAProductOptionValueRepository extends ServiceEntityRepository
         parent::__construct($registry, TAProductOptionValue::class);
     }
 
-//    /**
-//     * @return TAProductOptionValue[] Returns an array of TAProductOptionValue objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?TAProductOptionValue
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @return TAProductOption[] Returns an array of TAProductOption objects
+     */
+    public function findById($idProduct, $idOptionValue, $idHost): array
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.idProduct= :idproduct')
+            ->andWhere('t.idOptionValue= :idoptionvalue')
+            ->andWhere('t.idHost= :idhost')
+            ->setParameter('idproduct', $idProduct)
+            ->setParameter('idoptionvalue', $idOptionValue)
+            ->setParameter('idhost', $idHost)
+            ->getQuery()
+            ->getResult();
+    }
 }

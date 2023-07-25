@@ -30,7 +30,7 @@ class TOption
     /**
      * type d'option : text.
      */
-    // const TYPE_OPTION_TEXT = 1;
+    public const TYPE_OPTION_TEXT = 1;
 
     /**
      * type d'option : text en lecture seul.
@@ -47,12 +47,12 @@ class TOption
     /**
      * option spécial : option des quantité.
      */
-    // const SPECIAL_OPTION_QUANTITY = 1;
+    public const SPECIAL_OPTION_QUANTITY = 1;
 
     /**
      * option spécial : option des délais.
      */
-    // const SPECIAL_OPTION_DELAY = 2;
+    public const SPECIAL_OPTION_DELAY = 2;
 
     /**
      * option spécial : option des pays de livraison.
