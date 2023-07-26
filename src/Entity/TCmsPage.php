@@ -188,7 +188,7 @@ class TCmsPage
 //        $this->setCmsPagLastUpdate($date->format(DateHeure::DATETIMEMYSQL));
 //    }
 
-
+//     Todo : service
     /**
      * Cre un nouvel objet "TCmsPage" et le retourne
      * @param string $idHost					Identifiant du site
@@ -200,23 +200,23 @@ class TCmsPage
      * @param int $cmsPagStatut					[=0] Statut de la page
      * @return TCmsPage Nouvel Objet insere en base
      */
-    public static function createNew($idHost, $cmsPagUrl, $cmsPagMetaTitle, $cmsPagMetaDescription, $cmsPagTitle, $cmsPagContent, $cmsPagStatut = 0)
-    {
-        $tCmsPage = new self();
-        $tCmsPage->setIdHost($idHost);
-        $tCmsPage->setCmsPagUrl($cmsPagUrl);
-        $tCmsPage->setCmsPagMetaTitle($cmsPagMetaTitle);
-        $tCmsPage->setCmsPagMetaDescription($cmsPagMetaDescription);
-        $tCmsPage->setCmsPagTitle($cmsPagTitle);
-        $tCmsPage->setCmsPagContent($cmsPagContent);
-        $tCmsPage->setCmsPagStatut($cmsPagStatut);
-        $tCmsPage->save();
-
-        return $tCmsPage;
-    }
+//    public static function createNew($idHost, $cmsPagUrl, $cmsPagMetaTitle, $cmsPagMetaDescription, $cmsPagTitle, $cmsPagContent, $cmsPagStatut = 0)
+//    {
+//        $tCmsPage = new self();
+//        $tCmsPage->setIdHost($idHost);
+//        $tCmsPage->setCmsPagUrl($cmsPagUrl);
+//        $tCmsPage->setCmsPagMetaTitle($cmsPagMetaTitle);
+//        $tCmsPage->setCmsPagMetaDescription($cmsPagMetaDescription);
+//        $tCmsPage->setCmsPagTitle($cmsPagTitle);
+//        $tCmsPage->setCmsPagContent($cmsPagContent);
+//        $tCmsPage->setCmsPagStatut($cmsPagStatut);
+//        $tCmsPage->save();
+//
+//        return $tCmsPage;
+//    }
     // =================== Methodes de recherche (find) ===================
 
-
+//    Todo : repository
     /**
      * Recupere une page CMS pour un site et une url donnee (actives et inactives)
      * @param string $idHost		Identifiant du site
@@ -224,19 +224,19 @@ class TCmsPage
      * @param NULL|int $cmsPagStatut		[=NULL] Toutes, 1 pour Actif et 0 pour Inactif
      * @return TCmsPage
      */
-    public static function findByIdHostAndCmsPagUrl($idHost, $cmsPagUrl, $cmsPagStatut = NULL)
-    {
-        $aChamp	 = array('id_host', 'cms_pag_url');
-        $aValue	 = array($idHost, $cmsPagUrl);
-
-        if($cmsPagStatut !== NULL)
-        {
-            $aChamp[]	 = 'cms_pag_statut';
-            $aValue[]	 = $cmsPagStatut;
-        }
-
-        return self::findBy($aChamp, $aValue);
-    }
+//    public static function findByIdHostAndCmsPagUrl($idHost, $cmsPagUrl, $cmsPagStatut = NULL)
+//    {
+//        $aChamp	 = array('id_host', 'cms_pag_url');
+//        $aValue	 = array($idHost, $cmsPagUrl);
+//
+//        if($cmsPagStatut !== NULL)
+//        {
+//            $aChamp[]	 = 'cms_pag_statut';
+//            $aValue[]	 = $cmsPagStatut;
+//        }
+//
+//        return self::findBy($aChamp, $aValue);
+//    }
 
 
     /**
@@ -244,10 +244,10 @@ class TCmsPage
      * @param string $idHost id du site
      * @return TCmsPage[]
      */
-    public static function findAllActifByIdHost($idHost)
-    {
-        return self::findAllBy(array('cms_pag_statut', 'id_host'), array(1, $idHost));
-    }
+//    public static function findAllActifByIdHost($idHost)
+//    {
+//        return self::findAllBy(array('cms_pag_statut', 'id_host'), array(1, $idHost));
+//    }
     // =================== Autres methodes publiques ===================
 
 
@@ -255,30 +255,30 @@ class TCmsPage
      * Retourne le lien absolu de la page CMS du site (avec reecriture d'Url)
      * @return string
      */
-    public function cmsPagHref()
-    {
-        return System::constructHttpServerFromHost($this->getIdHost()) . $this->getCmsPagUrl();
-    }
+//    public function cmsPagHref()
+//    {
+//        return System::constructHttpServerFromHost($this->getIdHost()) . $this->getCmsPagUrl();
+//    }
 
 
     /**
      * Retourne le lien absolu de la page CMS pour la visualisation
      * @return string
      */
-    public function cmsPagHrefApercu()
-    {
-        return System::constructHttpServerFromHost($this->getIdHost()) . 'impression/cms/page/cms_pag_url=' . $this->getCmsPagUrl() . '&amp;apercu=1';
-    }
+//    public function cmsPagHrefApercu()
+//    {
+//        return System::constructHttpServerFromHost($this->getIdHost()) . 'impression/cms/page/cms_pag_url=' . $this->getCmsPagUrl() . '&amp;apercu=1';
+//    }
 
 
     /**
      * renvoi le content aprés remplacement des variables
      * @return text
      */
-    public function getContentReplacedVariable()
-    {
-        $template = new Template();
-
-        return $template->replaceVariable($this->getCmsPagContent());
-    }
+//    public function getContentReplacedVariable()
+//    {
+//        $template = new Template();
+//
+//        return $template->replaceVariable($this->getCmsPagContent());
+//    }
 }

@@ -15,7 +15,8 @@ class TCategory
     private ?int $id = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
-    private ?int $ordre = null;
+//    $ordre
+    private ?int $order = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -25,14 +26,14 @@ class TCategory
         return $this->id;
     }
 
-    public function getOrdre(): ?int
+    public function getOrder(): ?int
     {
-        return $this->ordre;
+        return $this->order;
     }
 
-    public function setOrdre(int $ordre): static
+    public function setOrder(int $order): static
     {
-        $this->ordre = $ordre;
+        $this->order = $order;
 
         return $this;
     }
@@ -64,16 +65,16 @@ class TCategory
     /**
      * Cre un nouvel objet "TCategorie" et le retourne
      * @param string $idHost		Identifiant du site
-     * @param int $ordre			[=0] Ordre
-     * @return TCategorie Nouvel Objet insere en base
+     * @param int $order			[=0] Order
+     * @return TCategory Nouvel Objet insere en base
      */
-//    public static function createNew($idHost, $ordre = 0)
+//    public static function createNew($idHost, $order = 0)
 //    {
-//        $tCategorie = new self();
-//        $tCategorie->setIdHost($idHost);
-//        $tCategorie->setOrdre($ordre);
-//        $tCategorie->save();
+//        $tCategory = new self();
+//        $tCategory->setIdHost($idHost);
+//        $tCategory->setOrder($order);
+//        $tCategory->save();
 //
-//        return $tCategorie;
+//        return $tCategory;
 //    }
 }

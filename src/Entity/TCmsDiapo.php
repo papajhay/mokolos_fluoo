@@ -80,29 +80,30 @@ class TCmsDiapo
 
     // ===================== Methodes de creation =====================
 
-
+//    Todo : service
     /**
      * Creer un nouvel objet "TCmsDiapo" et le retourner
-     * @param string $cmsDiaRepUrl      Url d'acces au repertoire du diaporama
-     * @param int $cmsDiaHeight         [=0] Hauteur en px
-     * @param int $cmsDiaWidth          [=0] Largeur en px
-     * @param int $cmsDiaName           [=''] Nom du diaporama pour l'admin
+     * @param string $repUrl      Url d'acces au repertoire du diaporama
+     * @param int $height         [=0] Hauteur en px
+     * @param int $width          [=0] Largeur en px
+     * @param int $name           [=''] Nom du diaporama pour l'admin
      * @return TCmsDiapo Nouvel objet insere en base
      */
-    public static function createNew($cmsDiaRepUrl, $cmsDiaHeight = 0, $cmsDiaWidth = 0, $cmsDiaName = '')
-    {
-        $tCmsDiapo = new TCmsDiapo();
-        $tCmsDiapo->setCmsDiaRepUrl($cmsDiaRepUrl)
-            ->setCmsDiaHeight($cmsDiaHeight)
-            ->setCmsDiaWidth($cmsDiaWidth)
-            ->setCmsDiaName($cmsDiaName)
-            ->save();
-
-        return $tCmsDiapo;
-    }
+//    public static function createNew($cmsDiaRepUrl, $cmsDiaHeight = 0, $cmsDiaWidth = 0, $cmsDiaName = '')
+//    {
+//        $tCmsDiapo = new TCmsDiapo();
+//        $tCmsDiapo->setRepUrl($repUrl)
+//            ->setHeight($height)
+//            ->setWidth($width)
+//            ->setName($name)
+//            ->save();
+//
+//        return $tCmsDiapo;
+//    }
     // =================== Methodes de recherche (find) ===================
 
 
+//    Todo : repository
     /**
      * Recuperer la liste des images d'un diaporama CMS a partir des chemins d'acces
      * @param string $cmsDiaRepPathFull     Chemin complet d'acces au repertoire
@@ -111,29 +112,29 @@ class TCmsDiapo
      * @param int $cmsDiaWidth              Largeur du diaporama
      * @return array Tableau de la liste des images du repertoire du diaporama : array(alt, height, name, url, width)
      */
-    private static function _findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, $cmsDiaHeight, $cmsDiaWidth)
-    {
+//    private static function _findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, $cmsDiaHeight, $cmsDiaWidth)
+//    {
         // initialiser la liste des images du repertoire du diaporama
-        $aCmsDiaImg = array();
+//        $aCmsDiaImg = array();
 
         // lister les images du diaporama
-        $cmsDiaRepertoire = new Repertoire();
-        $cmsDiaRepertoire->scan($cmsDiaRepPathFull);
+//        $cmsDiaRepertoire = new Repertoire();
+//        $cmsDiaRepertoire->scan($cmsDiaRepPathFull);
 
         // pour chaque image du repertoire du diaporama
-        foreach($cmsDiaRepertoire->getContenuFichiers() as $cmsDiaFichier)
-        {
-            $aCmsDiaImg[] = array(
-                "alt"	 => $cmsDiaFichier->getNomFichierSansExtention(),
-                "height" => $cmsDiaHeight,
-                "name"	 => $cmsDiaFichier->getNomFichier(),
-                "url"	 => $cmsDiaRepUrlFull . $cmsDiaFichier->getNomFichier(),
-                "width"	 => $cmsDiaWidth
-            );
-        }
-
-        return $aCmsDiaImg;
-    }
+//        foreach($cmsDiaRepertoire->getContenuFichiers() as $cmsDiaFichier)
+//        {
+//            $aCmsDiaImg[] = array(
+//                "alt"	 => $cmsDiaFichier->getNomFichierSansExtention(),
+//                "height" => $cmsDiaHeight,
+//                "name"	 => $cmsDiaFichier->getNomFichier(),
+//                "url"	 => $cmsDiaRepUrlFull . $cmsDiaFichier->getNomFichier(),
+//                "width"	 => $cmsDiaWidth
+//            );
+//        }
+//
+//        return $aCmsDiaImg;
+//    }
 
 
     /**
@@ -141,17 +142,17 @@ class TCmsDiapo
      * @param string $idHost        Identifiant du site
      * @return array Tableau de la liste des images du repertoire du diaporama : array(alt, height, name, url, width)
      */
-    public function findCmsDiaImgListForHost($idHost)
-    {
+//    public function findCmsDiaImgListForHost($idHost)
+//    {
         // recuperer les attributs du diaporama
-        $cmsDiaHeight	 = intval($this->getCmsDiaHeight());
-        $cmsDiaWidth	 = intval($this->getCmsDiaHeight());
-
-        $cmsDiaRepPathFull	 = $this->_cmsDiaRepPathFullForHost($idHost);
-        $cmsDiaRepUrlFull	 = $this->_cmsDiaRepUrlFullForHost($idHost);
-
-        return self::_findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, $cmsDiaHeight, $cmsDiaWidth);
-    }
+//        $cmsDiaHeight	 = intval($this->getCmsDiaHeight());
+//        $cmsDiaWidth	 = intval($this->getCmsDiaHeight());
+//
+//        $cmsDiaRepPathFull	 = $this->_cmsDiaRepPathFullForHost($idHost);
+//        $cmsDiaRepUrlFull	 = $this->_cmsDiaRepUrlFullForHost($idHost);
+//
+//        return self::_findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, $cmsDiaHeight, $cmsDiaWidth);
+//    }
 
 
     /**
@@ -160,41 +161,41 @@ class TCmsDiapo
      * @param Categories $categorie     Objet de la categorie du produit
      * @return array Tableau de la liste des grandes et petites images des repertoires du diaporama : array(alt, height, name, url, width)
      */
-    public static function findCmsDiaImgListForHostProduct($idHost, Categories $categorie)
-    {
+//    public static function findCmsDiaImgListForHostProduct($idHost, Categories $categorie)
+//    {
         // initialiser le tableau
-        $aCmsDiaImgProduct = array();
+//        $aCmsDiaImgProduct = array();
 
         // initialiser les attributs du diaporama
-        $cmsDiaRepPathFull	 = self::createCmsDiaRepPathFullForBlocType(TCmsBloc::ID_CMS_BLOC_TYPE_PRODUCT, $idHost);
-        $cmsDiaRepUrlFull	 = self::createCmsDiaRepUrlFullForBlocType(TCmsBloc::ID_CMS_BLOC_TYPE_PRODUCT, $idHost);
+//        $cmsDiaRepPathFull	 = self::createCmsDiaRepPathFullForBlocType(TCmsBloc::ID_CMS_BLOC_TYPE_PRODUCT, $idHost);
+//        $cmsDiaRepUrlFull	 = self::createCmsDiaRepUrlFullForBlocType(TCmsBloc::ID_CMS_BLOC_TYPE_PRODUCT, $idHost);
 
         // recuperer toutes les categories parentes
-        $aCategoriesParent = $categorie->findAllCategories(FALSE);
+//        $aCategoriesParent = $categorie->findAllCategories(FALSE);
 
         // pour chaque categorie parente
-        foreach($aCategoriesParent as $categorieParent)
-        {
+//        foreach($aCategoriesParent as $categorieParent)
+//        {
             // initialiser le chemin d'acces au dossier des images du diaporama
-            $cmsDiaProductRepPath = new Repertoire();
-            $cmsDiaProductRepPath->setCheminComplet($cmsDiaRepPathFull . $categorieParent->getCategoriesId() . DIRECTORY_SEPARATOR);
+//            $cmsDiaProductRepPath = new Repertoire();
+//            $cmsDiaProductRepPath->setCheminComplet($cmsDiaRepPathFull . $categorieParent->getCategoriesId() . DIRECTORY_SEPARATOR);
 
             // si le dossier contient au moins une image
-            if($cmsDiaProductRepPath->countFichier() > 0)
-            {
+//            if($cmsDiaProductRepPath->countFichier() > 0)
+//            {
                 // quitter la boucle
-                break;
-            }
-        }
+//                break;
+//            }
+//        }
+//
+//        $cmsDiaRepPathFull	 .= $categorieParent->getCategoriesId() . DIRECTORY_SEPARATOR;
+//        $cmsDiaRepUrlFull	 .= $categorieParent->getCategoriesId() . DIRECTORY_SEPARATOR;
 
-        $cmsDiaRepPathFull	 .= $categorieParent->getCategoriesId() . DIRECTORY_SEPARATOR;
-        $cmsDiaRepUrlFull	 .= $categorieParent->getCategoriesId() . DIRECTORY_SEPARATOR;
-
-        $aCmsDiaImgProduct["small"]	 = self::_findCmsDiaImgListFromPath($cmsDiaRepPathFull . "small" . DIRECTORY_SEPARATOR, $cmsDiaRepUrlFull . "small" . DIRECTORY_SEPARATOR, 185, 285);
-        $aCmsDiaImgProduct["large"]	 = self::_findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, 555, 855);
-
-        return $aCmsDiaImgProduct;
-    }
+//        $aCmsDiaImgProduct["small"]	 = self::_findCmsDiaImgListFromPath($cmsDiaRepPathFull . "small" . DIRECTORY_SEPARATOR, $cmsDiaRepUrlFull . "small" . DIRECTORY_SEPARATOR, 185, 285);
+//        $aCmsDiaImgProduct["large"]	 = self::_findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, 555, 855);
+//
+//        return $aCmsDiaImgProduct;
+//    }
 
 
     /**
@@ -203,17 +204,17 @@ class TCmsDiapo
      * @param bool $allowWebp		[=TRUE] indique si on accepte le webp. Mettre FALSE pour la gestion des images depuis l'admin
      * @return array Tableau de la liste des images du repertoire du diaporama : array(alt, height, name, url, width)
      */
-    public function findCmsDiaImgListForHostProductFusion(TProduitHost $tProduitHost, $allowWebp = TRUE)
-    {
+//    public function findCmsDiaImgListForHostProductFusion(TProduitHost $tProduitHost, $allowWebp = TRUE)
+//    {
         // initialiser les attributs du diaporama
-        $cmsDiaRepPathFull	 = $this->imageFullPath($tProduitHost->getIdHost(), $allowWebp);
-        $cmsDiaRepUrlFull	 = $this->imageFullUrl($tProduitHost->getIdHost(), $allowWebp);
-
-        $cmsDiaRepPathFull	 .= $tProduitHost->idParentOrIdProduitHost() . DIRECTORY_SEPARATOR;
-        $cmsDiaRepUrlFull	 .= $tProduitHost->idParentOrIdProduitHost() . DIRECTORY_SEPARATOR;
-
-        return self::_findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, $this->getCmsDiaHeight(), $this->getCmsDiaWidth());
-    }
+//        $cmsDiaRepPathFull	 = $this->imageFullPath($tProduitHost->getIdHost(), $allowWebp);
+//        $cmsDiaRepUrlFull	 = $this->imageFullUrl($tProduitHost->getIdHost(), $allowWebp);
+//
+//        $cmsDiaRepPathFull	 .= $tProduitHost->idParentOrIdProduitHost() . DIRECTORY_SEPARATOR;
+//        $cmsDiaRepUrlFull	 .= $tProduitHost->idParentOrIdProduitHost() . DIRECTORY_SEPARATOR;
+//
+//        return self::_findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, $this->getCmsDiaHeight(), $this->getCmsDiaWidth());
+//    }
 
     // ===================== Methodes d'acces au repertoire d'images =====================
     /**
@@ -221,10 +222,10 @@ class TCmsDiapo
      * @param string $idHost        Identifiant du site
      * @return string
      */
-    private function _cmsDiaRepPathFullForHost($idHost)
-    {
-        return self::_createCmsDiaRepPathRootForHost($idHost) . $this->getCmsDiaRepUrl();
-    }
+//    private function _cmsDiaRepPathFullForHost($idHost)
+//    {
+//        return self::_createCmsDiaRepPathRootForHost($idHost) . $this->getCmsDiaRepUrl();
+//    }
 
 
     /**
@@ -232,10 +233,10 @@ class TCmsDiapo
      * @param type $idHost
      * @return type
      */
-    private function _cmsDiaRepUrlFullForHost($idHost)
-    {
-        return self::_createCmsDiaRepUrlRootForHost($idHost) . $this->getCmsDiaRepUrl();
-    }
+//    private function _cmsDiaRepUrlFullForHost($idHost)
+//    {
+//        return self::_createCmsDiaRepUrlRootForHost($idHost) . $this->getCmsDiaRepUrl();
+//    }
 
 
     /**
@@ -244,67 +245,67 @@ class TCmsDiapo
      * @param bool $allowWebp [=TRUE] indique si on accepte le webp. Mettre FALSE pour l'envoi des images depuis l'admin
      * @return string
      */
-    private static function _createCmsDiaRepPathRootForHost($idHost, $allowWebp = TRUE)
-    {
+//    private static function _createCmsDiaRepPathRootForHost($idHost, $allowWebp = TRUE)
+//    {
         // si on est en prod
-        if(defined('SUB_DOMAIN') && (SUB_DOMAIN == 'www' || SUB_DOMAIN == 'static'))
-        {
+//        if(defined('SUB_DOMAIN') && (SUB_DOMAIN == 'www' || SUB_DOMAIN == 'static'))
+//        {
             // mode prod
-            $mode = 'www';
-        }
+//            $mode = 'www';
+//        }
         // on est en dev
-        else
-        {
+//        else
+//        {
             // mode dev
-            $mode = 'dev';
-        }
+//            $mode = 'dev';
+//        }
 
         // si on est sur lgi
-        if($idHost === 'lgi')
-        {
-            $homeName = 'lesgrand';
-        }
-        else
-        {
-            $homeName = 'limprime';
-        }
+//        if($idHost === 'lgi')
+//        {
+//            $homeName = 'lesgrand';
+//        }
+//        else
+//        {
+//            $homeName = 'limprime';
+//        }
 
         // si on veux du webp et qu'on l'accepte
-        if($allowWebp && System::getAcceptWebp())
-        {
+//        if($allowWebp && System::getAcceptWebp())
+//        {
             // si on est dans l'admin
-            if(System::isAdminContext())
-            {
+//            if(System::isAdminContext())
+//            {
                 // repertoire des images en webp
-                $imgDir = PATH_ASSETS_SITE_IMG_WEBP;
-            }
+//                $imgDir = PATH_ASSETS_SITE_IMG_WEBP;
+//            }
             // sur le site
-            else
-            {
+//            else
+//            {
                 // repertoire des images en webp
-                $imgDir = PATH_ASSETS_IMG_WEBP;
-            }
-        }
+//                $imgDir = PATH_ASSETS_IMG_WEBP;
+//            }
+//        }
         // pas de webp
-        else
-        {
+//        else
+//        {
             // si on est dans l'admin
-            if(System::isAdminContext())
-            {
+//            if(System::isAdminContext())
+//            {
                 // repertoire des images classique
-                $imgDir = PATH_ASSETS_SITE_IMG;
-            }
+//                $imgDir = PATH_ASSETS_SITE_IMG;
+//            }
             // sur le site
-            else
-            {
+//            else
+//            {
                 // repertoire des images classique
-                $imgDir = PATH_ASSETS_IMG;
-            }
-        }
+//                $imgDir = PATH_ASSETS_IMG;
+//            }
+//        }
 
         // on renvoi le chemin complet
-        return '/home/' . $homeName . '/' . $mode . '/' . $imgDir . '_specs/' . $idHost . '/';
-    }
+//        return '/home/' . $homeName . '/' . $mode . '/' . $imgDir . '_specs/' . $idHost . '/';
+//    }
 
 
     /**
@@ -313,56 +314,56 @@ class TCmsDiapo
      * @param bool $allowWebp		[=TRUE] indique si on accepte le webp. Mettre FALSE pour la gestion des images depuis l'admin
      * @return string
      */
-    private static function _createCmsDiaRepUrlRootForHost($idHost, $allowWebp = TRUE)
-    {
-        if(defined('HTTP_PROTOCOL') && defined('SUB_DOMAIN') && defined('SERVER_IMAGE_NAME'))
-        {
+//    private static function _createCmsDiaRepUrlRootForHost($idHost, $allowWebp = TRUE)
+//    {
+//        if(defined('HTTP_PROTOCOL') && defined('SUB_DOMAIN') && defined('SERVER_IMAGE_NAME'))
+//        {
             // recuperer le site
-            $siteHost = siteHost::findById(array($idHost));
+//            $siteHost = siteHost::findById(array($idHost));
 
             // construire l'url pour prendre en compte le CDN des images
-            $serverUrl = HTTP_PROTOCOL . '://' . SERVER_IMAGE_NAME . '.' . $siteHost->getDomaine() . '/';
-        }
-        else
-        {
-            $serverUrl = System::constructHttpServerFromHost($idHost);
-        }
+//            $serverUrl = HTTP_PROTOCOL . '://' . SERVER_IMAGE_NAME . '.' . $siteHost->getDomaine() . '/';
+//        }
+//        else
+//        {
+//            $serverUrl = System::constructHttpServerFromHost($idHost);
+//        }
 
         // si on veux du webp et qu'on l'accepte
-        if($allowWebp && System::getAcceptWebp())
-        {
+//        if($allowWebp && System::getAcceptWebp())
+//        {
             // si on est dans l'admin
-            if(System::isAdminContext())
-            {
+//            if(System::isAdminContext())
+//            {
                 // repertoire des images en webp
-                $imgDir = PATH_ASSETS_SITE_IMG_WEBP;
-            }
+//                $imgDir = PATH_ASSETS_SITE_IMG_WEBP;
+//            }
             // sur le site
-            else
-            {
+//            else
+//            {
                 // repertoire des images en webp
-                $imgDir = PATH_ASSETS_IMG_WEBP;
-            }
-        }
+//                $imgDir = PATH_ASSETS_IMG_WEBP;
+//            }
+//        }
         // pas de webp
-        else
-        {
+//        else
+//        {
             // si on est dans l'admin
-            if(System::isAdminContext())
-            {
+//            if(System::isAdminContext())
+//            {
                 // repertoire des images classique
-                $imgDir = PATH_ASSETS_SITE_IMG;
-            }
+//                $imgDir = PATH_ASSETS_SITE_IMG;
+//            }
             // sur le site
-            else
-            {
+//            else
+//            {
                 // repertoire des images classique
-                $imgDir = PATH_ASSETS_IMG;
-            }
-        }
+//                $imgDir = PATH_ASSETS_IMG;
+//            }
+//        }
 
-        return $serverUrl . $imgDir . '_specs/' . $idHost . '/';
-    }
+//        return $serverUrl . $imgDir . '_specs/' . $idHost . '/';
+//    }
 
 
     /**
@@ -372,10 +373,10 @@ class TCmsDiapo
      * @param bool $allowWebp		[=TRUE] indique si on accepte le webp. Mettre FALSE pour la gestion des images depuis l'admin
      * @return string
      */
-    public static function createCmsDiaRepPathFullForBlocType($idBlocType, $idHost, $allowWebp = TRUE)
-    {
-        return self::_createCmsDiaRepPathRootForHost($idHost, $allowWebp) . TCmsBloc::cmsDiaUrlFromBlocType($idBlocType);
-    }
+//    public static function createCmsDiaRepPathFullForBlocType($idBlocType, $idHost, $allowWebp = TRUE)
+//    {
+//        return self::_createCmsDiaRepPathRootForHost($idHost, $allowWebp) . TCmsBloc::cmsDiaUrlFromBlocType($idBlocType);
+//    }
 
 
     /**
@@ -384,10 +385,10 @@ class TCmsDiapo
      * @param bool $allowWebp		[=TRUE] indique si on accepte le webp. Mettre FALSE pour la gestion des images depuis l'admin
      * @return string
      */
-    public function imageFullPath($idHost, $allowWebp = TRUE)
-    {
-        return self::_createCmsDiaRepPathRootForHost($idHost, $allowWebp) . $this->getCmsDiaRepUrl();
-    }
+//    public function imageFullPath($idHost, $allowWebp = TRUE)
+//    {
+//        return self::_createCmsDiaRepPathRootForHost($idHost, $allowWebp) . $this->getCmsDiaRepUrl();
+//    }
 
 
     /**
@@ -397,10 +398,10 @@ class TCmsDiapo
      * @param bool $allowWebp		[=TRUE] indique si on accepte le webp. Mettre FALSE pour la gestion des images depuis l'admin
      * @return string
      */
-    public static function createCmsDiaRepUrlFullForBlocType($idBlocType, $idHost, $allowWebp = TRUE)
-    {
-        return self::_createCmsDiaRepUrlRootForHost($idHost, $allowWebp) . TCmsBloc::cmsDiaUrlFromBlocType($idBlocType);
-    }
+//    public static function createCmsDiaRepUrlFullForBlocType($idBlocType, $idHost, $allowWebp = TRUE)
+//    {
+//        return self::_createCmsDiaRepUrlRootForHost($idHost, $allowWebp) . TCmsBloc::cmsDiaUrlFromBlocType($idBlocType);
+//    }
 
 
     /**
@@ -409,10 +410,10 @@ class TCmsDiapo
      * @param bool $allowWebp		[=TRUE] indique si on accepte le webp. Mettre FALSE pour la gestion des images depuis l'admin
      * @return string
      */
-    public function imageFullUrl($idHost, $allowWebp = TRUE)
-    {
-        return self::_createCmsDiaRepUrlRootForHost($idHost, $allowWebp) . $this->getCmsDiaRepUrl();
-    }
+//    public function imageFullUrl($idHost, $allowWebp = TRUE)
+//    {
+//        return self::_createCmsDiaRepUrlRootForHost($idHost, $allowWebp) . $this->getCmsDiaRepUrl();
+//    }
 
 
     /**
@@ -421,30 +422,30 @@ class TCmsDiapo
      * @param string $cmsDiaRepPathFull         Le chemin d'acces au repertoire du diaporama CMS
      * @return Fichier|FALSE L'objet Fichier en cas de succés et FALSE en cas de probléme
      */
-    public static function uploadAndMoveFrom($cmsDiaImgList, $cmsDiaRepPathFull)
-    {
+//    public static function uploadAndMoveFrom($cmsDiaImgList, $cmsDiaRepPathFull)
+//    {
         // si l'upload a echoue
-        if($cmsDiaImgList['error'] !== UPLOAD_ERR_OK)
-        {
+//        if($cmsDiaImgList['error'] !== UPLOAD_ERR_OK)
+//        {
             // on quitte la fonction
-            return FALSE;
-        }
+//            return FALSE;
+//        }
 
         // création de l'objet fichier
-        $cmsDiaImgFichier = new Fichier();
-        $cmsDiaImgFichier->setCheminComplet($cmsDiaImgList['tmp_name']);
+//        $cmsDiaImgFichier = new Fichier();
+//        $cmsDiaImgFichier->setCheminComplet($cmsDiaImgList['tmp_name']);
 
         // creer le chemin complet avec le nouveau nom de l'image du diaporama
-        $cmsDiaImgPathFull = $cmsDiaRepPathFull . $cmsDiaImgList['name'];
+//        $cmsDiaImgPathFull = $cmsDiaRepPathFull . $cmsDiaImgList['name'];
 
         // si on a une erreur pendant le deplacement du fichier dans le dossier du diaporama d'images
-        if(!$cmsDiaImgFichier->moveUploaded($cmsDiaImgPathFull, TRUE, TRUE, 0775))
-        {
+//        if(!$cmsDiaImgFichier->moveUploaded($cmsDiaImgPathFull, TRUE, TRUE, 0775))
+//        {
             // on quitte la fonction
-            return FALSE;
-        }
+//            return FALSE;
+//        }
 
         // tout est bon on renvoi le fichier
-        return $cmsDiaImgFichier;
-    }
+//        return $cmsDiaImgFichier;
+//    }
 }

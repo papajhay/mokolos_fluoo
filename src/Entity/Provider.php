@@ -265,7 +265,7 @@ class Provider
 
     #[ORM\Column]
 //    $actif
-    private ?int $asset = null;
+    private ?bool $active ;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateValidCachePrice = null;
@@ -723,14 +723,14 @@ class Provider
         return $this;
     }
 
-    public function getAsset(): ?int
+    public function getActive(): ?int
     {
-        return $this->asset;
+        return $this->active;
     }
 
-    public function setAsset(int $asset): static
+    public function setActive(bool $active): static
     {
-        $this->asset = $asset;
+        $this->active = $active;
 
         return $this;
     }
