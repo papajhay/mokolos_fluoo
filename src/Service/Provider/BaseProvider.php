@@ -3,11 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service\Provider;
 
-use App\Entity\AchattodbEmail;
 use App\Entity\Provider;
-
-use App\Entity\TOptionValue;
-
 use App\Repository\OrderRepository;
 use App\Repository\ProviderRepository;
 use App\Repository\TSupplierOrderRepository;
@@ -26,7 +22,6 @@ class BaseProvider
         private ProviderRepository $providerRepository,
         private TSupplierOrderStatusRepository $supplierOrderStatusRepository,
         private AchattodbEmailService $achattodbEmailService,
-
         private OrderSupplierOrderService $orderSupplierOrderService,
         private TOptionService $toptionService,
         private TOptionValueService $optionValueService,
@@ -56,7 +51,7 @@ class BaseProvider
         $option = $this->toptionService->createIfNotExist($idOptionSource, $provider->getId(), $nomOption);
 
         // on charge notre objet produitOption ou on le créé si il n'existe pas
-        $this->productOptionService->createIfNotExist($idProduit, $option, $idHostFusion);
+        $this->productOptionService->createIfNotExist($idProduit, $option, $idHostFusion, null, TAProduitOption::STATUS_ACTIF, '', '');
 
         // on renvoi l'option
         return $option;
@@ -74,7 +69,7 @@ class BaseProvider
         $optionValue = $this->optionValueService->createIfNotExist($idOptionValueSource, $provider->getId(), $option, $nomOptionValue);
 
         // on charge notre objet produitOption ou on le créé si il n'existe pas
-        $this->productOptionService->createIfNotExist($idProduct, $option, $idHostFusion);
+        $this->productOptionService->createIfNotExist($idProduct, $option, $idHostFusion, null, TAProduitOption::STATUS_ACTIF, '', '');
 
         // liaison de l'option value avec le produit
         $produitOptionValue = $this->productOptionValueService->createIfNotExist($idProduct, $optionValue, $idHostFusion);
@@ -91,7 +86,6 @@ class BaseProvider
      */
     public function supplierIdBySupplierInformation(string $supplierInformation): ?array
     {
-
         $return = [];
         $matches = [];
 

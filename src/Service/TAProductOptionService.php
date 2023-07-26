@@ -21,7 +21,7 @@ class TAProductOptionService
      * @param string      $minValue      [=''] Valeur minimum pour les options de type texte si applicable
      * @param string      $maxValue      [=''] Valeur maximum pour les options de type texte si applicable
      */
-    protected function createIfNotExist(int $idProduct, TOption $option, string $idHost, string $defaultValue = null, int $proOptIsActif = TAProduitOption::STATUS_ACTIF, string $minValue = '', string $maxValue = ''): void
+    public function createIfNotExist(int $idProduct, TOption $option, string $idHost, string $defaultValue = null, int $proOptIsActif = TAProduitOption::STATUS_ACTIF, string $minValue = '', string $maxValue = ''): void
     {
         $today = new \DateTimeImmutable();
         // on recherche notre TAProduitOption
