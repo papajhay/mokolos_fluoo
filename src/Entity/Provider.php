@@ -11,55 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProviderRepository::class)]
 class Provider
 {
-    /**
-     * liste des fournisseurs supplémentaire.
-     * @var int[]
-     */
-    protected $_ADDITIONAL_SUPPLIER = ['ALIAS PIXART' => Provider::ID_SUPPLIER_PIXART,
-        'ALIAS REDUC' => fournisseurPrint24::ID_FOUR_FR,
-        'AUDRY' => 67,
-        'AVL' => 45,
-        'colissimo' => Provider::ID_SUPPLIER_LA_POSTE,
-        'cusin' => 5,
-        'crea' => Provider::ID_SUPPLIER_FLUOO_CREATION,
-        'digit' => 17,
-        'exa' => Provider::ID_SUPPLIER_EXAPRINT,
-        'exeprint' => Provider::ID_SUPPLIER_EXAPRINT,
-        'envelcolor.fr' => 71,
-        'igraphy' => 73,
-        'impressionsenligne' => 103,
-        'indexit' => 20,
-        'le-sac-publicitaire' => 75,
-        'max' => 11,
-        'magenta' => 45,
-        'mursdimages' => Provider::ID_SUPPLIER_PIXART,
-        'onelineprinters' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'onlinp' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'oneline' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'online' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'onlin' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'p24' => fournisseurPrint24::ID_FOUR_FR,
-        'p24 be' => fournisseurPrint24::ID_FOUR_BE,
-        'pixartprinting' => Provider::ID_SUPPLIER_PIXART,
-        'pix' => Provider::ID_SUPPLIER_PIXART,
-        'MULTISIGNE' => Provider::ID_SUPPLIER_PIXART,
-        'Print 24 be' => fournisseurPrint24::ID_FOUR_BE,
-        'Print 24 lu' => fournisseurPrint24::ID_FOUR_LU,
-        'Print 24be' => fournisseurPrint24::ID_FOUR_BE,
-        'print24' => fournisseurPrint24::ID_FOUR_FR,
-        'print 27' => fournisseurPrint24::ID_FOUR_FR,
-        'print 30' => fournisseurPrint24::ID_FOUR_FR,
-        'print 31' => fournisseurPrint24::ID_FOUR_FR,
-        'pc' => 1,
-        'printoclok' => 29,
-        'printforyou' => Provider::ID_SUPPLIER_PRINTFORYOU,
-        'Printconcept (ex Aud' => 67,
-        'carnet -liasse.com' => Provider::ID_SUPPLIER_REALISAPRINT,
-        'realisa' => Provider::ID_SUPPLIER_REALISAPRINT,
-        'smartlabel' => Provider::ID_SUPPLIER_ADESA,
-        'saxo' => Provider::ID_SUPPLIER_SAXO,
-        'ud' => Provider::ID_SUPPLIER_UD,
-        'yp' => Provider::ID_SUPPLIER_YESPRINT];
 
     /**
      * *************************************************************************
@@ -191,13 +142,15 @@ class Provider
     private ?int $currenciesId = null;
 
     #[ORM\Column]
-    private ?int $masterFournisseurId = null;
+    private ?int $masterId = null;
 
     #[ORM\Column]
-    private ?int $numberTva = null;
+//    $numberTva
+    private ?int $numberVAT = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $dirFactures = null;
+//    $dirFactures
+    private ?string $dirInvoices = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $accessLogin = null;
@@ -206,10 +159,12 @@ class Provider
     private ?string $comment = null;
 
     #[ORM\Column]
-    private ?float $tauxTva = null;
+//    $tauxTva
+    private ?float $VATRate = null;
 
     #[ORM\Column]
-    private ?int $tvaRecuperable = null;
+//    $tvaRécupérable
+    private ?int $recoverableVAT = null;
 
     #[ORM\Column]
     private ?int $billingCompany = null;
@@ -233,13 +188,15 @@ class Provider
     private ?int $salutation = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $payement = null;
+//    $payement
+    private ?string $payment = null;
 
     #[ORM\Column]
     private ?int $orderSelection = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $siteAdress = null;
+//    $fouSiteAdresse
+    private ?string $webSiteAddress = null;
 
     #[ORM\Column(length: 255)]
     private ?string $siteLogin = null;
@@ -257,7 +214,8 @@ class Provider
     private ?string $countryCode = null;
 
     #[ORM\Column]
-    private ?int $actif = null;
+//    $actif
+    private ?int $asset = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateValidCachePrice = null;
@@ -447,38 +405,38 @@ class Provider
         return $this;
     }
 
-    public function getMasterFournisseurId(): ?int
+    public function getMasterId(): ?int
     {
-        return $this->masterFournisseurId;
+        return $this->masterId;
     }
 
-    public function setMasterFournisseurId(int $masterFournisseurId): static
+    public function setMasterId(int $masterId): static
     {
-        $this->masterFournisseurId = $masterFournisseurId;
+        $this->masterId = $masterId;
 
         return $this;
     }
 
-    public function getNumberTva(): ?int
+    public function getNumberVAT(): ?int
     {
-        return $this->numberTva;
+        return $this->numberVAT;
     }
 
-    public function setNumberTva(int $numberTva): static
+    public function setNumberVAT(int $numberVAT): static
     {
-        $this->numberTva = $numberTva;
+        $this->numberVAT = $numberVAT;
 
         return $this;
     }
 
-    public function getDirFactures(): ?string
+    public function getDirInvoices(): ?string
     {
-        return $this->dirFactures;
+        return $this->dirInvoices;
     }
 
-    public function setDirFactures(?string $dirFactures): static
+    public function setDirInvoices(?string $dirInvoices): static
     {
-        $this->dirFactures = $dirFactures;
+        $this->dirInvoices = $dirInvoices;
 
         return $this;
     }
@@ -507,26 +465,26 @@ class Provider
         return $this;
     }
 
-    public function getTauxTva(): ?float
+    public function getVATRate(): ?float
     {
-        return $this->tauxTva;
+        return $this->VATRate;
     }
 
-    public function setTauxTva(float $tauxTva): static
+    public function setVATRate(float $VATRate): static
     {
-        $this->tauxTva = $tauxTva;
+        $this->VATRate = $VATRate;
 
         return $this;
     }
 
-    public function getTvaRecuperable(): ?int
+    public function getRecoverableVAT(): ?int
     {
-        return $this->tvaRecuperable;
+        return $this->recoverableVAT;
     }
 
-    public function setTvaRecuperable(int $tvaRecuperable): static
+    public function setRecoverableVAT(int $recoverableVAT): static
     {
-        $this->tvaRecuperable = $tvaRecuperable;
+        $this->recoverableVAT = $recoverableVAT;
 
         return $this;
     }
@@ -615,14 +573,14 @@ class Provider
         return $this;
     }
 
-    public function getPayement(): ?string
+    public function getPayment(): ?string
     {
-        return $this->payement;
+        return $this->payment;
     }
 
-    public function setPayement(string $payement): static
+    public function setPayment(string $payment): static
     {
-        $this->payement = $payement;
+        $this->payment = $payment;
 
         return $this;
     }
@@ -639,14 +597,14 @@ class Provider
         return $this;
     }
 
-    public function getSiteAdress(): ?string
+    public function getWebSiteAddress(): ?string
     {
-        return $this->siteAdress;
+        return $this->webSiteAdress;
     }
 
-    public function setSiteAdress(string $siteAdress): static
+    public function setWebSiteAdress(string $webSiteAdress): static
     {
-        $this->siteAdress = $siteAdress;
+        $this->webSiteAdress = $webSiteAdress;
 
         return $this;
     }
@@ -711,14 +669,14 @@ class Provider
         return $this;
     }
 
-    public function getActif(): ?int
+    public function getAsset(): ?int
     {
-        return $this->actif;
+        return $this->asset;
     }
 
-    public function setActif(int $actif): static
+    public function setAsset(int $asset): static
     {
-        $this->actif = $actif;
+        $this->asset = $asset;
 
         return $this;
     }
@@ -979,7 +937,7 @@ class Provider
 
     /*
      * *************************************************************************
-     * END TO DO : REPOSORY
+     * END TO DO : REPOSITORY
      * *************************************************************************
      */
 
@@ -2165,6 +2123,57 @@ class Provider
 
     // 	return $return;
     // }
+
+    /**
+     * liste des fournisseurs supplémentaire.
+     * @var int[]
+     */
+//    protected $_ADDITIONAL_SUPPLIER = ['ALIAS PIXART' => Provider::ID_SUPPLIER_PIXART,
+//        'ALIAS REDUC' => fournisseurPrint24::ID_FOUR_FR,
+//        'AUDRY' => 67,
+//        'AVL' => 45,
+//        'colissimo' => Provider::ID_SUPPLIER_LA_POSTE,
+//        'cusin' => 5,
+//        'crea' => Provider::ID_SUPPLIER_FLUOO_CREATION,
+//        'digit' => 17,
+//        'exa' => Provider::ID_SUPPLIER_EXAPRINT,
+//        'exeprint' => Provider::ID_SUPPLIER_EXAPRINT,
+//        'envelcolor.fr' => 71,
+//        'igraphy' => 73,
+//        'impressionsenligne' => 103,
+//        'indexit' => 20,
+//        'le-sac-publicitaire' => 75,
+//        'max' => 11,
+//        'magenta' => 45,
+//        'mursdimages' => Provider::ID_SUPPLIER_PIXART,
+//        'onelineprinters' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'onlinp' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'oneline' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'online' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'onlin' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'p24' => fournisseurPrint24::ID_FOUR_FR,
+//        'p24 be' => fournisseurPrint24::ID_FOUR_BE,
+//        'pixartprinting' => Provider::ID_SUPPLIER_PIXART,
+//        'pix' => Provider::ID_SUPPLIER_PIXART,
+//        'MULTISIGNE' => Provider::ID_SUPPLIER_PIXART,
+//        'Print 24 be' => fournisseurPrint24::ID_FOUR_BE,
+//        'Print 24 lu' => fournisseurPrint24::ID_FOUR_LU,
+//        'Print 24be' => fournisseurPrint24::ID_FOUR_BE,
+//        'print24' => fournisseurPrint24::ID_FOUR_FR,
+//        'print 27' => fournisseurPrint24::ID_FOUR_FR,
+//        'print 30' => fournisseurPrint24::ID_FOUR_FR,
+//        'print 31' => fournisseurPrint24::ID_FOUR_FR,
+//        'pc' => 1,
+//        'printoclok' => 29,
+//        'printforyou' => Provider::ID_SUPPLIER_PRINTFORYOU,
+//        'Printconcept (ex Aud' => 67,
+//        'carnet -liasse.com' => Provider::ID_SUPPLIER_REALISAPRINT,
+//        'realisa' => Provider::ID_SUPPLIER_REALISAPRINT,
+//        'smartlabel' => Provider::ID_SUPPLIER_ADESA,
+//        'saxo' => Provider::ID_SUPPLIER_SAXO,
+//        'ud' => Provider::ID_SUPPLIER_UD,
+//        'yp' => Provider::ID_SUPPLIER_YESPRINT];
+
 
     /*
      * *************************************************************************
