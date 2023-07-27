@@ -57,6 +57,17 @@ class TAHostCmsBloc
         return $this->tCmsBloc;
     }
 
+//    public function getTCmsBloc()
+//    {
+//        if($this->_tCmsBloc === NULL)
+//        {
+//            $this->_tCmsBloc = TCmsBloc::findById(array($this->getIdCmsBloc()));
+//        }
+//
+//        return $this->_tCmsBloc;
+//    }
+
+
     public function setTCmsBloc(string $tCmsBloc): static
     {
         $this->tCmsBloc = $tCmsBloc;
@@ -69,10 +80,79 @@ class TAHostCmsBloc
         return $this->tCmsDiapo;
     }
 
+//    public function getTCmsDiapo()
+//    {
+//        if($this->_tCmsDiapo === NULL)
+//        {
+//            $this->_tCmsDiapo = TCmsDiapo::findById(array($this->getTCmsBloc()->getIdCmsDiapo()));
+//        }
+//
+//        return $this->_tCmsDiapo;
+//    }
+
     public function setTCmsDiapo(string $tCmsDiapo): static
     {
         $this->tCmsDiapo = $tCmsDiapo;
 
         return $this;
     }
+
+//    Todo : repository
+    /**
+     * Creer un nouvel objet "TAHostCmsBloc" et le retourner
+     * @param string $idHost        Identifiant du site
+     * @param int $idCmsBloc        Identifiant du bloc CMS
+     * @return TAHostCmsBloc Nouvel objet insere en base
+     */
+//    public static function createNew($idHost, $idCmsBloc)
+//    {
+//        $taHostCmsBloc = new self();
+//        $taHostCmsBloc->setIdHost($idHost);
+//        $taHostCmsBloc->setIdCmsBloc($idCmsBloc);
+//        $taHostCmsBloc->save();
+//
+//        return $taHostCmsBloc;
+//    }
+
+
+    // =================== Methodes de recherche (find) ===================
+
+    /**
+     * Rechercher un bloc CMS d'un site a partir de son type
+     * @param string $idHost            Identifiant du site
+     * @param int $idCmsBlocType        Identifiant du type de bloc CMS
+     * @return TCmsBloc|NULL
+     */
+//    public static function findByIdHostAndIdCmsBlocType($idHost, $idCmsBlocType)
+//    {
+//        $joinList = array(
+//            'cb' => array('table' => TCmsBloc::$_SQL_TABLE_NAME, 'alias' => 'cb', 'joinCondition' => 't.id_cms_bloc = cb.id_cms_bloc', 'subObjectClass' => 'TCmsBloc'),
+//            'cd' => array('join' => 'LEFT JOIN', 'table' => TCmsDiapo::$_SQL_TABLE_NAME, 'alias' => 'cd', 'joinCondition' => 'cb.id_cms_diapo = cd.id_cms_diapo', 'subObjectClass' => 'TCmsDiapo')
+//        );
+//
+//        $taHostCmsBloc = TAHostCmsBloc::findBy(array('t.id_host', 'cb.id_cms_bloc_type'), array($idHost, $idCmsBlocType), $joinList);
+//
+//        return $taHostCmsBloc;
+//    }
+
+
+    /**
+     * Rechercher un bloc CMS (information colonne droite) d'un site
+     * @param string $idHost            Identifiant du site
+     * @return TAHostCmsBloc|NULL
+     */
+//    public static function findByIdHostForInfoColD($idHost)
+//    {
+//        return self::findByIdHostAndIdCmsBlocType($idHost, TCmsBloc::ID_CMS_BLOC_TYPE_INFCOLD);
+//    }
+
+    /**
+     * Rechercher un bloc CMS (reference entreprise) d'un site
+     * @param string $idHost            Identifiant du site
+     * @return TAHostCmsBloc|NULL
+     */
+//    public static function findByIdHostForRefEntr($idHost)
+//    {
+//        return self::findByIdHostAndIdCmsBlocType($idHost, TCmsBloc::ID_CMS_BLOC_TYPE_REFENTR);
+//    }
 }
