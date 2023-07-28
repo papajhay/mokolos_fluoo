@@ -24,8 +24,8 @@ class TTxt
 //    #[ORM\Column]
 //    private ?int $productHost = null;
 
-//    #[ORM\Column]
-//    private ?int $idProductHost;
+    #[ORM\Column]
+    private ?int $idProductHost;
 
     public function getId(): ?int
     {
@@ -60,22 +60,22 @@ class TTxt
      * Getter pour l'attribut $idProduitHost
      * @return int(11)
      */
-//    public function getIdProductHost()
-//    {
-//        return $this->idProductHost;
-//    }
-
+    public function getIdProductHost()
+    {
+        return $this->idProductHost;
+    }
 
     /**
      * Setter pour l'attribut $idProduitHost
      * @param int(11) $idProduitHost
      * @return TTxt
      */
-//    public function setIdProductHost($idProductHost)
-//    {
-//        $this->idProductHost = $idProductHost;
-//        return $this;
-//    }
+    public function setIdProductHost($idProductHost)
+    {
+        $this->idProductHost = $idProductHost;
+
+        return $this;
+    }
 
 //     Todo : service
     /**
@@ -135,7 +135,6 @@ class TTxt
 //        return self::findAllBy(array('id_host'), array($host->getHostId()));
 //    }
 
-
     /**
      * Retourne le txt lié à un site et un produit
      * @param siteHost $host
@@ -145,27 +144,5 @@ class TTxt
 //    public static function findByHostAndProductHost(siteHost $host, TProductHost $product)
 //    {
 //        return self::findBy(array('id_host', 'id_product_host'), array($host->getHostId(), $product->getIdProductHost()));
-//    }
-
-
-    /**
-     * Crée un nouvel objet "TTxt" et le retourne
-     *
-     * @param text $txtValue
-     * @param int(11) $idHost
-     * @param int(11) $idProduitHost
-     *
-     * @return TTxt Nouvel Objet inserer un base
-     */
-//    public static function createNew($txtValue, $idHost, $idProductHost)
-//    {
-//        $tTxt = new TTxt();
-//
-//        $tTxt->setValue($Value)
-//            ->setIdHost($idHost)
-//            ->setIdProductHost($idProductHost)
-//            ->save();
-//
-//        return $tTxt;
 //    }
 }
