@@ -112,6 +112,7 @@ class TCmsDiapo
      * @param int $cmsDiaWidth              Largeur du diaporama
      * @return array Tableau de la liste des images du repertoire du diaporama : array(alt, height, name, url, width)
      */
+
 //    private static function _findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, $cmsDiaHeight, $cmsDiaWidth)
 //    {
         // initialiser la liste des images du repertoire du diaporama
@@ -136,12 +137,12 @@ class TCmsDiapo
 //        return $aCmsDiaImg;
 //    }
 
-
     /**
      * Recuperer la liste des images du diaporama CMS
      * @param string $idHost        Identifiant du site
      * @return array Tableau de la liste des images du repertoire du diaporama : array(alt, height, name, url, width)
      */
+
 //    public function findCmsDiaImgListForHost($idHost)
 //    {
         // recuperer les attributs du diaporama
@@ -153,7 +154,6 @@ class TCmsDiapo
 //
 //        return self::_findCmsDiaImgListFromPath($cmsDiaRepPathFull, $cmsDiaRepUrlFull, $cmsDiaHeight, $cmsDiaWidth);
 //    }
-
 
     /**
      * Recuperer la liste des images du diaporama CMS des produits
@@ -197,13 +197,13 @@ class TCmsDiapo
 //        return $aCmsDiaImgProduct;
 //    }
 
-
     /**
      * Recuperer la liste des images du diaporama CMS des produits
      * @param TProduitHost $tProduitHost        Objet du produit host de Fusion
      * @param bool $allowWebp		[=TRUE] indique si on accepte le webp. Mettre FALSE pour la gestion des images depuis l'admin
      * @return array Tableau de la liste des images du repertoire du diaporama : array(alt, height, name, url, width)
      */
+
 //    public function findCmsDiaImgListForHostProductFusion(TProduitHost $tProduitHost, $allowWebp = TRUE)
 //    {
         // initialiser les attributs du diaporama
@@ -222,23 +222,23 @@ class TCmsDiapo
      * @param string $idHost        Identifiant du site
      * @return string
      */
+
 //    private function _cmsDiaRepPathFullForHost($idHost)
 //    {
 //        return self::_createCmsDiaRepPathRootForHost($idHost) . $this->getCmsDiaRepUrl();
 //    }
-
 
     /**
      * Obtenir l'url complete d'acces au repertoire du diaporama du bloc CMS
      * @param type $idHost
      * @return type
      */
+
 //    private function _cmsDiaRepUrlFullForHost($idHost)
 //    {
 //        return self::_createCmsDiaRepUrlRootForHost($idHost) . $this->getCmsDiaRepUrl();
 //    }
-
-
+  
     /**
      * Creer la racine du chemin d'acces au repertoire du diaporama du bloc CMS
      * @param string $idHost        Identifiant du site
@@ -306,7 +306,6 @@ class TCmsDiapo
         // on renvoi le chemin complet
 //        return '/home/' . $homeName . '/' . $mode . '/' . $imgDir . '_specs/' . $idHost . '/';
 //    }
-
 
     /**
      * Creer la racine de l'url d'acces au repertoire du diaporama du bloc CMS
@@ -378,7 +377,6 @@ class TCmsDiapo
 //        return self::_createCmsDiaRepPathRootForHost($idHost, $allowWebp) . TCmsBloc::cmsDiaUrlFromBlocType($idBlocType);
 //    }
 
-
     /**
      * Creer le chemin complet d'acces au repertoire du diaporama du bloc CMS
      * @param string $idHost        Identifiant du site
@@ -389,7 +387,6 @@ class TCmsDiapo
 //    {
 //        return self::_createCmsDiaRepPathRootForHost($idHost, $allowWebp) . $this->getCmsDiaRepUrl();
 //    }
-
 
     /**
      * Creer l'url complete d'acces au repertoire du diaporama du bloc CMS
@@ -403,7 +400,6 @@ class TCmsDiapo
 //        return self::_createCmsDiaRepUrlRootForHost($idHost, $allowWebp) . TCmsBloc::cmsDiaUrlFromBlocType($idBlocType);
 //    }
 
-
     /**
      * Creer l'url complete d'acces au repertoire du diaporama du bloc CMS
      * @param string $idHost        Identifiant du site
@@ -414,7 +410,6 @@ class TCmsDiapo
 //    {
 //        return self::_createCmsDiaRepUrlRootForHost($idHost, $allowWebp) . $this->getCmsDiaRepUrl();
 //    }
-
 
     /**
      * Uploader un fichier image du diaporama CMS

@@ -75,6 +75,7 @@ class TAProductMeta
      * @param type $proMetaIdParent
      * @param type $proMetaIdChild
      */
+
 //    static public function createNew($proMetaIdParent, $proMetaIdChild, $idHost)
 //    {
         // on créé un nouvel objet
@@ -86,7 +87,6 @@ class TAProductMeta
 //            ->setIdHost($idHost)
 //            ->save();
 //    }
-
 
     /**
      * renvoi si un produit est un meta produit à partir de son id produit host

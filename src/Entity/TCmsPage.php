@@ -188,6 +188,7 @@ class TCmsPage
 //        $this->setCmsPagLastUpdate($date->format(DateHeure::DATETIMEMYSQL));
 //    }
 
+
 //     Todo : service
     /**
      * Cre un nouvel objet "TCmsPage" et le retourne
@@ -200,6 +201,8 @@ class TCmsPage
      * @param int $cmsPagStatut					[=0] Statut de la page
      * @return TCmsPage Nouvel Objet insere en base
      */
+
+    // =================== Methodes de recherche (find) ===================
 //    public static function createNew($idHost, $cmsPagUrl, $cmsPagMetaTitle, $cmsPagMetaDescription, $cmsPagTitle, $cmsPagContent, $cmsPagStatut = 0)
 //    {
 //        $tCmsPage = new self();
@@ -238,12 +241,12 @@ class TCmsPage
 //        return self::findBy($aChamp, $aValue);
 //    }
 
-
     /**
      * renvoi tous les page cms active d'un site
      * @param string $idHost id du site
      * @return TCmsPage[]
      */
+
 //    public static function findAllActifByIdHost($idHost)
 //    {
 //        return self::findAllBy(array('cms_pag_statut', 'id_host'), array(1, $idHost));
@@ -260,7 +263,6 @@ class TCmsPage
 //        return System::constructHttpServerFromHost($this->getIdHost()) . $this->getCmsPagUrl();
 //    }
 
-
     /**
      * Retourne le lien absolu de la page CMS pour la visualisation
      * @return string
@@ -269,7 +271,6 @@ class TCmsPage
 //    {
 //        return System::constructHttpServerFromHost($this->getIdHost()) . 'impression/cms/page/cms_pag_url=' . $this->getCmsPagUrl() . '&amp;apercu=1';
 //    }
-
 
     /**
      * renvoi le content aprés remplacement des variables
