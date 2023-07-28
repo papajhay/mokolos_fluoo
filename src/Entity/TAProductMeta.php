@@ -69,24 +69,24 @@ class TAProductMeta
 //        return $this;
 //    }
 
-
+//     Todo : service
     /**
      *
      * @param type $proMetaIdParent
      * @param type $proMetaIdChild
      */
-    static public function createNew($proMetaIdParent, $proMetaIdChild, $idHost)
-    {
+
+//    static public function createNew($proMetaIdParent, $proMetaIdChild, $idHost)
+//    {
         // on créé un nouvel objet
-        $produitMeta = new TAProduitMeta();
+//        $produitMeta = new TAProduitMeta();
 
         // on met à jour et on enregistre
-        $produitMeta->setProMetaIdParent($proMetaIdParent)
-            ->setProMetaIdChild($proMetaIdChild)
-            ->setIdHost($idHost)
-            ->save();
-    }
-
+//        $produitMeta->setProMetaIdParent($proMetaIdParent)
+//            ->setProMetaIdChild($proMetaIdChild)
+//            ->setIdHost($idHost)
+//            ->save();
+//    }
 
     /**
      * renvoi si un produit est un meta produit à partir de son id produit host

@@ -142,6 +142,7 @@ class Provider
     private ?int $currenciesId = null;
 
     #[ORM\Column]
+    // $masterFournisseurId
     private ?int $masterId = null;
 
     #[ORM\Column]
@@ -215,7 +216,7 @@ class Provider
 
     #[ORM\Column]
 //    $actif
-    private ?int $asset = null;
+    private ?bool $active ;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateValidCachePrice = null;
@@ -274,10 +275,14 @@ class Provider
     #[ORM\OneToMany(mappedBy: 'provider', targetEntity: TAOptionProvider::class)]
     private Collection $tAOptionProviders;
 
+    #[ORM\OneToMany(mappedBy: 'provider', targetEntity: TAProductProvider::class)]
+    private Collection $tAProductProviders;
+
     public function __construct()
     {
         $this->taOptionValueProviders = new ArrayCollection();
         $this->tAOptionProviders = new ArrayCollection();
+        $this->tAProductProviders = new ArrayCollection();
     }
 
     /**
@@ -669,14 +674,14 @@ class Provider
         return $this;
     }
 
-    public function getAsset(): ?int
+    public function getActive(): ?int
     {
-        return $this->asset;
+        return $this->active;
     }
 
-    public function setAsset(int $asset): static
+    public function setActive(bool $active): static
     {
-        $this->asset = $asset;
+        $this->active = $active;
 
         return $this;
     }
@@ -2205,6 +2210,36 @@ class Provider
             // set the owning side to null (unless already changed)
             if ($taOptionValueProviders->getProvider() === $this) {
                 $taOptionValueProviders->setProvider(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAProductProvider>
+     */
+    public function getTAProductProviders(): Collection
+    {
+        return $this->tAProductProviders;
+    }
+
+    public function addTAProductProvider(TAProductProvider $tAProductProvider): static
+    {
+        if (!$this->tAProductProviders->contains($tAProductProvider)) {
+            $this->tAProductProviders->add($tAProductProvider);
+            $tAProductProvider->setProvider($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductProvider(TAProductProvider $tAProductProvider): static
+    {
+        if ($this->tAProductProviders->removeElement($tAProductProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductProvider->getProvider() === $this) {
+                $tAProductProvider->setProvider(null);
             }
         }
 

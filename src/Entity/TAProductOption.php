@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TAProductOptionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TAProductOptionRepository::class)]
@@ -41,9 +43,6 @@ class TAProductOption
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idOption = null;
-
     #[ORM\Column(length: 255)]
     private ?string $libelle = null;
 
@@ -69,6 +68,17 @@ class TAProductOption
     #[ORM\JoinColumn(nullable: false)]
     private ?TProduct $product = null;
 
+    #[ORM\OneToMany(mappedBy: 'tAProductOption', targetEntity: TAProductOptionValue::class)]
+    private Collection $tAProductOptionValues;
+
+    #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
+    private ?TOption $TOption = null;
+
+    public function __construct()
+    {
+        $this->tAProductOptionValues = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,17 +96,6 @@ class TAProductOption
         return $this;
     }
 
-    public function getIdOption(): ?int
-    {
-        return $this->idOption;
-    }
-
-    public function setIdOption(int $idOption): static
-    {
-        $this->idOption = $idOption;
-
-        return $this;
-    }
 
     public function getLibelle(): ?string
     {
@@ -618,4 +617,46 @@ class TAProductOption
     // on n'a pas trouvé
     // 	return false;
     // }
+
+    /**
+     * @return Collection<int, TAProductOptionValue>
+     */
+    public function getTAProductOptionValues(): Collection
+    {
+        return $this->tAProductOptionValues;
+    }
+
+    public function addTAProductOptionValue(TAProductOptionValue $tAProductOptionValue): static
+    {
+        if (!$this->tAProductOptionValues->contains($tAProductOptionValue)) {
+            $this->tAProductOptionValues->add($tAProductOptionValue);
+            $tAProductOptionValue->setTAProductOption($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOptionValue(TAProductOptionValue $tAProductOptionValue): static
+    {
+        if ($this->tAProductOptionValues->removeElement($tAProductOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOptionValue->getTAProductOption() === $this) {
+                $tAProductOptionValue->setTAProductOption(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTOption(): ?TOption
+    {
+        return $this->TOption;
+    }
+
+    public function setTOption(?TOption $TOption): static
+    {
+        $this->TOption = $TOption;
+
+        return $this;
+    }
 }

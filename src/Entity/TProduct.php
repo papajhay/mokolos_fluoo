@@ -47,17 +47,15 @@ class TProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: TAProductOption::class)]
     private Collection $tAProductOptions;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: TAProductProvider::class)]
+    private Collection $tAProductProviders;
+
     public function __construct()
     {
         $this->tAProductOptions = new ArrayCollection();
+        $this->tAProductProviders = new ArrayCollection();
     }
 
-    // TODO relation
-    /*
-     * un objet TAProduitFournisseur lié à notre objet
-     * @var TAProduitFournisseur
-     */
-    // private $_produitFournisseur;
 
     public function getId(): ?int
     {
@@ -1139,4 +1137,34 @@ class TProduct
 
         return $return;
     }*/
+
+    /**
+     * @return Collection<int, TAProductProvider>
+     */
+    public function getTAProductProviders(): Collection
+    {
+        return $this->tAProductProviders;
+    }
+
+    public function addTAProductProviders(TAProductProvider $provider): static
+    {
+        if (!$this->tAProductProviders->contains($provider)) {
+            $this->tAProductProviders->add($provider);
+            $provider->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductProviders(TAProductProvider $productProvider): static
+    {
+        if ($this->tAProductProviders->removeElement($productProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($productProvider->getProduct() === $this) {
+                $productProvider->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
 }

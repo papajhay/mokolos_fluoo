@@ -61,7 +61,9 @@ class TAOrderSupplierOrder
 
     /**
      * objet DateHeure de la livraison estimé.
-     * @var DateHeure
+
+     * @return DateHeure
+
      */
     // private $_deliveryDate = null;
 
