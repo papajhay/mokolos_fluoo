@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -98,22 +98,6 @@ class TAHostCmsBloc
     }
 
 //    Todo : repository
-    /**
-     * Creer un nouvel objet "TAHostCmsBloc" et le retourner
-     * @param string $idHost        Identifiant du site
-     * @param int $idCmsBloc        Identifiant du bloc CMS
-     * @return TAHostCmsBloc Nouvel objet insere en base
-     */
-//    public static function createNew($idHost, $idCmsBloc)
-//    {
-//        $taHostCmsBloc = new self();
-//        $taHostCmsBloc->setIdHost($idHost);
-//        $taHostCmsBloc->setIdCmsBloc($idCmsBloc);
-//        $taHostCmsBloc->save();
-//
-//        return $taHostCmsBloc;
-//    }
-
 
     // =================== Methodes de recherche (find) ===================
 

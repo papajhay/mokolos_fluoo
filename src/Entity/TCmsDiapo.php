@@ -78,31 +78,7 @@ class TCmsDiapo
         return $this;
     }
 
-    // ===================== Methodes de creation =====================
-
-//    Todo : service
-    /**
-     * Creer un nouvel objet "TCmsDiapo" et le retourner
-     * @param string $repUrl      Url d'acces au repertoire du diaporama
-     * @param int $height         [=0] Hauteur en px
-     * @param int $width          [=0] Largeur en px
-     * @param int $name           [=''] Nom du diaporama pour l'admin
-     * @return TCmsDiapo Nouvel objet insere en base
-     */
-//    public static function createNew($cmsDiaRepUrl, $cmsDiaHeight = 0, $cmsDiaWidth = 0, $cmsDiaName = '')
-//    {
-//        $tCmsDiapo = new TCmsDiapo();
-//        $tCmsDiapo->setRepUrl($repUrl)
-//            ->setHeight($height)
-//            ->setWidth($width)
-//            ->setName($name)
-//            ->save();
-//
-//        return $tCmsDiapo;
-//    }
     // =================== Methodes de recherche (find) ===================
-
-
 //    Todo : repository
     /**
      * Recuperer la liste des images d'un diaporama CMS a partir des chemins d'acces

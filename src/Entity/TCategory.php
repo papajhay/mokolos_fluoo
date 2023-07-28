@@ -61,21 +61,4 @@ class TCategory
 //    {
 //        return self::findAllBy(array('id_host'), array($idHost), array('ordre'));
 //    }
-
-
-    /**
-     * Cre un nouvel objet "TCategorie" et le retourne
-     * @param string $idHost		Identifiant du site
-     * @param int $order			[=0] Order
-     * @return TCategory Nouvel Objet insere en base
-     */
-//    public static function createNew($idHost, $order = 0)
-//    {
-//        $tCategory = new self();
-//        $tCategory->setIdHost($idHost);
-//        $tCategory->setOrder($order);
-//        $tCategory->save();
-//
-//        return $tCategory;
-//    }
 }

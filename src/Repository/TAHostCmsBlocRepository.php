@@ -21,28 +21,14 @@ class TAHostCmsBlocRepository extends ServiceEntityRepository
         parent::__construct($registry, TAHostCmsBloc::class);
     }
 
-//    /**
-//     * @return TAHostCmsBloc[] Returns an array of TAHostCmsBloc objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?TAHostCmsBloc
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByHostAndInfoColDCms($idHost, )
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.idHost= :idHost')
+            ->andWhere('t.idOption= :idoption')
+            ->setParameter('idHost', $idHost)
+            ->setParameter('idoption', $idOption)
+            ->getQuery()
+            ->getResult();
+    }
 }
