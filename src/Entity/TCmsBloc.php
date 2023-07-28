@@ -94,24 +94,6 @@ class TCmsBloc
 //        self::ID_CMS_BLOC_TYPE_REFENTR => "cms/bloc/refentr/",
 //        self::ID_CMS_BLOC_TYPE_PRODUCT => "cms/bloc/product/"
 //    ];
-    /**
-     * Crer un nouvel objet "TCmsBloc" et le retourner
-     * @param int(11) $idCmsBlocType    Identifiant du type de bloc CMS
-     * @param text $cmsBloHtml          Contenu HTML du bloc CMS
-     * @param int(11) $idCmsDiapo       [=0] Identifiant du diaporama du bloc CMS
-     * @return TCmsBloc Nouvel Objet insere en base
-     */
-//    public static function createNew($idCmsBlocType, $cmsBloHtml, $idCmsDiapo = 0)
-//    {
-//        $tCmsBloc = new self();
-//        $tCmsBloc->setIdCmsBlocType($idCmsBlocType);
-//        $tCmsBloc->setCmsBloHtml($cmsBloHtml);
-//        $tCmsBloc->setIdCmsDiapo($idCmsDiapo);
-//        $tCmsBloc->save();
-//
-//        return $tCmsBloc;
-//    }
-
 
     // ===================== Autres methodes =====================
 

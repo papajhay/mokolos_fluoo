@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -21,7 +21,7 @@ class TCmsPage
      * Identifiant du site
      * @var string
      */
-//    private $idHost;
+    private $idHost;
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
@@ -67,28 +67,17 @@ class TCmsPage
      * Getter pour l'attribut de l'identifiant du site
      * @return int
      */
-//    public function getIdHost()
-//    {
-//        return $this->idHost;
-//    }
+    public function getIdHost()
+    {
+        return $this->idHost;
+    }
 
-//    public function setIdHost($idHost)
-//    {
-//        $this->idHost = $idHost;
-//        return $this;
-//    }
+    public function setIdHost($idHost)
+    {
+        $this->idHost = $idHost;
 
-
-    /**
-     * Setter pour l'attribut de l'identifiant du site
-     * @param int $idHost       Identifiant du site
-     * @return TCmsPage
-     */
-//    public function setIdHost($idHost)
-//    {
-//        $this->idHost = $idHost;
-//        return $this;
-//    }
+        return $this;
+    }
 
     public function getMetaTitle(): ?string
     {
@@ -188,32 +177,6 @@ class TCmsPage
 //        $this->setCmsPagLastUpdate($date->format(DateHeure::DATETIMEMYSQL));
 //    }
 
-//     Todo : service
-    /**
-     * Cre un nouvel objet "TCmsPage" et le retourne
-     * @param string $idHost					Identifiant du site
-     * @param string $cmsPagUrl					Url de la page
-     * @param string $cmsPagMetaTitle			Meta titre
-     * @param string $cmsPagMetaDescription		Meta description
-     * @param string $cmsPagTitle				Titre de la page
-     * @param string $cmsPagContent				Contenu de la page
-     * @param int $cmsPagStatut					[=0] Statut de la page
-     * @return TCmsPage Nouvel Objet insere en base
-     */
-//    public static function createNew($idHost, $cmsPagUrl, $cmsPagMetaTitle, $cmsPagMetaDescription, $cmsPagTitle, $cmsPagContent, $cmsPagStatut = 0)
-//    {
-//        $tCmsPage = new self();
-//        $tCmsPage->setIdHost($idHost);
-//        $tCmsPage->setCmsPagUrl($cmsPagUrl);
-//        $tCmsPage->setCmsPagMetaTitle($cmsPagMetaTitle);
-//        $tCmsPage->setCmsPagMetaDescription($cmsPagMetaDescription);
-//        $tCmsPage->setCmsPagTitle($cmsPagTitle);
-//        $tCmsPage->setCmsPagContent($cmsPagContent);
-//        $tCmsPage->setCmsPagStatut($cmsPagStatut);
-//        $tCmsPage->save();
-//
-//        return $tCmsPage;
-//    }
     // =================== Methodes de recherche (find) ===================
 
 //    Todo : repository
