@@ -11,55 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProviderRepository::class)]
 class Provider
 {
-    /**
-     * liste des fournisseurs supplémentaire.
-     * @var int[]
-     */
-    protected $_ADDITIONAL_SUPPLIER = ['ALIAS PIXART' => Provider::ID_SUPPLIER_PIXART,
-        'ALIAS REDUC' => fournisseurPrint24::ID_FOUR_FR,
-        'AUDRY' => 67,
-        'AVL' => 45,
-        'colissimo' => Provider::ID_SUPPLIER_LA_POSTE,
-        'cusin' => 5,
-        'crea' => Provider::ID_SUPPLIER_FLUOO_CREATION,
-        'digit' => 17,
-        'exa' => Provider::ID_SUPPLIER_EXAPRINT,
-        'exeprint' => Provider::ID_SUPPLIER_EXAPRINT,
-        'envelcolor.fr' => 71,
-        'igraphy' => 73,
-        'impressionsenligne' => 103,
-        'indexit' => 20,
-        'le-sac-publicitaire' => 75,
-        'max' => 11,
-        'magenta' => 45,
-        'mursdimages' => Provider::ID_SUPPLIER_PIXART,
-        'onelineprinters' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'onlinp' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'oneline' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'online' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'onlin' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-        'p24' => fournisseurPrint24::ID_FOUR_FR,
-        'p24 be' => fournisseurPrint24::ID_FOUR_BE,
-        'pixartprinting' => Provider::ID_SUPPLIER_PIXART,
-        'pix' => Provider::ID_SUPPLIER_PIXART,
-        'MULTISIGNE' => Provider::ID_SUPPLIER_PIXART,
-        'Print 24 be' => fournisseurPrint24::ID_FOUR_BE,
-        'Print 24 lu' => fournisseurPrint24::ID_FOUR_LU,
-        'Print 24be' => fournisseurPrint24::ID_FOUR_BE,
-        'print24' => fournisseurPrint24::ID_FOUR_FR,
-        'print 27' => fournisseurPrint24::ID_FOUR_FR,
-        'print 30' => fournisseurPrint24::ID_FOUR_FR,
-        'print 31' => fournisseurPrint24::ID_FOUR_FR,
-        'pc' => 1,
-        'printoclok' => 29,
-        'printforyou' => Provider::ID_SUPPLIER_PRINTFORYOU,
-        'Printconcept (ex Aud' => 67,
-        'carnet -liasse.com' => Provider::ID_SUPPLIER_REALISAPRINT,
-        'realisa' => Provider::ID_SUPPLIER_REALISAPRINT,
-        'smartlabel' => Provider::ID_SUPPLIER_ADESA,
-        'saxo' => Provider::ID_SUPPLIER_SAXO,
-        'ud' => Provider::ID_SUPPLIER_UD,
-        'yp' => Provider::ID_SUPPLIER_YESPRINT];
 
     /**
      * *************************************************************************
@@ -471,7 +422,7 @@ class Provider
         return $this;
     }
 
-    public function getNumberTva(): ?int
+    public function getNumberVAT(): ?int
     {
         return $this->numberVAT;
     }
@@ -651,14 +602,14 @@ class Provider
         return $this;
     }
 
-    public function getSiteAdress(): ?string
+    public function getWebSiteAddress(): ?string
     {
-        return $this->siteAdress;
+        return $this->webSiteAdress;
     }
 
-    public function setSiteAdress(string $siteAdress): static
+    public function setWebSiteAdress(string $webSiteAdress): static
     {
-        $this->siteAdress = $siteAdress;
+        $this->webSiteAdress = $webSiteAdress;
 
         return $this;
     }
@@ -2177,6 +2128,57 @@ class Provider
 
     // 	return $return;
     // }
+
+    /**
+     * liste des fournisseurs supplémentaire.
+     * @var int[]
+     */
+//    protected $_ADDITIONAL_SUPPLIER = ['ALIAS PIXART' => Provider::ID_SUPPLIER_PIXART,
+//        'ALIAS REDUC' => fournisseurPrint24::ID_FOUR_FR,
+//        'AUDRY' => 67,
+//        'AVL' => 45,
+//        'colissimo' => Provider::ID_SUPPLIER_LA_POSTE,
+//        'cusin' => 5,
+//        'crea' => Provider::ID_SUPPLIER_FLUOO_CREATION,
+//        'digit' => 17,
+//        'exa' => Provider::ID_SUPPLIER_EXAPRINT,
+//        'exeprint' => Provider::ID_SUPPLIER_EXAPRINT,
+//        'envelcolor.fr' => 71,
+//        'igraphy' => 73,
+//        'impressionsenligne' => 103,
+//        'indexit' => 20,
+//        'le-sac-publicitaire' => 75,
+//        'max' => 11,
+//        'magenta' => 45,
+//        'mursdimages' => Provider::ID_SUPPLIER_PIXART,
+//        'onelineprinters' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'onlinp' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'oneline' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'online' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'onlin' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+//        'p24' => fournisseurPrint24::ID_FOUR_FR,
+//        'p24 be' => fournisseurPrint24::ID_FOUR_BE,
+//        'pixartprinting' => Provider::ID_SUPPLIER_PIXART,
+//        'pix' => Provider::ID_SUPPLIER_PIXART,
+//        'MULTISIGNE' => Provider::ID_SUPPLIER_PIXART,
+//        'Print 24 be' => fournisseurPrint24::ID_FOUR_BE,
+//        'Print 24 lu' => fournisseurPrint24::ID_FOUR_LU,
+//        'Print 24be' => fournisseurPrint24::ID_FOUR_BE,
+//        'print24' => fournisseurPrint24::ID_FOUR_FR,
+//        'print 27' => fournisseurPrint24::ID_FOUR_FR,
+//        'print 30' => fournisseurPrint24::ID_FOUR_FR,
+//        'print 31' => fournisseurPrint24::ID_FOUR_FR,
+//        'pc' => 1,
+//        'printoclok' => 29,
+//        'printforyou' => Provider::ID_SUPPLIER_PRINTFORYOU,
+//        'Printconcept (ex Aud' => 67,
+//        'carnet -liasse.com' => Provider::ID_SUPPLIER_REALISAPRINT,
+//        'realisa' => Provider::ID_SUPPLIER_REALISAPRINT,
+//        'smartlabel' => Provider::ID_SUPPLIER_ADESA,
+//        'saxo' => Provider::ID_SUPPLIER_SAXO,
+//        'ud' => Provider::ID_SUPPLIER_UD,
+//        'yp' => Provider::ID_SUPPLIER_YESPRINT];
+
 
     /*
      * *************************************************************************

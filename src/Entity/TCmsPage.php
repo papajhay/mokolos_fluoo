@@ -177,6 +177,7 @@ class TCmsPage
 //        $this->setCmsPagLastUpdate($date->format(DateHeure::DATETIMEMYSQL));
 //    }
 
+
     // =================== Methodes de recherche (find) ===================
 
 //    Todo : repository
@@ -201,12 +202,12 @@ class TCmsPage
 //        return self::findBy($aChamp, $aValue);
 //    }
 
-
     /**
      * renvoi tous les page cms active d'un site
      * @param string $idHost id du site
      * @return TCmsPage[]
      */
+
 //    public static function findAllActifByIdHost($idHost)
 //    {
 //        return self::findAllBy(array('cms_pag_statut', 'id_host'), array(1, $idHost));
@@ -223,7 +224,6 @@ class TCmsPage
 //        return System::constructHttpServerFromHost($this->getIdHost()) . $this->getCmsPagUrl();
 //    }
 
-
     /**
      * Retourne le lien absolu de la page CMS pour la visualisation
      * @return string
@@ -232,7 +232,6 @@ class TCmsPage
 //    {
 //        return System::constructHttpServerFromHost($this->getIdHost()) . 'impression/cms/page/cms_pag_url=' . $this->getCmsPagUrl() . '&amp;apercu=1';
 //    }
-
 
     /**
      * renvoi le content aprés remplacement des variables

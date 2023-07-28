@@ -15,6 +15,7 @@ class TCategory
     private ?int $id = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
+
 //    $ordre
     private ?int $order = null;
 
