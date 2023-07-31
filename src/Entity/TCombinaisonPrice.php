@@ -14,7 +14,8 @@ class TCombinaisonPrice
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $date_maj = null;
+    //old $date_maj
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column]
     private ?float $price = null;
@@ -28,14 +29,14 @@ class TCombinaisonPrice
         return $this->id;
     }
 
-    public function getDateMaj(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->date_maj;
+        return $this->updatedAt;
     }
 
-    public function setDateMaj(\DateTimeImmutable $date_maj): static
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
-        $this->date_maj = $date_maj;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

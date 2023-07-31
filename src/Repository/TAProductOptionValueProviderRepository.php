@@ -2,28 +2,28 @@
 
 namespace App\Repository;
 
-use App\Entity\TProductHostAcl;
+use App\Entity\TAProductOptionValueProvider;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<TProductHostAcl>
+ * @extends ServiceEntityRepository<TAProductOptionValueProvider>
  *
- * @method TProductHostAcl|null find($id, $lockMode = null, $lockVersion = null)
- * @method TProductHostAcl|null findOneBy(array $criteria, array $orderBy = null)
- * @method TProductHostAcl[]    findAll()
- * @method TProductHostAcl[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TAProductOptionValueProvider|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TAProductOptionValueProvider|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TAProductOptionValueProvider[]    findAll()
+ * @method TAProductOptionValueProvider[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TProductHostAclRepository extends ServiceEntityRepository
+class TAProductOptionValueProviderRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TProductHostAcl::class);
+        parent::__construct($registry, TAProductOptionValueProvider::class);
     }
 
-    /**
-     * @return TProductHostAcl[] Returns an array of TProductHostAcl objects
-     */
+//    /**
+//     * @return TAProductOptionValueProvider[] Returns an array of TAProductOptionValueProvider objects
+//     */
 //    public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('t')
@@ -36,7 +36,7 @@ class TProductHostAclRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?TProductHostAcl
+//    public function findOneBySomeField($value): ?TAProductOptionValueProvider
 //    {
 //        return $this->createQueryBuilder('t')
 //            ->andWhere('t.exampleField = :val')
