@@ -12,6 +12,7 @@ class TMessageService
     */
     public function replaceVariableErrText(TMessage $TMessage)
     {
+        // TODO create class Template
         return Template::replaceVariableFrom($TMessage->getText(), ['tError' => $TMessage]);
     }
 
