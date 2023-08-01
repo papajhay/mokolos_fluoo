@@ -16,7 +16,7 @@ class Ttransporter
     /**
      * id du transporteur DPD France.
      */
-    // const ID_CARRIER_DPD_FRANCE = 1;
+    const ID_CARRIER_DPD_FRANCE = 1;
 
     /**
      * id du transporteur CHRONOPOST.
@@ -76,12 +76,12 @@ class Ttransporter
     /**
      * id du transporteur GLS France.
      */
-    // const ID_CARRIER_GLS = 17;
+    const ID_CARRIER_GLS = 17;
 
     /**
      * id du transporteur France Express.
      */
-    // const ID_CARRIER_FRANCE_EXPRESS = 18;
+     const ID_CARRIER_FRANCE_EXPRESS = 18;
 
     /**
      * id du transporteur BRT (filiale italienne de DPD a priori).
@@ -91,7 +91,7 @@ class Ttransporter
     /**
      * id du transporteur Ciblex.
      */
-    // const ID_CARRIER_CIBLEX = 20;
+     const ID_CARRIER_CIBLEX = 20;
 
     /**
      * nombre de jour maximum pendant lequel le tracking est disponible. 0 car par défaut pas de tracking.

@@ -136,7 +136,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand la commande passe en impression.
      */
-    private function _pcreOrderInProduction(): string
+    protected function _pcreOrderInProduction(): string
     {
         $masque = '#';
         $masque .= 'n°(\d+)(?:_\d+|)\s*:\s*\[\D*(\d+)\D*(?:/\d+|)\].*conforme.*actuellement.*impression.*\n';
@@ -149,7 +149,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand le fournisseur à reçu les fichiers.
      */
-    private function _pcreMailFileReceivedSubject(): string
+    protected function _pcreMailFileReceivedSubject(): string
     {
         return '#ception fichier.*n°(\d+)(?:_\d+|)\s*:\s*\[\D*(\d+)\D*(?:/\d+|)\]#i';
     }
@@ -157,7 +157,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand la commande passe en expedition.
      */
-    private function _pcreMailDispatchedSubject(): string
+    protected function _pcreMailDispatchedSubject(): string
     {
         return '#°(\d+)(?:_\d+|)\s*:\s*\[\D*(\d+)\D*(?:/\d+|)\] est en expédition#i';
     }
@@ -165,7 +165,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand la commande passe en expedition.
      */
-    private function _pcreMailDispatchedReprintSubject(): string
+    protected function _pcreMailDispatchedReprintSubject(): string
     {
         return '#°(\d+)(?:_\d+|)\s*:\s*\[REIMPRESSION CDE[^\]]*\] est en expédition#i';
     }
@@ -173,7 +173,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand la commande passe en expedition.
      */
-    private function _pcreMailErrorSubject(): string
+    protected function _pcreMailErrorSubject(): string
     {
         return '#Problème bloquant.*n°(\d+)\s*:\s*\[\D*(\d+)\D*\]#i';
     }
@@ -181,7 +181,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand la commande passe en expedition.
      */
-    private function _pcreMailErrorSubject2(): string
+    protected function _pcreMailErrorSubject2(): string
     {
         return '#n°(\d+)\s*:\s*\[\D*(\d+)\D*\] bloquée lors#i';
     }
@@ -189,7 +189,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand la commande passe en expedition.
      */
-    private function _pcreMailErrorSubject3(): string
+    protected function _pcreMailErrorSubject3(): string
     {
         return '#n°(\d+)\s*bloquée à.*:\s*\[\D*(\d+)\D*\]#i';
     }
@@ -197,7 +197,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE pour les mails de réclamation.
      */
-    private function _pcreMailReclamationSubject(): string
+    protected function _pcreMailReclamationSubject(): string
     {
         return '#Réclamation.*\D(\d+)\s*:\s*\[\D*(\d+)\D#i';
     }
@@ -205,7 +205,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE pour les mails de réclamation.
      */
-    private function _pcreMailReclamationInProgressBody(): string
+    protected function _pcreMailReclamationInProgressBody(): string
     {
         return '#Votre réclamation n°\d+ pour le commande n°(\d+) est actuellement en cours d\'analyse#i';
     }
@@ -213,7 +213,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE pour les mails de suivi.
      */
-    private function _pcreMailFollowingSubject(): string
+    protected function _pcreMailFollowingSubject(): string
     {
         return '#Suivi.*\D(\d+)\s*:\s*\[\D*(\d+)\D#i';
     }
@@ -221,7 +221,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE pour le sujet du mail de réimpression.
      */
-    private function _pcreMailReprintSubject(): string
+    protected function _pcreMailReprintSubject(): string
     {
         return '#Votre commande n°(\d+)\s*:\s*\[REIMPRESSION CDE\s*:\s*(\d+)\] est en préparation#i';
     }
@@ -229,7 +229,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE pour le corp du mail de réimpression.
      */
-    private function _pcreMailReprintBody(): string
+    protected function _pcreMailReprintBody(): string
     {
         return '#Expédition prévue au plus tard le\s*:\s*(\d+/\d+/\d+)\D#i';
     }
@@ -237,7 +237,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE pour le sujet du mail de réimpression (autre mail).
      */
-    private function _pcreMailReprint2Subject(): string
+    protected function _pcreMailReprint2Subject(): string
     {
         return '#Commande n°(\d+)\s*:\s*\[REIMPRESSION CDE\s*:\s*(\d+)\] générée avec succès#i';
     }
@@ -245,7 +245,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE pour le corp du mail de réimpression.
      */
-    private function _pcreMailReprint2Body(): string
+    protected function _pcreMailReprint2Body(): string
     {
         return '#Montant TTC\s*:\s*(\d+)€#i';
     }
@@ -253,7 +253,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand la commande passe en impression.
      */
-    private function _pcreMailReprintinProductionBody(): string
+    protected function _pcreMailReprintinProductionBody(): string
     {
         $masque = '#';
         $masque .= 'n°(\d+)(?:_\d+|)\s*:\s*\[REIMPRESSION CDE\s*:\s*(\d+)_\d*\s*\].*conforme.*actuellement.*impression.*\n';
@@ -266,7 +266,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand la commande est non livrée suite à l'absence du destinataire.
      */
-    private function _pcreMailOrderNotDeliveredBody(): string
+    protected function _pcreMailOrderNotDeliveredBody(): string
     {
         $masque = '#';
         $masque .= 'Commande\s*n°\s*(\d+)\s*:\s*\[(\d+)\]';
@@ -278,7 +278,7 @@ class BaseRealizedPrint extends BaseProvider
     /**
      * renvoi le masque PCRE quand la commande est bloquée.
      */
-    private function _pcreMailOrderBlockedSubject(): string
+    protected function _pcreMailOrderBlockedSubject(): string
     {
         $masque = '#';
         $masque .= '^Votre commande\s*n°\s*(\d+)\s*:\s*\[(\d+)\]\s*est toujours bloquée$';
