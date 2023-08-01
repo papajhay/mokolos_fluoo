@@ -58,9 +58,6 @@ class TAProductOption
     #[ORM\Column(length: 255)]
     private ?string $optionMaxValue = '';
 
-    #[ORM\Column(length: 255)]
-    private ?string $idHost = null;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $dateHourLastSeen = null;
 
@@ -73,6 +70,10 @@ class TAProductOption
 
     #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
     private ?TOption $TOption = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
+    // old: $idHost
+    private ?hosts $host = null;
 
     public function __construct()
     {
@@ -157,18 +158,6 @@ class TAProductOption
         return $this;
     }
 
-    public function getIdHost(): ?string
-    {
-        return $this->idHost;
-    }
-
-    public function setIdHost(string $idHost): static
-    {
-        $this->idHost = $idHost;
-
-        return $this;
-    }
-
     public function getDateHourLastSeen(): ?\DateTimeImmutable
     {
         return $this->dateHourLastSeen;
@@ -177,6 +166,18 @@ class TAProductOption
     public function setDateHourLastSeen(\DateTimeImmutable $dateHourLastSeen): static
     {
         $this->dateHourLastSeen = $dateHourLastSeen;
+
+        return $this;
+    }
+
+    public function getHost(): ?hosts
+    {
+        return $this->host;
+    }
+
+    public function setHost(?hosts $host): static
+    {
+        $this->host = $host;
 
         return $this;
     }

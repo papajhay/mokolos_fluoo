@@ -38,9 +38,6 @@ class TAProductOptionValue
     private ?int $productOptionValueOrder = null;
 
     #[ORM\Column]
-    private ?int $idHost = null;
-
-    #[ORM\Column]
     // date de la derniére fois ou l'on a vu ce produit option. NULL pour une date inconnu
     private ?\DateTime $dateLastSeen = null;
 
@@ -56,6 +53,10 @@ class TAProductOptionValue
 
     #[ORM\ManyToOne(inversedBy: 'tAProductOptionValues')]
     private ?TAProductOption $tAProductOption = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tAProductOptionValues')]
+    // old: $idHost
+    private ?hosts $host = null;
 
     public function getId(): ?int
     {
@@ -107,18 +108,6 @@ class TAProductOptionValue
     public function setProductOptionValueOrder(int $productOptionValueOrder): static
     {
         $this->productOptionValueOrder = $productOptionValueOrder;
-
-        return $this;
-    }
-
-    public function getIdHost(): ?int
-    {
-        return $this->idHost;
-    }
-
-    public function setIdHost(int $idHost): static
-    {
-        $this->idHost = $idHost;
 
         return $this;
     }
@@ -179,6 +168,18 @@ class TAProductOptionValue
     public function setTAProductOption(?TAProductOption $tAProductOption): static
     {
         $this->tAProductOption = $tAProductOption;
+
+        return $this;
+    }
+
+    public function getHost(): ?hosts
+    {
+        return $this->host;
+    }
+
+    public function setHost(?hosts $host): static
+    {
+        $this->host = $host;
 
         return $this;
     }

@@ -177,10 +177,18 @@ class Hosts
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAProductMeta::class)]
     private Collection $tAProductMetas;
 
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAProductOption::class)]
+    private Collection $tAProductOptions;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAProductOptionValue::class)]
+    private Collection $tAProductOptionValues;
+
     public function __construct()
     {
         $this->tAHostCmsBlocs = new ArrayCollection();
         $this->tAProductMetas = new ArrayCollection();
+        $this->tAProductOptions = new ArrayCollection();
+        $this->tAProductOptionValues = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -747,6 +755,66 @@ class Hosts
             // set the owning side to null (unless already changed)
             if ($tAHostCmsBloc->getHost() === $this) {
                 $tAHostCmsBloc->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAProductOption>
+     */
+    public function getTAProductOptions(): Collection
+    {
+        return $this->tAProductOptions;
+    }
+
+    public function addTAProductOption(TAProductOption $tAProductOption): static
+    {
+        if (!$this->tAProductOptions->contains($tAProductOption)) {
+            $this->tAProductOptions->add($tAProductOption);
+            $tAProductOption->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOption(TAProductOption $tAProductOption): static
+    {
+        if ($this->tAProductOptions->removeElement($tAProductOption)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOption->getHost() === $this) {
+                $tAProductOption->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAProductOptionValue>
+     */
+    public function getTAProductOptionValues(): Collection
+    {
+        return $this->tAProductOptionValues;
+    }
+
+    public function addTAProductOptionValue(TAProductOptionValue $tAProductOptionValue): static
+    {
+        if (!$this->tAProductOptionValues->contains($tAProductOptionValue)) {
+            $this->tAProductOptionValues->add($tAProductOptionValue);
+            $tAProductOptionValue->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOptionValue(TAProductOptionValue $tAProductOptionValue): static
+    {
+        if ($this->tAProductOptionValues->removeElement($tAProductOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOptionValue->getHost() === $this) {
+                $tAProductOptionValue->setHost(null);
             }
         }
 
