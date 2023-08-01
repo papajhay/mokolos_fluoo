@@ -100,8 +100,10 @@ class TProductHost
     #[ORM\Column]
     private ?int $idProduct = null;
 
-    #[ORM\Column]
-    private ?int $idHost = null;
+    #[ORM\ManyToOne(inversedBy: 'tProductHosts')]
+    // private $_host		 = null;
+    //private ?int $idHost = null;
+    private ?Hosts $host = null;
 
     #[ORM\Column(length: 255)]
     private ?string $footerLink = null;
@@ -143,7 +145,7 @@ class TProductHost
      * objet siteHost du site de ce produit host.
      * @var siteHost
      */
-    // private $_host		 = null;
+
     // private $_produit	 = null;
     /**
      * Le prix de vente HT mini.
@@ -390,14 +392,14 @@ class TProductHost
         return $this;
     }
 
-    public function getIdHost(): ?int
+    public function getHost(): ?Hosts
     {
-        return $this->idHost;
+        return $this->host;
     }
 
-    public function setIdHost(int $idHost): static
+    public function setHost(?Hosts $host): static
     {
-        $this->idHost = $idHost;
+        $this->host = $host;
 
         return $this;
     }

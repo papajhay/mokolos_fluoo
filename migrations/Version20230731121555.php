@@ -20,7 +20,6 @@ final class Version20230731121555 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE tcombinaison_price (id INT AUTO_INCREMENT NOT NULL, date_maj DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', price DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE tproduct_host_acl DROP id_product_host, DROP id_host, DROP active');
     }
 

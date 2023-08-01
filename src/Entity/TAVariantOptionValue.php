@@ -21,7 +21,9 @@ class TAVariantOptionValue
 //    private ?int $idOptionValue;
 
     #[ORM\Column]
-    private ?int $idHost;
+    //private ?int $idHost;
+    #[ORM\ManyToOne(inversedBy: 'tAVariantOptionValues')]
+    private ?Hosts $host = null;
 
     #[ORM\Column]
     private ?bool $isActive = null;
@@ -77,26 +79,17 @@ class TAVariantOptionValue
 //        return $this;
 //    }
 
-    /**
-     * Getter pour l'attribut $idHost  (id du site)
-     * @return varchar(5)
-     */
-//    public function getIdHost()
-//    {
-//        return $this->idHost;
-//    }
+    public function getHost(): ?Hosts
+    {
+        return $this->host;
+    }
 
-    /**
-     * Setter pour l'attribut $idHost  (id du site)
-     * @param varchar(5) $idHost
-     * @return TAVariantOptionValue
-     */
-//    public function setIdHost($idHost)
-//    {
-//        $this->idHost = $idHost;
-//
-//        return $this;
-//    }
+    public function setHost(?Hosts $host): static
+    {
+        $this->host = $host;
+
+        return $this;
+    }
 
 
     public function isIsActive(): ?bool
@@ -196,4 +189,5 @@ class TAVariantOptionValue
 //            $variantOptionValue->delete();
 //        }
 //    }
+
 }

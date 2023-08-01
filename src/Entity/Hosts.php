@@ -170,6 +170,22 @@ class Hosts
     #[ORM\Column]
     // old: $hosPriceDecimal
     private ?float $priceDecimal = 0;
+  
+  #[ORM\OneToMany(mappedBy: 'host', targetEntity: TTxt::class)]
+    private Collection $tTxts;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TCmsPage::class)]
+    private Collection $tCmsPages;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TProductHost::class)]
+    private Collection $tProductHosts;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAVariantOptionValue::class)]
+    private Collection $tAVariantOptionValues;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TProductHostMoreViewed::class)]
+    private Collection $tProductHostMoreVieweds
+
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAHostCmsBloc::class)]
     private Collection $tAHostCmsBlocs;
@@ -189,8 +205,13 @@ class Hosts
         $this->tAProductMetas = new ArrayCollection();
         $this->tAProductOptions = new ArrayCollection();
         $this->tAProductOptionValues = new ArrayCollection();
+        $this->tTsts = new ArrayCollection();
+        $this->tCmsPages = new ArrayCollection();
+        $this->tProductHosts = new ArrayCollection();
+        $this->tAVariantOptionValues = new ArrayCollection();
+        $this->tProductHostMoreVieweds = new ArrayCollection();
     }
-
+  
     public function getId(): ?int
     {
         return $this->id;
@@ -1294,4 +1315,154 @@ class Hosts
 //            }
 //        }
    // }
+
+   /**
+    * @return Collection<int, TTxt>
+    */
+   public function getTTsts(): Collection
+   {
+       return $this->tTsts;
+   }
+
+   public function addTTst(TTxt $tTst): static
+   {
+       if (!$this->tTsts->contains($tTst)) {
+           $this->tTsts->add($tTst);
+           $tTst->setHost($this);
+       }
+
+       return $this;
+   }
+
+   public function removeTTst(TTxt $tTst): static
+   {
+       if ($this->tTsts->removeElement($tTst)) {
+           // set the owning side to null (unless already changed)
+           if ($tTst->getHost() === $this) {
+               $tTst->setHost(null);
+           }
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection<int, TCmsPage>
+    */
+   public function getTCmsPages(): Collection
+   {
+       return $this->tCmsPages;
+   }
+
+   public function addTCmsPage(TCmsPage $tCmsPage): static
+   {
+       if (!$this->tCmsPages->contains($tCmsPage)) {
+           $this->tCmsPages->add($tCmsPage);
+           $tCmsPage->setHost($this);
+       }
+
+       return $this;
+   }
+
+   public function removeTCmsPage(TCmsPage $tCmsPage): static
+   {
+       if ($this->tCmsPages->removeElement($tCmsPage)) {
+           // set the owning side to null (unless already changed)
+           if ($tCmsPage->getHost() === $this) {
+               $tCmsPage->setHost(null);
+           }
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection<int, TProductHost>
+    */
+   public function getTProductHosts(): Collection
+   {
+       return $this->tProductHosts;
+   }
+
+   public function addTProductHost(TProductHost $tProductHost): static
+   {
+       if (!$this->tProductHosts->contains($tProductHost)) {
+           $this->tProductHosts->add($tProductHost);
+           $tProductHost->setHost($this);
+       }
+
+       return $this;
+   }
+
+   public function removeTProductHost(TProductHost $tProductHost): static
+   {
+       if ($this->tProductHosts->removeElement($tProductHost)) {
+           // set the owning side to null (unless already changed)
+           if ($tProductHost->getHost() === $this) {
+               $tProductHost->setHost(null);
+           }
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection<int, TAVariantOptionValue>
+    */
+   public function getTAVariantOptionValues(): Collection
+   {
+       return $this->tAVariantOptionValues;
+   }
+
+   public function addTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+   {
+       if (!$this->tAVariantOptionValues->contains($tAVariantOptionValue)) {
+           $this->tAVariantOptionValues->add($tAVariantOptionValue);
+           $tAVariantOptionValue->setHost($this);
+       }
+
+       return $this;
+   }
+
+   public function removeTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+   {
+       if ($this->tAVariantOptionValues->removeElement($tAVariantOptionValue)) {
+           // set the owning side to null (unless already changed)
+           if ($tAVariantOptionValue->getHost() === $this) {
+               $tAVariantOptionValue->setHost(null);
+           }
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection<int, TProductHostMoreViewed>
+    */
+   public function getTProductHostMoreVieweds(): Collection
+   {
+       return $this->tProductHostMoreVieweds;
+   }
+
+   public function addTProductHostMoreViewed(TProductHostMoreViewed $tProductHostMoreViewed): static
+   {
+       if (!$this->tProductHostMoreVieweds->contains($tProductHostMoreViewed)) {
+           $this->tProductHostMoreVieweds->add($tProductHostMoreViewed);
+           $tProductHostMoreViewed->setHost($this);
+       }
+
+       return $this;
+   }
+
+   public function removeTProductHostMoreViewed(TProductHostMoreViewed $tProductHostMoreViewed): static
+   {
+       if ($this->tProductHostMoreVieweds->removeElement($tProductHostMoreViewed)) {
+           // set the owning side to null (unless already changed)
+           if ($tProductHostMoreViewed->getHost() === $this) {
+               $tProductHostMoreViewed->setHost(null);
+           }
+       }
+
+       return $this;
+   }
 }
