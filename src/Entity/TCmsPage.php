@@ -21,7 +21,10 @@ class TCmsPage
      * Identifiant du site
      * @var string
      */
-    private $idHost;
+    //private $idHost;
+    #[ORM\ManyToOne(inversedBy: 'tCmsPages')]
+    private ?Hosts $host = null;
+
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
@@ -44,11 +47,25 @@ class TCmsPage
     private ?\DateTimeImmutable $lastUpdate = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $dateHeureLastUpdate = null;
+    private ?\DateTimeImmutable $dateTimeLastUpdate = null;
+
+
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getHost(): ?Hosts
+    {
+        return $this->host;
+    }
+
+    public function setHost(?Hosts $host): static
+    {
+        $this->host = $host;
+
+        return $this;
     }
 
     public function getUrl(): ?string
@@ -59,22 +76,6 @@ class TCmsPage
     public function setUrl(string $url): static
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Getter pour l'attribut de l'identifiant du site
-     * @return int
-     */
-    public function getIdHost()
-    {
-        return $this->idHost;
-    }
-
-    public function setIdHost($idHost)
-    {
-        $this->idHost = $idHost;
 
         return $this;
     }
@@ -151,32 +152,17 @@ class TCmsPage
         return $this;
     }
 
-    public function getDateHeureLastUpdate(): ?\DateTimeImmutable
+    public function getDateTimeLastUpdate(): ?\DateTimeImmutable
     {
-        return $this->dateHeureLastUpdate;
+        return $this->dateTimeLastUpdate;
     }
 
-    public function setDateHeureLastUpdate(\DateTimeImmutable $dateHeureLastUpdate): static
+    public function setDateTimeLastUpdate(\DateTimeImmutable $dateTimeLastUpdate): static
     {
-        $this->dateHeureLastUpdate = $dateHeureLastUpdate;
+        $this->dateTimeLastUpdate = $dateTimeLastUpdate;
 
         return $this;
     }
-
-    /**
-     * avant de sauvegarder on met à jour la date de derniére modification
-     */
-//    protected function _preSave()
-//    {
-//        parent::_preSave();
-
-        // création d'un nouvel objet date
-//        $date = new DateHeure();
-
-        // on met à jour la date de derniére modification
-//        $this->setCmsPagLastUpdate($date->format(DateHeure::DATETIMEMYSQL));
-//    }
-
 
     // =================== Methodes de recherche (find) ===================
 
@@ -212,17 +198,21 @@ class TCmsPage
 //    {
 //        return self::findAllBy(array('cms_pag_statut', 'id_host'), array(1, $idHost));
 //    }
-    // =================== Autres methodes publiques ===================
 
-
+    //Todo Service
     /**
-     * Retourne le lien absolu de la page CMS du site (avec reecriture d'Url)
-     * @return string
+     * avant de sauvegarder on met à jour la date de derniére modification
      */
-//    public function cmsPagHref()
-//    {
-//        return System::constructHttpServerFromHost($this->getIdHost()) . $this->getCmsPagUrl();
-//    }
+//   protected function _preSave()
+//   {
+//        parent::_preSave();
+//
+//    // création d'un nouvel objet date
+//       $date = new DateHeure();
+//
+//    // on met à jour la date de derniére modification
+//       $this->setCmsPagLastUpdate($date->format(DateHeure::DATETIMEMYSQL));
+//   }
 
     /**
      * Retourne le lien absolu de la page CMS pour la visualisation
@@ -243,4 +233,15 @@ class TCmsPage
 //
 //        return $template->replaceVariable($this->getCmsPagContent());
 //    }
+
+    /**
+     * Retourne le lien absolu de la page CMS du site (avec reecriture d'Url)
+     * @return string
+     */
+//    public function cmsPagHref()
+//    {
+//        return System::constructHttpServerFromHost($this->getIdHost()) . $this->getCmsPagUrl();
+//    }
+
+
 }
