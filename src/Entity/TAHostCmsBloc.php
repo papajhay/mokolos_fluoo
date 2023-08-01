@@ -26,26 +26,8 @@ class TAHostCmsBloc
 //    Todo : relation
     private ?string $tCmsDiapo = null;
 
-    /**
-     * Getter pour l'attribut de l'identifiant du site
-     * @return int
-     */
-//    public function getIdHost()
-//    {
-//        return $this->idHost;
-//    }
-
-
-    /**
-     * Setter pour l'attribut de l'identifiant du site
-     * @param int $idHost       Identifiant du site
-     * @return TAHostCmsBloc
-     */
-//    public function setIdHost($idHost)
-//    {
-//        $this->idHost = $idHost;
-//        return $this;
-//    }
+    #[ORM\ManyToOne(inversedBy: 'tAHostCmsBlocs')]
+    private ?hosts $host = null;
 
     public function getId(): ?int
     {
@@ -93,6 +75,27 @@ class TAHostCmsBloc
     public function setTCmsDiapo(string $tCmsDiapo): static
     {
         $this->tCmsDiapo = $tCmsDiapo;
+
+        return $this;
+    }
+
+    /**
+     * Getter pour l'attribut de l'identifiant du site
+     * @return int
+     */
+    public function getHost(): ?hosts
+    {
+        return $this->host;
+    }
+
+    /**
+     * Setter pour l'attribut de l'identifiant du site
+     * @param int $idHost       Identifiant du site
+     * @return TAHostCmsBloc
+     */
+    public function setHost(?hosts $host): static
+    {
+        $this->host = $host;
 
         return $this;
     }

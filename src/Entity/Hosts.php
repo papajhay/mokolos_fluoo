@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\HostsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HostsRepository::class)]
@@ -168,6 +170,18 @@ class Hosts
     #[ORM\Column]
     // old: $hosPriceDecimal
     private ?float $priceDecimal = 0;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAHostCmsBloc::class)]
+    private Collection $tAHostCmsBlocs;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAProductMeta::class)]
+    private Collection $tAProductMetas;
+
+    public function __construct()
+    {
+        $this->tAHostCmsBlocs = new ArrayCollection();
+        $this->tAProductMetas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -674,6 +688,67 @@ class Hosts
     public function setPriceDecimal(float $priceDecimal): static
     {
         $this->priceDecimal = $priceDecimal;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, TAProductMeta>
+     */
+    public function getTAProductMetas(): Collection
+    {
+        return $this->tAProductMetas;
+    }
+
+    public function addTAProductMeta(TAProductMeta $tAProductMeta): static
+    {
+        if (!$this->tAProductMetas->contains($tAProductMeta)) {
+            $this->tAProductMetas->add($tAProductMeta);
+            $tAProductMeta->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductMeta(TAProductMeta $tAProductMeta): static
+    {
+        if ($this->tAProductMetas->removeElement($tAProductMeta)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductMeta->getHost() === $this) {
+                $tAProductMeta->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAHostCmsBloc>
+     */
+    public function getTAHostCmsBlocs(): Collection
+    {
+        return $this->tAHostCmsBlocs;
+    }
+
+    public function addTAHostCmsBloc(TAHostCmsBloc $tAHostCmsBloc): static
+    {
+        if (!$this->tAHostCmsBlocs->contains($tAHostCmsBloc)) {
+            $this->tAHostCmsBlocs->add($tAHostCmsBloc);
+            $tAHostCmsBloc->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAHostCmsBloc(TAHostCmsBloc $tAHostCmsBloc): static
+    {
+        if ($this->tAHostCmsBlocs->removeElement($tAHostCmsBloc)) {
+            // set the owning side to null (unless already changed)
+            if ($tAHostCmsBloc->getHost() === $this) {
+                $tAHostCmsBloc->setHost(null);
+            }
+        }
 
         return $this;
     }
