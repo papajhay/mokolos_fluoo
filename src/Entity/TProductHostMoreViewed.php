@@ -144,26 +144,4 @@ class TProductHostMoreViewed
 //
 //        return TRUE;
 //    }
-
-//    Todo : service
-    /*
-     * Crée un nouvel objet "TProduitHostMoreViewed" et le retourne
-     *
-     * @param mediumint(8) unsigned $idProduitHost id du produit host
-     * @param mediumint(8) unsigned $proMorHosVieCompteur Nombre de consultation
-     * @param varchar(5) $idHost Id du site
-     *
-     * @return TProduitHostMoreViewed Nouvel Objet inserer un base
-     */
-//    public static function createNew($idProductHost, $proMorHosVieCounter, $idHost)
-//    {
-//        $tProductHostMoreViewed = new TProductHostMoreViewed();
-//
-//        $tProductHostMoreViewed->setIdProductHost($idProductHost)
-//            ->setProMorHosVieCounter($proMorHosVieCounter)
-//            ->setIdHost($idHost)
-//            ->save();
-//
-//        return $tProductHostMoreViewed;
-//    }
 }

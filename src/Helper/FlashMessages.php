@@ -107,8 +107,8 @@ class FlashMessages
         // on ajoute l'erreur
         return $this->addByMessage($message, $type);
     }
-
     // TODO
+
     /*
      * renvoi true si il n'ya pas de message à afficher.
      */

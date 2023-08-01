@@ -69,6 +69,7 @@ class TAProductMeta
 //        return $this;
 //    }
 
+    /*
      * renvoi si un produit est un meta produit à partir de son id produit host
      * @param int $idProduitHost
      * @param string $idHost id du site
