@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\HostsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HostsRepository::class)]
@@ -168,6 +170,18 @@ class Hosts
     #[ORM\Column]
     // old: $hosPriceDecimal
     private ?float $priceDecimal = 0;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TTxt::class)]
+    private Collection $tTxts;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TCmsPage::class)]
+    private Collection $tCmsPages;
+
+    public function __construct()
+    {
+        $this->tTsts = new ArrayCollection();
+        $this->tCmsPages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -1151,4 +1165,64 @@ class Hosts
 //            }
 //        }
    // }
+
+   /**
+    * @return Collection<int, TTxt>
+    */
+   public function getTTsts(): Collection
+   {
+       return $this->tTsts;
+   }
+
+   public function addTTst(TTxt $tTst): static
+   {
+       if (!$this->tTsts->contains($tTst)) {
+           $this->tTsts->add($tTst);
+           $tTst->setHost($this);
+       }
+
+       return $this;
+   }
+
+   public function removeTTst(TTxt $tTst): static
+   {
+       if ($this->tTsts->removeElement($tTst)) {
+           // set the owning side to null (unless already changed)
+           if ($tTst->getHost() === $this) {
+               $tTst->setHost(null);
+           }
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection<int, TCmsPage>
+    */
+   public function getTCmsPages(): Collection
+   {
+       return $this->tCmsPages;
+   }
+
+   public function addTCmsPage(TCmsPage $tCmsPage): static
+   {
+       if (!$this->tCmsPages->contains($tCmsPage)) {
+           $this->tCmsPages->add($tCmsPage);
+           $tCmsPage->setHost($this);
+       }
+
+       return $this;
+   }
+
+   public function removeTCmsPage(TCmsPage $tCmsPage): static
+   {
+       if ($this->tCmsPages->removeElement($tCmsPage)) {
+           // set the owning side to null (unless already changed)
+           if ($tCmsPage->getHost() === $this) {
+               $tCmsPage->setHost(null);
+           }
+       }
+
+       return $this;
+   }
 }

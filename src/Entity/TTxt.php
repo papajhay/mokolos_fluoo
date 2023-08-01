@@ -15,16 +15,17 @@ class TTxt
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    //private $txtValue;
     private ?string $value = null;
 
-    #[ORM\Column]
-    private ?int $idHost = null;
+    #[ORM\ManyToOne(inversedBy: 'tTxts')]
+    #[ORM\JoinColumn(nullable: false)]
+    //private ?SiteHost $_host = null;
+    private ?Hosts $host = null;
 
-//    Todo : relation
-//    #[ORM\Column]
-//    private ?int $productHost = null;
-
+    //TODO relation
     #[ORM\Column]
+    //private ?int $productHost = null;
     private ?int $idProductHost;
 
     public function getId(): ?int
@@ -44,23 +45,23 @@ class TTxt
         return $this;
     }
 
-    public function getIdHost(): ?int
+    public function getHost(): ?Hosts
     {
-        return $this->idHost;
+        return $this->host;
     }
 
-    public function setIdHost(int $idHost): static
+    public function setHost(?Hosts $host): static
     {
-        $this->idHost = $idHost;
+        $this->host = $host;
 
         return $this;
     }
 
     /**
      * Getter pour l'attribut $idProduitHost
-     * @return int(11)
+     * @return int|null (11)
      */
-    public function getIdProductHost()
+    public function getIdProductHost(): ?int
     {
         return $this->idProductHost;
     }
@@ -70,61 +71,13 @@ class TTxt
      * @param int(11) $idProduitHost
      * @return TTxt
      */
-    public function setIdProductHost($idProductHost)
+    public function setIdProductHost($idProductHost): static
     {
         $this->idProductHost = $idProductHost;
 
         return $this;
     }
-
-//     Todo : service
-    /**
-     * Retourne le tProduitHost
-     * @return TProduitHost
-     */
-//    public function getProductHost()
-//    {
-//
-//        if($this->productHost === null)
-//        {
-//            $this->productHost = TProductHost::findById(array($this->idProduitHost, $this->getHost()->getMasterHost()));
-//        }
-//
-//        return $this->productHost;
-//    }
-
-    /**
-     * Retourne le siteHost
-     * @return siteHost
-     */
-    public function getHost()
-    {
-
-        if($this->_host === null)
-        {
-            $this->_host = siteHost::findById($this->idHost);
-        }
-
-        return $this->_host;
-    }
-
-
-    /**
-     * aprés enregistré on supprime notre objet si on a pas de texte
-     */
-//    protected function _postSave()
-//    {
-//        parent::_postSave();
-
-        // si on a pas de texte
-//        if(trim($this->getTxtValue()) == '')
-//        {
-            // on supprime notre objet
-//            $this->delete();
-//        }
-//    }
-
-//    Todo : repository
+    //TODO repository
     /**
      * Retourne tout les Txts d'un site
      * @param siteHost $host
@@ -145,4 +98,54 @@ class TTxt
 //    {
 //        return self::findBy(array('id_host', 'id_product_host'), array($host->getHostId(), $product->getIdProductHost()));
 //    }
+
+    // TODO service
+    /**
+     * Retourne le tProduitHost
+     * @return TProduitHost
+     */
+//    public function getProductHost()
+//    {
+//
+//        if($this->productHost === null)
+//        {
+//            $this->productHost = TProductHost::findById(array($this->idProduitHost, $this->getHost()->getMasterHost()));
+//        }
+//
+//        return $this->productHost;
+//    }
+
+    /**
+     * Retourne le siteHost
+     * @return siteHost
+     */
+//    public function getHost()
+//    {
+//
+//        if($this->_host === null)
+//        {
+//            $this->_host = siteHost::findById($this->idHost);
+//        }
+//
+//        return $this->_host;
+//    }
+
+
+    /**
+     * aprés enregistré on supprime notre objet si on a pas de texte
+     */
+//    protected function _postSave()
+//    {
+//        parent::_postSave();
+
+        // si on a pas de texte
+//        if(trim($this->getTxtValue()) == '')
+//        {
+            // on supprime notre objet
+//            $this->delete();
+//        }
+//    }
+
+//
+
 }
