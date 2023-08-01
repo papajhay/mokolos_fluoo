@@ -170,8 +170,8 @@ class Hosts
     #[ORM\Column]
     // old: $hosPriceDecimal
     private ?float $priceDecimal = 0;
-
-    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TTxt::class)]
+  
+  #[ORM\OneToMany(mappedBy: 'host', targetEntity: TTxt::class)]
     private Collection $tTxts;
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TCmsPage::class)]
@@ -184,17 +184,34 @@ class Hosts
     private Collection $tAVariantOptionValues;
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TProductHostMoreViewed::class)]
-    private Collection $tProductHostMoreVieweds;
+    private Collection $tProductHostMoreVieweds
+
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAHostCmsBloc::class)]
+    private Collection $tAHostCmsBlocs;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAProductMeta::class)]
+    private Collection $tAProductMetas;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAProductOption::class)]
+    private Collection $tAProductOptions;
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAProductOptionValue::class)]
+    private Collection $tAProductOptionValues;
 
     public function __construct()
     {
+        $this->tAHostCmsBlocs = new ArrayCollection();
+        $this->tAProductMetas = new ArrayCollection();
+        $this->tAProductOptions = new ArrayCollection();
+        $this->tAProductOptionValues = new ArrayCollection();
         $this->tTsts = new ArrayCollection();
         $this->tCmsPages = new ArrayCollection();
         $this->tProductHosts = new ArrayCollection();
         $this->tAVariantOptionValues = new ArrayCollection();
         $this->tProductHostMoreVieweds = new ArrayCollection();
     }
-
+  
     public function getId(): ?int
     {
         return $this->id;
@@ -700,6 +717,127 @@ class Hosts
     public function setPriceDecimal(float $priceDecimal): static
     {
         $this->priceDecimal = $priceDecimal;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, TAProductMeta>
+     */
+    public function getTAProductMetas(): Collection
+    {
+        return $this->tAProductMetas;
+    }
+
+    public function addTAProductMeta(TAProductMeta $tAProductMeta): static
+    {
+        if (!$this->tAProductMetas->contains($tAProductMeta)) {
+            $this->tAProductMetas->add($tAProductMeta);
+            $tAProductMeta->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductMeta(TAProductMeta $tAProductMeta): static
+    {
+        if ($this->tAProductMetas->removeElement($tAProductMeta)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductMeta->getHost() === $this) {
+                $tAProductMeta->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAHostCmsBloc>
+     */
+    public function getTAHostCmsBlocs(): Collection
+    {
+        return $this->tAHostCmsBlocs;
+    }
+
+    public function addTAHostCmsBloc(TAHostCmsBloc $tAHostCmsBloc): static
+    {
+        if (!$this->tAHostCmsBlocs->contains($tAHostCmsBloc)) {
+            $this->tAHostCmsBlocs->add($tAHostCmsBloc);
+            $tAHostCmsBloc->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAHostCmsBloc(TAHostCmsBloc $tAHostCmsBloc): static
+    {
+        if ($this->tAHostCmsBlocs->removeElement($tAHostCmsBloc)) {
+            // set the owning side to null (unless already changed)
+            if ($tAHostCmsBloc->getHost() === $this) {
+                $tAHostCmsBloc->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAProductOption>
+     */
+    public function getTAProductOptions(): Collection
+    {
+        return $this->tAProductOptions;
+    }
+
+    public function addTAProductOption(TAProductOption $tAProductOption): static
+    {
+        if (!$this->tAProductOptions->contains($tAProductOption)) {
+            $this->tAProductOptions->add($tAProductOption);
+            $tAProductOption->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOption(TAProductOption $tAProductOption): static
+    {
+        if ($this->tAProductOptions->removeElement($tAProductOption)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOption->getHost() === $this) {
+                $tAProductOption->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAProductOptionValue>
+     */
+    public function getTAProductOptionValues(): Collection
+    {
+        return $this->tAProductOptionValues;
+    }
+
+    public function addTAProductOptionValue(TAProductOptionValue $tAProductOptionValue): static
+    {
+        if (!$this->tAProductOptionValues->contains($tAProductOptionValue)) {
+            $this->tAProductOptionValues->add($tAProductOptionValue);
+            $tAProductOptionValue->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOptionValue(TAProductOptionValue $tAProductOptionValue): static
+    {
+        if ($this->tAProductOptionValues->removeElement($tAProductOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOptionValue->getHost() === $this) {
+                $tAProductOptionValue->setHost(null);
+            }
+        }
 
         return $this;
     }

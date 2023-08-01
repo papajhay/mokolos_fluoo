@@ -23,7 +23,8 @@ class TAProductMeta
      * Identifiant du site
      * @var string
      */
-//    private $idHost;
+    #[ORM\ManyToOne(inversedBy: 'tAProductMetas')]
+    private ?hosts $host = null;
 
     public function getId(): ?int
     {
@@ -54,20 +55,18 @@ class TAProductMeta
         return $this;
     }
 
-    /**
-     * Getter pour l'attribut de l'identifiant du site
-     * @return int
-     */
-//    public function getIdHost()
-//    {
-//        return $this->idHost;
-//    }
 
-//    public function setIdHost($idHost)
-//    {
-//        $this->idHost = $idHost;
-//        return $this;
-//    }
+    public function getHost(): ?hosts
+    {
+        return $this->host;
+    }
+
+    public function setHost(?hosts $host): static
+    {
+        $this->host = $host;
+
+        return $this;
+    }
 
     /*
      * renvoi si un produit est un meta produit à partir de son id produit host
