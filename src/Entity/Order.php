@@ -166,9 +166,10 @@ class Order
     // id du produit lgi si disponible ou null sinon
     private ?int $idProductLgi = null;
 
-    #[ORM\Column(nullable: true)]
     // id de lu produit host fusion si disponible ou null sinon
-    private ?int $idProductHost = null;
+    //private ?int $idProductHost = null
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?TProductHost $productHost = null;
 
     #[ORM\Column(nullable: true)]
     // selection fusion ou null si non applicable
@@ -4464,4 +4465,16 @@ class Order
     //
     //        return $return;
     //    }
+
+    public function getProductHost(): ?TProductHost
+    {
+        return $this->productHost;
+    }
+
+    public function setProductHost(?TProductHost $productHost): static
+    {
+        $this->productHost = $productHost;
+
+        return $this;
+    }
 }

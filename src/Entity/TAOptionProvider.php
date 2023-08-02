@@ -8,12 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TAOptionProviderRepository::class)]
 class TAOptionProvider
 {
-    /*
-    * *************************************************************************
-    * CONSTANT
-    * *************************************************************************
-    */
-
     /**
      * option spécial : option de hauteur.
      */
@@ -29,51 +23,35 @@ class TAOptionProvider
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idOption = 0;
-
     #[ORM\Column(length: 255)]
     private ?string $optIdSource = null;
 
     #[ORM\Column(length: 255)]
     private ?string $descriptionSource = null;
 
-    #[ORM\Column]
-    private ?int $idProduct = null;
-
+    /**
+     * id du fournisseur
+     * @var Provider|null
+     */
     #[ORM\ManyToOne(inversedBy: 'tAOptionProviders')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Provider $provider = null;
 
     /**
-     * nom du ou des clés primaires OBLIGATOIREMENT un Array.
-     * @var array
+     * opion à laquelle est lié notre option fournisseur
+     * @var TOption|null
      */
-    // public static $_SQL_PK = array('id_fournisseur', 'id_option', 'id_produit');
+    //private $_option = null;
+    #[ORM\ManyToOne(inversedBy: 'tAOptionProviders')]
+    private ?TOption $tOption = null;
 
-    /*
-     * *************************************************************************
-     * TO DO : RELATION
-     * *************************************************************************
-     */
-    /**
-     * option à laquelle est lié notre option fournisseur.
-     * @var \TOption
-     */
-    // private $_option = null;
+    #[ORM\ManyToOne(inversedBy: 'tAOptionProviders')]
+    private ?TProduct $tProduct = null;
 
-    public function getIdOption(): ?int
+    public function getId(): ?int
     {
-        return $this->idOption;
+        return $this->id;
     }
-
-    public function setIdOption(int $idOption): static
-    {
-        $this->idOption = $idOption;
-
-        return $this;
-    }
-
     public function getOptIdSource(): ?string
     {
         return $this->optIdSource;
@@ -86,24 +64,12 @@ class TAOptionProvider
         return $this;
     }
 
-    public function getIdProduct(): ?int
-    {
-        return $this->idProduct;
-    }
-
-    public function setIdProduct(int $idProduct): static
-    {
-        $this->idProduct = $idProduct;
-
-        return $this;
-    }
-
-    public function getDescriptionSource()
+    public function getDescriptionSource(): ?string
     {
         return $this->descriptionSource;
     }
 
-    public function setDescriptionSource($descriptionSource)
+    public function setDescriptionSource($descriptionSource): static
     {
         $this->descriptionSource = $descriptionSource;
 
@@ -122,11 +88,31 @@ class TAOptionProvider
         return $this;
     }
 
-    /*
-    * *************************************************************************
-    * TO DO : REPOSITORY
-    * *************************************************************************
-    */
+    public function getTOption(): ?TOption
+    {
+        return $this->tOption;
+    }
+
+    public function setTOption(?TOption $tOption): static
+    {
+        $this->tOption = $tOption;
+
+        return $this;
+    }
+
+    public function getTProduct(): ?TProduct
+    {
+        return $this->tProduct;
+    }
+
+    public function setTProduct(?TProduct $tProduct): static
+    {
+        $this->tProduct = $tProduct;
+
+        return $this;
+    }
+
+    // TODO : REPOSITORY
     /*
      * Cré un nouvel objet "TAOptionFournisseur" et le retourne
      * @param int unsigned $idFournisseur id du fournisseur

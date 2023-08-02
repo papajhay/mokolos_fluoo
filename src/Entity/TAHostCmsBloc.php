@@ -8,35 +8,45 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TAHostCmsBlocRepository::class)]
 class TAHostCmsBloc
 {
-    /**
-     * Identifiant du site
-     * @var string
-     */
-//    private $idHost;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-//     Todo : relation
-    private ?string $tCmsBloc = null;
-
-    #[ORM\Column(length: 255)]
-//    Todo : relation
-    private ?string $tCmsDiapo = null;
-
+    /**
+    * Identifiant du site
+    * @var Hosts|null
+     */
+    // private $idHost;
     #[ORM\ManyToOne(inversedBy: 'tAHostCmsBlocs')]
-    private ?hosts $host = null;
+    private ?Hosts $host = null;
+
+    /**
+     * Sous-objet du bloc CMS
+     * @var TCmsBloc|null
+     */
+    // private $_tCmsBloc = NULL;
+    #[ORM\ManyToOne(inversedBy: 'tcmsDiapo')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TCmsBloc $tcmsBloc = null;
+
+    /**
+     * Sous-objet du diaporama du bloc CMS
+     * @var TCmsDiapo|null
+     */
+    // private $_tCmsDiapo = NULL;
+    #[ORM\ManyToOne(inversedBy: 'tAHostCmsBlocs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TCmsDiapo $tcmsDiapo = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTCmsBloc(): ?string
+    public function getTcmsBloc(): ?TCmsBloc
     {
-        return $this->tCmsBloc;
+        return $this->tcmsBloc;
     }
 
 //    public function getTCmsBloc()
@@ -50,16 +60,16 @@ class TAHostCmsBloc
 //    }
 
 
-    public function setTCmsBloc(string $tCmsBloc): static
+    public function setTcmsBloc(TCmsBloc $tCmsBloc): static
     {
-        $this->tCmsBloc = $tCmsBloc;
+        $this->tcmsBloc = $tCmsBloc;
 
         return $this;
     }
 
-    public function getTCmsDiapo(): ?string
+    public function getTcmsDiapo(): ?TCmsDiapo
     {
-        return $this->tCmsDiapo;
+        return $this->tcmsDiapo;
     }
 
 //    public function getTCmsDiapo()
@@ -72,25 +82,25 @@ class TAHostCmsBloc
 //        return $this->_tCmsDiapo;
 //    }
 
-    public function setTCmsDiapo(string $tCmsDiapo): static
+    public function setTcmsDiapo(TCmsDiapo $tCmsDiapo): static
     {
-        $this->tCmsDiapo = $tCmsDiapo;
+        $this->tcmsBloc = $tCmsDiapo;
 
         return $this;
     }
 
     /**
      * Getter pour l'attribut de l'identifiant du site
-     * @return int
+     * @return Hosts|null
      */
-    public function getHost(): ?hosts
+    public function getHost(): ?Hosts
     {
         return $this->host;
     }
 
     /**
      * Setter pour l'attribut de l'identifiant du site
-     * @param int $idHost       Identifiant du site
+     * @param hosts|null $host
      * @return TAHostCmsBloc
      */
     public function setHost(?hosts $host): static
@@ -100,9 +110,7 @@ class TAHostCmsBloc
         return $this;
     }
 
-//    Todo : repository
-
-    // =================== Methodes de recherche (find) ===================
+    //   Todo : repository
 
     /**
      * Rechercher un bloc CMS d'un site a partir de son type

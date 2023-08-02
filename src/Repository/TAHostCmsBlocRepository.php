@@ -21,7 +21,7 @@ class TAHostCmsBlocRepository extends ServiceEntityRepository
         parent::__construct($registry, TAHostCmsBloc::class);
     }
 
-    public function findByHostAndInfoColDCms($idHost, )
+    public function findByHostAndInfoColDCms($idHost, $idOption)
     {
         return $this->createQueryBuilder('t')
             ->where('t.idHost= :idHost')
