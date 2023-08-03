@@ -53,11 +53,15 @@ class TProduct
     #[ORM\OneToMany(mappedBy: 'tProduct', targetEntity: TAOptionProvider::class)]
     private Collection $tAOptionProviders;
 
+    #[ORM\OneToMany(mappedBy: 'tProduct', targetEntity: TAProductOptionValueProvider::class, orphanRemoval: true)]
+    private Collection $tAProductOptionValueProviders;
+
     public function __construct()
     {
         $this->tAProductOptions = new ArrayCollection();
         $this->tAProductProviders = new ArrayCollection();
         $this->tAOptionProviders = new ArrayCollection();
+        $this->tAProductOptionValueProviders = new ArrayCollection();
     }
 
 
@@ -1196,6 +1200,36 @@ class TProduct
             // set the owning side to null (unless already changed)
             if ($tAOptionProvider->getTProduct() === $this) {
                 $tAOptionProvider->setTProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAProductOptionValueProvider>
+     */
+    public function getTAProductOptionValueProviders(): Collection
+    {
+        return $this->tAProductOptionValueProviders;
+    }
+
+    public function addTAProductOptionValueProvider(TAProductOptionValueProvider $tAProductOptionValueProvider): static
+    {
+        if (!$this->tAProductOptionValueProviders->contains($tAProductOptionValueProvider)) {
+            $this->tAProductOptionValueProviders->add($tAProductOptionValueProvider);
+            $tAProductOptionValueProvider->setTProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOptionValueProvider(TAProductOptionValueProvider $tAProductOptionValueProvider): static
+    {
+        if ($this->tAProductOptionValueProviders->removeElement($tAProductOptionValueProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOptionValueProvider->getTProduct() === $this) {
+                $tAProductOptionValueProvider->setTProduct(null);
             }
         }
 

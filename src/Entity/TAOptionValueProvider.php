@@ -20,9 +20,6 @@ class TAOptionValueProvider
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $idOptionValue = null;
-
-    #[ORM\Column]
     private ?int $idSource = null;
 
     #[ORM\Column(length: 255)]
@@ -44,28 +41,17 @@ class TAOptionValueProvider
     #[ORM\JoinColumn(nullable: false)]
     private ?TOption $tOption = null;
 
-    // TODO Relation
     /**
      * Option Value correspondante.
-     * @var TOptionValue
+     * @var TOptionValue|null
      */
     // private $_optionValue = null;
+    #[ORM\ManyToOne(inversedBy: 'tAOptionValueProviders')]
+    private ?TOptionValue $tOptionValue = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdOptionValue(): ?int
-    {
-        return $this->idOptionValue;
-    }
-
-    public function setIdOptionValue(int $idOptionValue): static
-    {
-        $this->idOptionValue = $idOptionValue;
-
-        return $this;
     }
 
     public function getIdSource(): ?int
@@ -112,6 +98,42 @@ class TAOptionValueProvider
     public function setElementId(string $elementId): static
     {
         $this->elementId = $elementId;
+
+        return $this;
+    }
+
+    public function getProvider(): ?Provider
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(?Provider $provider): static
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getTOption(): ?TOption
+    {
+        return $this->tOption;
+    }
+
+    public function setTOption(?TOption $tOption): static
+    {
+        $this->tOption = $tOption;
+
+        return $this;
+    }
+
+    public function getTOptionValue(): ?TOptionValue
+    {
+        return $this->tOptionValue;
+    }
+
+    public function setTOptionValue(?TOptionValue $tOptionValue): static
+    {
+        $this->tOptionValue = $tOptionValue;
 
         return $this;
     }
@@ -223,27 +245,4 @@ class TAOptionValueProvider
     //        }
     //    }
 
-    public function getProvider(): ?Provider
-    {
-        return $this->provider;
-    }
-
-    public function setProvider(?Provider $provider): static
-    {
-        $this->provider = $provider;
-
-        return $this;
-    }
-
-    public function getTOption(): ?TOption
-    {
-        return $this->tOption;
-    }
-
-    public function setTOption(?TOption $tOption): static
-    {
-        $this->tOption = $tOption;
-
-        return $this;
-    }
 }

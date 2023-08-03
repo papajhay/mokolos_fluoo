@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -40,6 +41,9 @@ class OrderRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * @throws NonUniqueResultException
+     */
     public function findById($idOrder): ?Order
     {
         return $this->createQueryBuilder('o')
