@@ -23,10 +23,8 @@ class TTxt
     //private ?SiteHost $_host = null;
     private ?Hosts $host = null;
 
-    //TODO relation
-    #[ORM\Column]
-    //private ?int $productHost = null;
-    private ?int $idProductHost;
+    #[ORM\ManyToOne(inversedBy: 'tTxts')]
+    private ?TProductHost $productHost = null;
 
     public function getId(): ?int
     {
@@ -57,26 +55,18 @@ class TTxt
         return $this;
     }
 
-    /**
-     * Getter pour l'attribut $idProduitHost
-     * @return int|null (11)
-     */
-    public function getIdProductHost(): ?int
+    public function getProductHost(): ?TProductHost
     {
-        return $this->idProductHost;
+        return $this->productHost;
     }
 
-    /**
-     * Setter pour l'attribut $idProduitHost
-     * @param int(11) $idProduitHost
-     * @return TTxt
-     */
-    public function setIdProductHost($idProductHost): static
+    public function setProductHost(?TProductHost $productHost): static
     {
-        $this->idProductHost = $idProductHost;
+        $this->productHost = $productHost;
 
         return $this;
     }
+
     //TODO repository
     /**
      * Retourne tout les Txts d'un site
@@ -145,7 +135,4 @@ class TTxt
 //            $this->delete();
 //        }
 //    }
-
-//
-
 }

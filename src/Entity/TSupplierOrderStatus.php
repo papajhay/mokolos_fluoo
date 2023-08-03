@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TSupplierOrderStatusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 // $_SQL_TABLE_NAME = 'lesgrand.t_supplier_order_status';
@@ -92,6 +94,14 @@ class TSupplierOrderStatus
     #[ORM\Column(length: 255)]
     // Nom de ce statut comme il apparait dans l'accés fournisseur
     private ?string $supplierAccessName = null;
+
+    #[ORM\OneToMany(mappedBy: 'supplierOrderStatus', targetEntity: TSupplierOrder::class)]
+    private Collection $tSupplierOrders;
+
+    public function __construct()
+    {
+        $this->tSupplierOrders = new ArrayCollection();
+    }
     // private $supOrdStaSupplierAccessName = 'Inconnu';
 
     public function getId(): ?int
@@ -159,14 +169,44 @@ class TSupplierOrderStatus
         return $this;
     }
 
-    // TODO Service
+    /**
+     * @return Collection<int, TSupplierOrder>
+     */
+    public function getTSupplierOrders(): Collection
+    {
+        return $this->tSupplierOrders;
+    }
+
+    public function addTSupplierOrder(TSupplierOrder $tSupplierOrder): static
+    {
+        if (!$this->tSupplierOrders->contains($tSupplierOrder)) {
+            $this->tSupplierOrders->add($tSupplierOrder);
+            $tSupplierOrder->setSupplierOrderStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTSupplierOrder(TSupplierOrder $tSupplierOrder): static
+    {
+        if ($this->tSupplierOrders->removeElement($tSupplierOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($tSupplierOrder->getSupplierOrderStatus() === $this) {
+                $tSupplierOrder->setSupplierOrderStatus(null);
+            }
+        }
+
+        return $this;
+    }
+
+//    Todo: service
     /*
      * indique si le statut est actif
      * @return boolean true si le statut est actif et false sinon
      */
     //    public function isActive()
     //    {
-    //        // statut inactif
+            // statut inactif
     //        if($this->getSupOrdStaActive() == 0)
     //        {
     //            return false;
