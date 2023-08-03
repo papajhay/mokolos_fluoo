@@ -38,9 +38,21 @@ class TOptionValue
     #[ORM\OneToMany(mappedBy: 'TOptionValue', targetEntity: TAProductOptionValue::class)]
     private Collection $tAProductOptionValues;
 
+    #[ORM\OneToMany(mappedBy: 'tOptionValue', targetEntity: TAOptionValueProvider::class)]
+    private Collection $tAOptionValueProviders;
+
+    #[ORM\OneToMany(mappedBy: 'tOptionValue', targetEntity: TAProductOptionValueProvider::class, orphanRemoval: true)]
+    private Collection $tAProductOptionValueProviders;
+
+    #[ORM\OneToMany(mappedBy: 'tOptionValue', targetEntity: TAVariantOptionValue::class, orphanRemoval: true)]
+    private Collection $tAVariantOptionValues;
+
     public function __construct()
     {
         $this->tAProductOptionValues = new ArrayCollection();
+        $this->tAOptionValueProviders = new ArrayCollection();
+        $this->tAProductOptionValueProviders = new ArrayCollection();
+        $this->tAVariantOptionValues = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,6 +120,96 @@ class TOptionValue
             // set the owning side to null (unless already changed)
             if ($tAProductOptionValue->getTOptionValue() === $this) {
                 $tAProductOptionValue->setTOptionValue(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAOptionValueProvider>
+     */
+    public function getTAOptionValueProviders(): Collection
+    {
+        return $this->tAOptionValueProviders;
+    }
+
+    public function addTAOptionValueProvider(TAOptionValueProvider $tAOptionValueProvider): static
+    {
+        if (!$this->tAOptionValueProviders->contains($tAOptionValueProvider)) {
+            $this->tAOptionValueProviders->add($tAOptionValueProvider);
+            $tAOptionValueProvider->setTOptionValue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAOptionValueProvider(TAOptionValueProvider $tAOptionValueProvider): static
+    {
+        if ($this->tAOptionValueProviders->removeElement($tAOptionValueProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($tAOptionValueProvider->getTOptionValue() === $this) {
+                $tAOptionValueProvider->setTOptionValue(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAProductOptionValueProvider>
+     */
+    public function getTAProductOptionValueProviders(): Collection
+    {
+        return $this->tAProductOptionValueProviders;
+    }
+
+    public function addTAProductOptionValueProvider(TAProductOptionValueProvider $tAProductOptionValueProvider): static
+    {
+        if (!$this->tAProductOptionValueProviders->contains($tAProductOptionValueProvider)) {
+            $this->tAProductOptionValueProviders->add($tAProductOptionValueProvider);
+            $tAProductOptionValueProvider->setTOptionValue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOptionValueProvider(TAProductOptionValueProvider $tAProductOptionValueProvider): static
+    {
+        if ($this->tAProductOptionValueProviders->removeElement($tAProductOptionValueProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOptionValueProvider->getTOptionValue() === $this) {
+                $tAProductOptionValueProvider->setTOptionValue(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAVariantOptionValue>
+     */
+    public function getTAVariantOptionValues(): Collection
+    {
+        return $this->tAVariantOptionValues;
+    }
+
+    public function addTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+    {
+        if (!$this->tAVariantOptionValues->contains($tAVariantOptionValue)) {
+            $this->tAVariantOptionValues->add($tAVariantOptionValue);
+            $tAVariantOptionValue->setTOptionValue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+    {
+        if ($this->tAVariantOptionValues->removeElement($tAVariantOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tAVariantOptionValue->getTOptionValue() === $this) {
+                $tAVariantOptionValue->setTOptionValue(null);
             }
         }
 

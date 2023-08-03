@@ -148,9 +148,13 @@ class TProductHost
     #[ORM\OneToMany(mappedBy: 'productHost', targetEntity: TProductHostMoreViewed::class)]
     private Collection $tProductHostMoreVieweds;
 
+    #[ORM\OneToMany(mappedBy: 'tProductHost', targetEntity: TAVariantOptionValue::class, orphanRemoval: true)]
+    private Collection $tAVariantOptionValues;
+
     public function __construct()
     {
         $this->tTxts = new ArrayCollection();
+        $this->tAVariantOptionValues = new ArrayCollection();
         $this->tProductHostMoreVieweds = new ArrayCollection();
     }
 
@@ -619,34 +623,34 @@ class TProductHost
     //        $valeurs	 = array();
     //        $joinList	 = array();
     //
-            // on ne veut que les produits actifs
+    //        // on ne veut que les produits actifs
     //        if($actifOnly)
     //        {
-                // on ne prend que les produit host (pour les acls ca sera gérer plus tard
+    //            // on ne prend que les produit host (pour les acls ca sera gérer plus tard
     //            $champs[]	 = 'pro_hos_is_actif';
     //            $valeurs[]	 = 1;
     //        }
     //
-            // suivant ce que l'on veux au niveau des produits satellite
+    //        // suivant ce que l'on veux au niveau des produits satellite
     //        switch($produitSatellite)
     //        {
-                // on ne veux pas les produits satellites
+    //            // on ne veux pas les produits satellites
     //            case DbTable::SANS:
     //                $champs[]	 = 'pro_hos_satellite_id_parent';
     //                $valeurs[]	 = 0;
     //                break;
     //
-                // on veux uniquement les produits satellites
+    //            // on veux uniquement les produits satellites
     //            case DbTable::UNIQUEMENT:
     //                $champs[]	 = 'pro_hos_satellite_id_parent';
     //                $valeurs[]	 = array(0, '<>');
     //                break;
     //        }
     //
-            // suivant ce que l'on veux au niveau des meta produits
+    //        // suivant ce que l'on veux au niveau des meta produits
     //        switch($metaProduit)
     //        {
-                // on ne veux pas les meta produits
+    //            // on ne veux pas les meta produits
     //            case DbTable::SANS:
     //                $joinList[]	 = array('join' => 'LEFT JOIN', 'table' => TAProduitMeta::$_SQL_TABLE_NAME, 'alias' => 'pm', 'joinCondition' => 't.id_produit_host = pm.pro_meta_id_parent AND pm.id_host = t.id_host');
     //                $champs[]	 = 'pro_meta_id_parent';
@@ -690,16 +694,16 @@ class TProductHost
     //        }
     //        $order = array('pro_hos_ordre', 'pro_hos_libelle');
     //
-            // on recupere un find all by avec les parametres
+    //        // on recupere un find all by avec les parametres
     //        $aTProduitHost = self::findAllBy($champs, $valeurs, $order, 0, $joinList);
     //
-            // activation ou desactivation de produits en fonction des ACL
+    //        // activation ou desactivation de produits en fonction des ACL
     //        if($idHostForACL !== null)
     //        {
-                // chargement des ACL des produits du site
+    //            // chargement des ACL des produits du site
     //            $aTProduitHostAcl = TProduitHostAcl::findAllBy(array('id_host'), array($idHostForACL));
     //
-                // pour chaque produit
+    //            // pour chaque produit
     //            foreach($aTProduitHost as $idProduitHost => $tProduitHost)
     //            {
                     // pour chaque ACL de produit
@@ -735,20 +739,20 @@ class TProductHost
                 // on parcour le tableau
     //            foreach($aTProduitHost as $key => $tProduitHost)
     //            {
-                    // si nous avons un produit meta
+    //                // si nous avons un produit meta
     //                if($tProduitHost->isMeta())
     //                {
-                        // on le déplace à la fin du tableau
+    //                    // on le déplace à la fin du tableau
     //                    $aTProduitHost[$idMeta] = $tProduitHost;
     //                    unset($aTProduitHost[$key]);
     //
-                        // on incrémente notre id pour le prochain meta produit
+    //                    // on incrémente notre id pour le prochain meta produit
     //                    $idMeta++;
     //                }
     //            }
     //        }
     //
-            // on renvoi le resultat
+    //        // on renvoi le resultat
     //        return $aTProduitHost;
     //    }
 
@@ -761,14 +765,14 @@ class TProductHost
      */
     //    public function findAllMetaChild($checkAcl = true, $actifOnly = true, $idProductInFirstPlace = null)
     //    {
-            // si notre produit n'est pas un meta produit
+    //        // si notre produit n'est pas un meta produit
     //        if(!$this->isMeta())
     //        {
-                // pas besoin de chercher on envoi un tableau vide
+    //            // pas besoin de chercher on envoi un tableau vide
     //            return array();
     //        }
     //
-            // paramétre pour trouver les produits meta
+    //        // paramétre pour trouver les produits meta
     //        $fields	 = array('pm.pro_meta_id_parent', 't.id_host');
     //        $values	 = array($this->getIdProduitHost(), $this->getIdHost());
     //
@@ -805,24 +809,24 @@ class TProductHost
             // si on doit placer un produit en premiere place
     //        if($idProductInFirstPlace)
     //        {
-                // pour chaque produit
+    //            // pour chaque produit
     //            foreach($allProduit AS $key => $produit)
     //            {
-                    // si on a le produit à mettre en premier
+    //                // si on a le produit à mettre en premier
     //                if($produit->getIdProduitHost() == $idProductInFirstPlace)
     //                {
-                        // on le supprime du tableau
+    //                    // on le supprime du tableau
     //                    unset($allProduit[$key]);
     //
-                        // on le rajoute avec une clef à -1 pour etre en premier
+    //                    // on le rajoute avec une clef à -1 pour etre en premier
     //                    $allProduit[-1] = $produit;
     //
-                        // on quitte la boucle car inutile d'aller plus loin
+    //                    // on quitte la boucle car inutile d'aller plus loin
     //                    break;
     //                }
     //            }
     //
-                // on retrie le tableau
+    //            // on retrie le tableau
     //            ksort($allProduit);
     //        }
     //
@@ -859,10 +863,10 @@ class TProductHost
     //            $aParam['aValue'][]	 = 0;
     //            $aParam['aValue'][]	 = $this->getIdHost();
     //
-                // recherche des produits
+    //            // recherche des produits
     //            return self::findAllBy($aParam['aChamp'], $aParam['aValue'], 'pro_hos_libelle');
     //        }
-            // sinon c'est pas un meta produit donc on renvoi un tableau vide
+    //        // sinon c'est pas un meta produit donc on renvoi un tableau vide
     //        else
     //        {
     //            return self::findAllBy(array('pro_hos_satellite_id_parent', 'id_host'), array(0, $this->getIdHost()), 'pro_hos_libelle');
@@ -878,7 +882,7 @@ class TProductHost
     //    {
     //        $return = array();
     //
-            // tableau qui va contenir tous les id de fournisseur p24 pour ne pas avoir de doublon
+    //        // tableau qui va contenir tous les id de fournisseur p24 pour ne pas avoir de doublon
     //        $tabProFouIdSource = array();
     //
     //        // jointure de la table
@@ -888,36 +892,36 @@ class TProductHost
     //                'alias'			 => 'pf',
     //                'joinCondition'	 => 't.id_produit = pf.id_produit'));
     //
-            // récupération de tous les produits actif non satellite qui ont le bon fournisseur, uniquement ceux de lig pour ne pas avoir de doublon
+    //        // récupération de tous les produits actif non satellite qui ont le bon fournisseur, uniquement ceux de lig pour ne pas avoir de doublon
     //        $allProductHost = self::findAllBy(array('id_fournisseur', 'pro_hos_satellite_id_parent', 't.id_host'), array($fournisseur->getMasterFournisseurId(), 0, $fournisseur->getFouIdHostForSelection()), 'pro_hos_ordre, pro_hos_libelle', 0, $jointure);
     //
-            // comme on peux difficilement faire des condition avec OR dans findallby on va prendre chaque produit
+    //        // comme on peux difficilement faire des condition avec OR dans findallby on va prendre chaque produit
     //        foreach($allProductHost AS $idProduct => $productHost)
     //        {
-                // si le produit n'est pas affiché en page d'acceuil et si il n'appartient pas à un produit meta
+    //            // si le produit n'est pas affiché en page d'acceuil et si il n'appartient pas à un produit meta
     //            if(!$productHost->getProHosShowOnHomeTop() && !$productHost->isMetaChild())
     //            {
-                    // on le supprime de notre tableau
+    //                // on le supprime de notre tableau
     //                unset($allProductHost[$idProduct]);
     //            }
-                // on verifie si on a déjà un produit qui correspond au même produit chez p24
+    //            // on verifie si on a déjà un produit qui correspond au même produit chez p24
     //            elseif(in_array($productHost->getProduitFournisseur()->getProFouLibelleSource(), $tabProFouIdSource))
     //            {
-                    // on le supprime de notre tableau
+    //                // on le supprime de notre tableau
     //                unset($allProductHost[$idProduct]);
     //            }
-                // on garde le produit
+    //            // on garde le produit
     //            else
     //            {
-                    // on ajoute l'id du fournisseur dans notre tableau
+    //                // on ajoute l'id du fournisseur dans notre tableau
     //                $tabProFouIdSource[] = $productHost->getProduitFournisseur()->getProFouLibelleSource();
     //            }
     //        }
     //
-            // pour chaque produit
+    //        // pour chaque produit
     //        foreach($allProductHost AS $productHost)
     //        {
-                // on met le produit dans notre tableau de retour avec son id en clef
+    //            // on met le produit dans notre tableau de retour avec son id en clef
     //            $return[$productHost->getIdProduitHost()] = $productHost;
     //        }
     //
@@ -944,7 +948,7 @@ class TProductHost
     //        $sql .= $object->getJoinCondition();
     //        $sql .= ' WHERE ' . $key . ' = "' . $value . '" and t.id_host = "' . $idHost . '"';
     //
-            // si on exclut les produit satellite
+    //        // si on exclut les produit satellite
     //        if($noSatellite)
     //        {
     //            $sql .= ' AND t.pro_hos_satellite_id_parent = 0';
@@ -1007,13 +1011,13 @@ class TProductHost
      */
     //    public function findFirstTADesignerSmartProduitHost()
     //    {
-            // recuperation de la page Smart UD liee a la page produit host de Fusion
+    //        // recuperation de la page Smart UD liee a la page produit host de Fusion
     //        $taDesignerSmartProduitHost = TADesignerSmartProduitHost::findByIdProduitHost($this->getIdProduitHost(), $this->getIdHost());
     //
-            // si on a une liaison avec le produit host on essaie de trouver une laison avec l'id du produit
+    //        // si on a une liaison avec le produit host on essaie de trouver une laison avec l'id du produit
     //        if($taDesignerSmartProduitHost === null)
     //        {
-                // recuperation de la page Smart UD liee a l'id du produit
+    //            // recuperation de la page Smart UD liee a l'id du produit
     //            $taDesignerSmartProduitHost = TADesignerSmartProduitHost::findByIdProduit($this->getIdProduit(), $this->getIdHost());
     //        }
     //
@@ -1074,48 +1078,45 @@ class TProductHost
      */
     //    public function getCountSatellite()
     //    {
-            // si on n'a pas encore compté le nombre de produit satellite
+    //        // si on n'a pas encore compté le nombre de produit satellite
     //        if($this->_countSatellite === null)
     //        {
-                // on compte le nombre de produit satellite
+    //            // on compte le nombre de produit satellite
     //            $this->_countSatellite = self::count(array('pro_hos_satellite_id_parent', 'id_host'), array($this->getIdProduitHost(), $this->getIdHost()));
     //        }
     //
     //        return $this->_countSatellite;
     //    }
-
     /*
      * getteur du diaporama des images de pub du produit
      * @return \TCmsDiapo
      */
     //    public function getSliderProductAds()
     //    {
-            // si on n'a pas encore cherché le diaporama
+    //        // si on n'a pas encore cherché le diaporama
     //        if($this->_sliderProductAds === null)
     //        {
-                // on le récupére
+    //            // on le récupére
     //            $this->_sliderProductAds = TCmsDiapo::findById(array(TCmsDiapo::ID_SLIDER_PRODUCT_ADS));
     //        }
     //
     //        return $this->_sliderProductAds;
     //    }
-
     /*
      * getteur du diaporama des images de détails du produit
      * @return \TCmsDiapo
      */
     //    public function getSliderProductDetail()
     //    {
-            // si on n'a pas encore cherché le diaporama
+    //        // si on n'a pas encore cherché le diaporama
     //        if($this->_sliderProductDetail === null)
     //        {
-                // on le récupére
+    //            // on le récupére
     //            $this->_sliderProductDetail = TCmsDiapo::findById(array(TCmsDiapo::ID_SLIDER_PRODUCT_DETAILS));
     //        }
     //
     //        return $this->_sliderProductDetail;
     //    }
-
     /*	 * *********************************************************
          * Méthode pour la compatibilité tproduithost/produitmixed
          * ********************************************************** */
@@ -1125,7 +1126,7 @@ class TProductHost
      */
     //    public function isSatellite()
     //    {
-            // si il s'agit d'un produit satellite
+    //        // si il s'agit d'un produit satellite
     //        if($this->getProHosSatelliteIdParent() <> 0)
     //        {
     //            return true;
@@ -1140,7 +1141,7 @@ class TProductHost
      */
     //    public function isVariant()
     //    {
-            // si il s'agit d'un produit variant
+    //        // si il s'agit d'un produit variant
     //        if($this->getProHosVariant() == TProduitHost::ID_VARIANT)
     //        {
     //            return true;
@@ -1173,32 +1174,32 @@ class TProductHost
      */
     //    public function getDescription1()
     //    {
-            // si on est sur un site principal
+    //        // si on est sur un site principal
     //        if(System::getCurrentHost()->isMaster())
     //        {
-                // on renvoi la description 1
+    //            // on renvoi la description 1
     //            return Template::replaceVariableFrom($this->getProHosDescription1());
     //        }
     //
-            // récupération du texte host du site
+    //        // récupération du texte host du site
     //        $txtHost = TTxt::findByHostAndProductHost(System::getCurrentHost(), $this);
     //
-            // si on a un texte
+    //        // si on a un texte
     //        if($txtHost !== null && $txtHost->getTxtValue() != '')
     //        {
-                // on renverra le texte du ttext
+    //            // on renverra le texte du ttext
     //            return Template::replaceVariableFrom($txtHost->getTxtValue());
     //        }
     //
-            // si on est sur un site lu / ca / gb
+    //        // si on est sur un site lu / ca / gb
     //        if(System::getCurrentHost()->getPaysCode() == 'lu' || System::getCurrentHost()->getPaysCode() == 'fr')
     //        {
     //            return '';
     //        }
-            // site classique
+    //        // site classique
     //        else
     //        {
-                // on renvoi la description 1
+    //            // on renvoi la description 1
     //            return Template::replaceVariableFrom($this->getProHosDescription1());
     //        }
     //    }
@@ -1212,7 +1213,6 @@ class TProductHost
     //    {
     //        return Template::replaceVariableFrom($this->getProHosDescription3());
     //    }
-
     /*	 * ***********************************************************
          * Autres Métodes
          * ********************************************************** */
@@ -1260,16 +1260,15 @@ class TProductHost
      */
     //    public function getProduitFournisseur()
     //    {
-            // si on a pas encore récupéré le produitFournisseur
+    //        // si on a pas encore récupéré le produitFournisseur
     //        if(!isset($this->_produitFournisseur))
     //        {
-                // on recherche le produit fournisseur source
+    //            // on recherche le produit fournisseur source
     //            $this->_produitFournisseur = TAProduitFournisseur::findByIdProduit($this->getIdProduit());
     //        }
     //
     //        return $this->_produitFournisseur;
     //    }
-
     /*
      * Renvoi l'url pour afficher les produits satellites
      */
@@ -1284,18 +1283,18 @@ class TProductHost
      */
     //    public function getProduitMetaParent()
     //    {
-            // si on a pas encore récupéré le produitMetaParent
+    //        // si on a pas encore récupéré le produitMetaParent
     //        if(!isset($this->_produitMetaParent))
     //        {
-                // on récupére l'id d'un des meta parent
+    //            // on récupére l'id d'un des meta parent
     //            $idMetaparent = TAProduitMeta::metaParentIdByChildId($this->getIdProduitHost(), $this->getIdHost());
     //
-                // le produit appartient à un meta produit
+    //            // le produit appartient à un meta produit
     //            if($idMetaparent <> null)
     //            {
     //                $this->_produitMetaParent = TProduitHost::findById(array($idMetaparent, $this->getIdHost()));
     //            }
-                // le produit n'appartient pas à un meta produit
+    //            // le produit n'appartient pas à un meta produit
     //            else
     //            {
     //                $this->_produitMetaParent = null;
@@ -1313,10 +1312,10 @@ class TProductHost
     //    {
     //        $return = array();
     //
-            // pour chaque site localisé
+    //        // pour chaque site localisé
     //        foreach(siteHost::findAllSlaves($this->getIdHost(), false) AS $host)
     //        {
-                // on récupére les info de ce site
+    //            // on récupére les info de ce site
     //            $return[$host->getHostId()] = TProduitHostMoreViewed::getCountView($this->getIdProduitHost(), $host->getHostId());
     //        }
     //
@@ -1334,12 +1333,12 @@ class TProductHost
     //        {
     //            return '<span class="sprite-icone sprite-fusion" title="Meta produit">&nbsp;</span>';
     //        }
-            // le produit à un fournisseur
+    //        // le produit à un fournisseur
     //        elseif($this->getProduitFournisseur() !== null)
     //        {
     //            return '<span class="sprite-icone sprite-fournisseur-' . $this->getProduitFournisseur()->getIdFournisseur() . '" title="' . $this->getProduitFournisseur()->getFournisseur()->getNomFour() . '">&nbsp;</span>';
     //        }
-            // le produit n'a pas de fournisseur
+    //        // le produit n'a pas de fournisseur
     //        else
     //        {
     //            return '<span class="sprite-icone sprite-question" title="Aucun fournisseur">&nbsp;</span>';
@@ -1352,7 +1351,7 @@ class TProductHost
      */
     //    public function getLibelleSource()
     //    {
-            // le produit n'est pas un meta produit et il a un fournisseur
+    //        // le produit n'est pas un meta produit et il a un fournisseur
     //        if(!$this->isMeta() && $this->getProduitFournisseur() !== null)
     //        {
     //            return $this->getProduitFournisseur()->getProFouLibelleSource();
@@ -1370,12 +1369,12 @@ class TProductHost
      */
     //    public function getIdSource()
     //    {
-            // le produit n'est pas un meta produit et il a un fournisseur
+    //        // le produit n'est pas un meta produit et il a un fournisseur
     //        if(!$this->isMeta() && $this->getProduitFournisseur() !== null)
     //        {
     //            return $this->getProduitFournisseur()->getProFouIdSource();
     //        }
-            // le produit n'a pas de fournisseur ou il s'agit d'un meta produit
+    //        // le produit n'a pas de fournisseur ou il s'agit d'un meta produit
     //        else
     //        {
     //            return '';
@@ -1389,10 +1388,10 @@ class TProductHost
      */
     //    public function getDefautSelection($idHost)
     //    {
-            // si notre produit est un variant
+    //        // si notre produit est un variant
     //        if($this->isVariant())
     //        {
-                // on récupére l'id de produit host
+    //            // on récupére l'id de produit host
     //            $idProduitHostForVariant = $this->getIdProduitHost();
     //        }
     //        // produit original
@@ -1422,7 +1421,7 @@ class TProductHost
      */
     //    public function getIdProduitSrc()
     //    {
-            // on recherche le produit fournisseur source
+    //        // on recherche le produit fournisseur source
     //        return $this->getProduitFournisseur()->getProFouIdSource();
     //    }
 
@@ -1437,10 +1436,10 @@ class TProductHost
      */
     //    public function getOptionsAndValues($idHost, $dependance = null, $getOnLyActif = true, $standardDelivryCountry = true, $withFournisseurData = false)
     //    {
-            // si notre produit est un variant
+    //        // si notre produit est un variant
     //        if($this->isVariant())
     //        {
-                // on récupére l'id de produit host
+    //            // on récupére l'id de produit host
     //            $idProduitHostForVariant = $this->getIdProduitHost();
     //        }
     //        // produit original
@@ -1449,7 +1448,7 @@ class TProductHost
     //            $idProduitHostForVariant = null;
     //        }
     //
-            // on appel la fonction dans le produit
+    //        // on appel la fonction dans le produit
     //        return $this->getProduit()->getOptionsAndValues($idHost, $dependance, $getOnLyActif, $standardDelivryCountry, $withFournisseurData, $idProduitHostForVariant);
     //    }
 
@@ -1503,11 +1502,11 @@ class TProductHost
     //    {
     //        if($this->_minPrice === null && $this->getProHosMinPrice() !== null)
     //        {
-                // creation d'un objet prix
+    //            // creation d'un objet prix
     //            $this->_minPrice = new Prix($this->getProHosMinPrice(), 2, System::getTauxTva());
     //        }
     //
-            // on renvoi l'objet prix
+    //        // on renvoi l'objet prix
     //        return $this->_minPrice;
     //    }
 
@@ -1518,37 +1517,37 @@ class TProductHost
      */
     //    public function getAProduitHostAcl()
     //    {
-            // si on a pas encore chercher les acl
+    //        // si on a pas encore chercher les acl
     //        if($this->_aProduitHostAcl == null)
     //        {
-                // on reinitialise en array
+    //            // on reinitialise en array
     //            $this->_aProduitHostAcl = array();
     //
-                // si on a un produit satellite
+    //            // si on a un produit satellite
     //            if($this->isSatellite())
     //            {
-                    // on récupére l'id de produit host du parent
+    //                // on récupére l'id de produit host du parent
     //                $idProduitHost = $this->getSatelliteIdParent();
     //            }
     //            // produit standard
     //            else
     //            {
-                    // on récupére l'id du produit
+    //                // on récupére l'id du produit
     //                $idProduitHost = $this->getIdProduitHost();
     //            }
     //
-                // on récupére les acl
+    //            // on récupére les acl
     //            $allAcl = TProduitHostAcl::findAllByIdProduitHost($idProduitHost);
     //
     //            // pour chaque acl
     //            foreach($allAcl AS $acl)
     //            {
-                    // on le met dans la variable avec le host en clef
+    //                // on le met dans la variable avec le host en clef
     //                $this->_aProduitHostAcl[$acl->getIdHost()] = $acl;
     //            }
     //        }
     //
-            // on renvoi notre tableau
+    //        // on renvoi notre tableau
     //        return $this->_aProduitHostAcl;
     //    }
 
@@ -1559,17 +1558,17 @@ class TProductHost
      */
     //    public function getAProduitHostAclActifByIdHost($idHost)
     //    {
-            // on récupére les acl
+    //        // on récupére les acl
     //        $allAcl = $this->getAProduitHostAcl();
     //
-            // si on a pas d'acl
+    //        // si on a pas d'acl
     //        if(!isset($allAcl[$idHost]))
     //        {
-                // on considére actif
+    //            // on considére actif
     //            return true;
     //        }
     //
-            // on renvoi la valeur de l'acl
+    //        // on renvoi la valeur de l'acl
     //        return $allAcl[$idHost]->getProHosAclActif();
     //    }
 
@@ -1579,7 +1578,7 @@ class TProductHost
      */
     //    function getDateHeureLastUpdate()
     //    {
-            // si on a pas encore cherché
+    //        // si on a pas encore cherché
     //        if($this->_dateHeureLastUpdate == null)
     //        {
     //            $this->_dateHeureLastUpdate = new DateHeure($this->getProHosLastUpdate());
@@ -1594,19 +1593,19 @@ class TProductHost
      */
     //    function getDateHeureListLastUpdate()
     //    {
-            // si on a pas encore cherché
+    //        // si on a pas encore cherché
     //        if($this->_dateHeureListLastUpdate == null)
     //        {
-                // si on a pas de date
+    //            // si on a pas de date
     //            if($this->getProHosListLastUpdate() == null)
     //            {
-                    // on renverra null
+    //                // on renverra null
     //                $this->_dateHeureListLastUpdate = null;
     //            }
-                // on a une date
+    //            // on a une date
     //            else
     //            {
-                    // on renvoi le dateheure
+    //                // on renvoi le dateheure
     //                $this->_dateHeureListLastUpdate = new DateHeure($this->getProHosListLastUpdate());
     //            }
     //        }
@@ -1633,10 +1632,10 @@ class TProductHost
     //    {
     //        parent::_preSave();
     //
-            // création d'un nouvel objet date
+    //        // création d'un nouvel objet date
     //        $date = new DateHeure();
     //
-            // on met à jour la date de derniére modification
+    //        // on met à jour la date de derniére modification
     //        $this->setProHosLastUpdate($date->format(DateHeure::DATETIMEMYSQL));
     //    }
 
@@ -1647,20 +1646,20 @@ class TProductHost
     //    {
     //        parent::_postSave();
     //
-            // si on est pas sur une page satellite
+    //        // si on est pas sur une page satellite
     //        if(!$this->isSatellite())
     //        {
-                // rien à faire
+    //            // rien à faire
     //            return true;
     //        }
     //
-            // on récupére le produit parent
+    //        // on récupére le produit parent
     //        $produitParent = TProduitHost::findById(array($this->getProHosSatelliteIdParent(), $this->getIdHost()));
     //
-            // si on a bien un produit parent
+    //        // si on a bien un produit parent
     //        if($produitParent->getIdProduitHost() != null)
     //        {
-                // on met à jour la date de deniére modification du listing des satellite
+    //            // on met à jour la date de deniére modification du listing des satellite
     //            $produitParent->setProHosListLastUpdate($this->getProHosLastUpdate())
     //                ->save();
     //        }
@@ -1673,42 +1672,41 @@ class TProductHost
     //    {
     //        parent::_preDelete();
     //
-            // on supprime toutes les éventuelles variations lié à ce produit
+    //        // on supprime toutes les éventuelles variations lié à ce produit
     //        TAVariantOptionValue::deleteByProduitHost($this);
     //
-            // si on n'est pas sur un produit satellite
+    //        // si on n'est pas sur un produit satellite
     //        if(!$this->isSatellite())
     //        {
-                // création d'un repertoire du diaporama de pub
+    //            // création d'un repertoire du diaporama de pub
     //            $directorySliderProductAds = new Repertoire();
     //            $directorySliderProductAds->setCheminComplet($this->sliderProductAdsDirectoryFullPath(false));
     //
-                // si le produit posséde un diaporama de pub
+    //            // si le produit posséde un diaporama de pub
     //            if($directorySliderProductAds->exist())
     //            {
-                    // on supprime les images en webp
+    //                // on supprime les images en webp
     //                Webp::deleteWebpDirectoryByOriginalFullPath($directorySliderProductAds->getCheminComplet());
     //
-                    // on supprime le repertoire
+    //                // on supprime le repertoire
     //                $directorySliderProductAds->rm(true);
     //            }
     //
-                // création d'un repertoire du diaporama de détail de produit
+    //            // création d'un repertoire du diaporama de détail de produit
     //            $directorySliderProductDetail = new Repertoire();
     //            $directorySliderProductDetail->setCheminComplet($this->sliderProductDetailDirectoryFullPath(false));
     //
-                // si le produit posséde un diaporama de détail de produit
+    //            // si le produit posséde un diaporama de détail de produit
     //            if($directorySliderProductDetail->exist())
     //            {
-                    // on supprime les images en webp
+    //                // on supprime les images en webp
     //                Webp::deleteWebpDirectoryByOriginalFullPath($directorySliderProductDetail->getCheminComplet());
     //
-                    // on supprime le repertoire
+    //                // on supprime le repertoire
     //                $directorySliderProductDetail->rm(true);
     //            }
     //        }
     //    }
-
     /*
      * Indique si le produit en cour est un produit ratteché ou pas
      * @return boolean
@@ -1744,7 +1742,7 @@ class TProductHost
      */
     //    public function allPicturesForAdviceExamples()
     //    {
-            // initialisation des variables
+    //        // initialisation des variables
     //        $aPictures				 = array();
     //        $aTDesignerGabaritSmart	 = array();
     //        $aPictureAltFirstWord	 = array(
@@ -1762,15 +1760,15 @@ class TProductHost
     //        $pictureAlt				 = '';
     //        $pictureLabel			 = '';
     //
-            // recuperation de la premiere page Smart UD liee a la page produit host de Fusion
+    //        // recuperation de la premiere page Smart UD liee a la page produit host de Fusion
     //        $taDesignerSmartProduitHost = $this->findFirstTADesignerSmartProduitHost();
     //
     //        if($taDesignerSmartProduitHost !== null)
     //        {
-                // on recupere les 12 images UD qui correspondent a la page du produit host de fusion
+    //            // on recupere les 12 images UD qui correspondent a la page du produit host de fusion
     //            $aTDesignerGabaritSmart = TDesignerGabarit::findAllByIdDesignerSmartWithAllTypeRecherche($taDesignerSmartProduitHost->getIdDesignerSmart(), array(0, 12), $this->getIdProduitHost());
     //
-                // creation du libelle de l'ensemble des images UD illustrees
+    //            // creation du libelle de l'ensemble des images UD illustrees
     //            $pictureLabel = 'Exemple d\'imprimé publicitaire ' . $this->getProHosLibelle() . ' sur notre site d\'imprimeur en ligne.';
     //        }
     //
@@ -1790,7 +1788,7 @@ class TProductHost
     //            $pictureSrc		 = $tDesignerGabaritSmart->previewRelativeUrlForAdviceExamples(2);
     //            $pictureTitle	 = $pictureAlt;
     //
-                // calcul de la largeur de la miniature (on arrondi a l'entier inferieur)
+    //            // calcul de la largeur de la miniature (on arrondi a l'entier inferieur)
     //            $pictureWidth = floor($tDesignerGabaritSmart->getDesignerFormat()->getDesignerFormatMiniature()->getDesForMinLargeur() / 2);
     //
     //            $aPictures[] = array('alt' => $pictureAlt, 'href' => $pictureHref, 'label' => $pictureLabel, 'src' => $pictureSrc, 'title' => $pictureTitle, 'width' => $pictureWidth);
@@ -1806,40 +1804,40 @@ class TProductHost
      */
     //    public function updateMinPrice()
     //    {
-            // initialisation du prix d'achat et de vente HT pour le cas ou on ne le recupéee pas
+    //        // initialisation du prix d'achat et de vente HT pour le cas ou on ne le recupéee pas
     //        $proHosMinPrice	 = null;
     //        $prixMini		 = null;
     //
-            // si notre produit n'est pas un meta produit
+    //        // si notre produit n'est pas un meta produit
     //        if(!$this->isMeta())
     //        {
-                // recuperation de l'objet fournisseur de ce produit
+    //            // recuperation de l'objet fournisseur de ce produit
     //            $fournisseur = $this->getProduitFournisseur()->getFournisseur();
     //
-                // si on a pour ce fournisseur une méthode qui permet de récupéré le prix mini
+    //            // si on a pour ce fournisseur une méthode qui permet de récupéré le prix mini
     //            if(method_exists($fournisseur, 'minPriceByProFouIdSource'))
     //            {
-                    // on l'utilise
+    //                // on l'utilise
     //                $prixMini = $fournisseur->minPriceByProFouIdSource($this->getProduitFournisseur()->getProFouIdSource());
     //            }
-                // le fournisseur ne posséde pas de méthode pour récup le prix mini on va chercher dans les combinaisons
+    //            // le fournisseur ne posséde pas de méthode pour récup le prix mini on va chercher dans les combinaisons
     //            else
     //            {
-                    // récupération du prix mini
+    //                // récupération du prix mini
     //                $tabPrixMini = TCombinaison::getFirstPriceFor($this, $this->getIdHost(), array(), false);
     //                $prixMini	 = $tabPrixMini['com_pri_prix'];
     //            }
     //
-                // recuperation du site host
+    //            // recuperation du site host
     //            $host = siteHost::findById($this->getIdHost());
     //
-                // creation d'un objet prix
+    //            // creation d'un objet prix
     //            $prixAchatMini = new Prix($prixMini, 2, System::getTauxTva($host));
     //
-                // calcul du prix de vente HT mini (a partir du prix d'achat HT mini si on en a un)
+    //            // calcul du prix de vente HT mini (a partir du prix d'achat HT mini si on en a un)
     //            if($prixAchatMini->getMontant() > 0)
     //            {
-                    // on applique la marge pour obtenir un prix de vente HT
+    //                // on applique la marge pour obtenir un prix de vente HT
     //                $prixVenteMini	 = $prixAchatMini->margePrix($host->getIdFourP24(), 0, $host, $this->getIdProduit(), null, $host->getHosPriceDecimal());
     //                $proHosMinPrice	 = $prixVenteMini->getMontant(Prix::PRIXHT);
     //            }
@@ -1847,22 +1845,22 @@ class TProductHost
     //        // meta produit
     //        else
     //        {
-                // pour chaque sous produit qui appartient a notre meta produit
+    //            // pour chaque sous produit qui appartient a notre meta produit
     //            foreach($this->findAllMetaChild(false, true) AS $produit)
     //            {
-                    // si ce produit a un prix et qu'il est inferieur au prixMini actuel
+    //                // si ce produit a un prix et qu'il est inferieur au prixMini actuel
     //                if($produit->getMinPrice() !== null && ($prixMini === null || $prixMini > $produit->getProHosMinPrice()))
     //                {
-                        // on met a jour le prix de vente HT mini
+    //                    // on met a jour le prix de vente HT mini
     //                    $prixMini = $produit->getProHosMinPrice();
     //                }
     //            }
     //
-                // ici le prix mini est un prix de vente HT
+    //            // ici le prix mini est un prix de vente HT
     //            $proHosMinPrice = $prixMini;
     //        }
     //
-            // mise a jour du prix de vente HT mini
+    //        // mise a jour du prix de vente HT mini
     //        $this->setProHosMinPrice($proHosMinPrice);
     //        $this->save();
     //    }
@@ -1922,12 +1920,12 @@ class TProductHost
      */
     //    public function haveSatellite()
     //    {
-            // si on a une date de modification de listing des produits satellites
+    //        // si on a une date de modification de listing des produits satellites
     //        if($this->getProHosListLastUpdate() != null)
     //        {
     //            return true;
     //        }
-            // pas de listing de produit satellite
+    //        // pas de listing de produit satellite
     //        else
     //        {
     //            return false;
@@ -1960,14 +1958,44 @@ class TProductHost
      */
     //    public function idParentOrIdProduitHost()
     //    {
-            // si on a un id de parent
+    //        // si on a un id de parent
     //        if($this->getProHosSatelliteIdParent() != 0)
     //        {
-                // on le renvoi
+    //            // on le renvoi
     //            return $this->getProHosSatelliteIdParent();
     //        }
     //
-            // on renvoi l'id de produit host
+    //        // on renvoi l'id de produit host
     //        return $this->getIdProduitHost();
     //    }
+
+    /**
+     * @return Collection<int, TAVariantOptionValue>
+     */
+    public function getTAVariantOptionValues(): Collection
+    {
+        return $this->tAVariantOptionValues;
+    }
+
+    public function addTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+    {
+        if (!$this->tAVariantOptionValues->contains($tAVariantOptionValue)) {
+            $this->tAVariantOptionValues->add($tAVariantOptionValue);
+            $tAVariantOptionValue->setTProductHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+    {
+        if ($this->tAVariantOptionValues->removeElement($tAVariantOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tAVariantOptionValue->getTProductHost() === $this) {
+                $tAVariantOptionValue->setTProductHost(null);
+            }
+        }
+
+        return $this;
+    }
 }
