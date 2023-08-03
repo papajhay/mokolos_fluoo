@@ -199,6 +199,9 @@ class Hosts
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAProductOptionValue::class)]
     private Collection $tAProductOptionValues;
 
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TCategory::class, orphanRemoval: true)]
+    private Collection $tCategories;
+
     public function __construct()
     {
         $this->tAHostCmsBlocs = new ArrayCollection();
@@ -210,6 +213,7 @@ class Hosts
         $this->tProductHosts = new ArrayCollection();
         $this->tAVariantOptionValues = new ArrayCollection();
         $this->tProductHostMoreVieweds = new ArrayCollection();
+        $this->tCategories = new ArrayCollection();
     }
   
     public function getId(): ?int
@@ -1460,6 +1464,36 @@ class Hosts
            // set the owning side to null (unless already changed)
            if ($tProductHostMoreViewed->getHost() === $this) {
                $tProductHostMoreViewed->setHost(null);
+           }
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection<int, TCategory>
+    */
+   public function getTCategories(): Collection
+   {
+       return $this->tCategories;
+   }
+
+   public function addTCategory(TCategory $tCategory): static
+   {
+       if (!$this->tCategories->contains($tCategory)) {
+           $this->tCategories->add($tCategory);
+           $tCategory->setHost($this);
+       }
+
+       return $this;
+   }
+
+   public function removeTCategory(TCategory $tCategory): static
+   {
+       if ($this->tCategories->removeElement($tCategory)) {
+           // set the owning side to null (unless already changed)
+           if ($tCategory->getHost() === $this) {
+               $tCategory->setHost(null);
            }
        }
 

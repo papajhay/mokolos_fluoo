@@ -26,7 +26,7 @@ class TAHostCmsBloc
      * @var TCmsBloc|null
      */
     // private $_tCmsBloc = NULL;
-    #[ORM\ManyToOne(inversedBy: 'tcmsDiapo')]
+    #[ORM\ManyToOne(inversedBy: 'tAHostCmsBlocs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TCmsBloc $tcmsBloc = null;
 

@@ -30,9 +30,13 @@ class TCmsDiapo
     #[ORM\OneToMany(mappedBy: 'tcmsDiapo', targetEntity: TAHostCmsBloc::class, orphanRemoval: true)]
     private Collection $tAHostCmsBlocs;
 
+    #[ORM\OneToMany(mappedBy: 'tCmsDiapo', targetEntity: TCmsBloc::class, orphanRemoval: true)]
+    private Collection $tCmsBlocs;
+
     public function __construct()
     {
         $this->tAHostCmsBlocs = new ArrayCollection();
+        $this->tCmsBlocs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -454,6 +458,36 @@ public function removeTAHostCmsBloc(TAHostCmsBloc $tAHostCmsBloc): static
         // set the owning side to null (unless already changed)
         if ($tAHostCmsBloc->getTcmsDiapo() === $this) {
             $tAHostCmsBloc->setTcmsDiapo(null);
+        }
+    }
+
+    return $this;
+}
+
+/**
+ * @return Collection<int, TCmsBloc>
+ */
+public function getTCmsBlocs(): Collection
+{
+    return $this->tCmsBlocs;
+}
+
+public function addTCmsBloc(TCmsBloc $tCmsBloc): static
+{
+    if (!$this->tCmsBlocs->contains($tCmsBloc)) {
+        $this->tCmsBlocs->add($tCmsBloc);
+        $tCmsBloc->setTCmsDiapo($this);
+    }
+
+    return $this;
+}
+
+public function removeTCmsBloc(TCmsBloc $tCmsBloc): static
+{
+    if ($this->tCmsBlocs->removeElement($tCmsBloc)) {
+        // set the owning side to null (unless already changed)
+        if ($tCmsBloc->getTCmsDiapo() === $this) {
+            $tCmsBloc->setTCmsDiapo(null);
         }
     }
 

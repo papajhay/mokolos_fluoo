@@ -20,6 +20,9 @@ class TCombinaisonPrice
     #[ORM\Column]
     private ?float $price = null;
 
+    #[ORM\OneToOne(mappedBy: 'tCombinaisonPrice', cascade: ['persist', 'remove'])]
+    private ?TCombinaison $tCombinaison = null;
+
     //private $idFournisseur;
     //private $idCombinaison;
     //private $_combinaison;
@@ -153,4 +156,26 @@ class TCombinaisonPrice
     // on supprime les vieux enregistrement
 //        DB::prepareDeleteAndExecute(self::$_SQL_TABLE_NAME, array(array('com_pri_date_maj', $date->format(DateHeure::DATETIMEMYSQL), 's', '<')));
 //    }
+
+public function getTCombinaison(): ?TCombinaison
+{
+    return $this->tCombinaison;
+}
+
+public function setTCombinaison(?TCombinaison $tCombinaison): static
+{
+    // unset the owning side of the relation if necessary
+    if ($tCombinaison === null && $this->tCombinaison !== null) {
+        $this->tCombinaison->setTCombinaisonPrice(null);
+    }
+
+    // set the owning side of the relation if necessary
+    if ($tCombinaison !== null && $tCombinaison->getTCombinaisonPrice() !== $this) {
+        $tCombinaison->setTCombinaisonPrice($this);
+    }
+
+    $this->tCombinaison = $tCombinaison;
+
+    return $this;
+}
 }

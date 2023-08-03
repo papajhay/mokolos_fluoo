@@ -15,12 +15,15 @@ class TCategory
     private ?int $id = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
-
-//    $ordre
+    //  $ordre
     private ?int $order = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tCategories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Hosts $host = null;
 
     public function getId(): ?int
     {
@@ -47,6 +50,17 @@ class TCategory
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+    public function getHost(): ?Hosts
+    {
+        return $this->host;
+    }
+
+    public function setHost(?Hosts $host): static
+    {
+        $this->host = $host;
 
         return $this;
     }

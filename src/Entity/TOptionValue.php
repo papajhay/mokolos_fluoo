@@ -47,12 +47,16 @@ class TOptionValue
     #[ORM\OneToMany(mappedBy: 'tOptionValue', targetEntity: TAVariantOptionValue::class, orphanRemoval: true)]
     private Collection $tAVariantOptionValues;
 
+    #[ORM\OneToMany(mappedBy: 'tOptionValue', targetEntity: TCombinaison::class, orphanRemoval: true)]
+    private Collection $tCombinaisons;
+
     public function __construct()
     {
         $this->tAProductOptionValues = new ArrayCollection();
         $this->tAOptionValueProviders = new ArrayCollection();
         $this->tAProductOptionValueProviders = new ArrayCollection();
         $this->tAVariantOptionValues = new ArrayCollection();
+        $this->tCombinaisons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -210,6 +214,36 @@ class TOptionValue
             // set the owning side to null (unless already changed)
             if ($tAVariantOptionValue->getTOptionValue() === $this) {
                 $tAVariantOptionValue->setTOptionValue(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TCombinaison>
+     */
+    public function getTCombinaisons(): Collection
+    {
+        return $this->tCombinaisons;
+    }
+
+    public function addTCombinaison(TCombinaison $tCombinaison): static
+    {
+        if (!$this->tCombinaisons->contains($tCombinaison)) {
+            $this->tCombinaisons->add($tCombinaison);
+            $tCombinaison->setTOptionValue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTCombinaison(TCombinaison $tCombinaison): static
+    {
+        if ($this->tCombinaisons->removeElement($tCombinaison)) {
+            // set the owning side to null (unless already changed)
+            if ($tCombinaison->getTOptionValue() === $this) {
+                $tCombinaison->setTOptionValue(null);
             }
         }
 
