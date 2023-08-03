@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TCmsDiapoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TCmsDiapoRepository::class)]
@@ -24,6 +26,14 @@ class TCmsDiapo
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[ORM\OneToMany(mappedBy: 'tcmsDiapo', targetEntity: TAHostCmsBloc::class, orphanRemoval: true)]
+    private Collection $tAHostCmsBlocs;
+
+    public function __construct()
+    {
+        $this->tAHostCmsBlocs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -419,4 +429,34 @@ class TCmsDiapo
         // tout est bon on renvoi le fichier
 //        return $cmsDiaImgFichier;
 //    }
+
+/**
+ * @return Collection<int, TAHostCmsBloc>
+ */
+public function getTAHostCmsBlocs(): Collection
+{
+    return $this->tAHostCmsBlocs;
+}
+
+public function addTAHostCmsBloc(TAHostCmsBloc $tAHostCmsBloc): static
+{
+    if (!$this->tAHostCmsBlocs->contains($tAHostCmsBloc)) {
+        $this->tAHostCmsBlocs->add($tAHostCmsBloc);
+        $tAHostCmsBloc->setTcmsDiapo($this);
+    }
+
+    return $this;
+}
+
+public function removeTAHostCmsBloc(TAHostCmsBloc $tAHostCmsBloc): static
+{
+    if ($this->tAHostCmsBlocs->removeElement($tAHostCmsBloc)) {
+        // set the owning side to null (unless already changed)
+        if ($tAHostCmsBloc->getTcmsDiapo() === $this) {
+            $tAHostCmsBloc->setTcmsDiapo(null);
+        }
+    }
+
+    return $this;
+}
 }

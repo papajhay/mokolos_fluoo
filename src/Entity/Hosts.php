@@ -158,7 +158,7 @@ class Hosts
 
     #[ORM\Column]
     // old: $hosAmountPremium
-    private ?float $amountPremuim = 1000;
+    private ?float $amountPremium = 1000;
 
     #[ORM\Column]
     // old: $hosProductsNumber
@@ -184,7 +184,7 @@ class Hosts
     private Collection $tAVariantOptionValues;
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TProductHostMoreViewed::class)]
-    private Collection $tProductHostMoreVieweds
+    private Collection $tProductHostMoreVieweds;
 
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAHostCmsBloc::class)]
@@ -205,7 +205,7 @@ class Hosts
         $this->tAProductMetas = new ArrayCollection();
         $this->tAProductOptions = new ArrayCollection();
         $this->tAProductOptionValues = new ArrayCollection();
-        $this->tTsts = new ArrayCollection();
+        $this->tTxts = new ArrayCollection();
         $this->tCmsPages = new ArrayCollection();
         $this->tProductHosts = new ArrayCollection();
         $this->tAVariantOptionValues = new ArrayCollection();
@@ -673,14 +673,14 @@ class Hosts
         return $this;
     }
 
-    public function getAmountPremuim(): ?float
+    public function getAmountPremium(): ?float
     {
-        return $this->amountPremuim;
+        return $this->amountPremium;
     }
 
-    public function setAmountPremuim(float $amountPremuim): static
+    public function setAmountPremium(float $amountPremium): static
     {
-        $this->amountPremuim = $amountPremuim;
+        $this->amountPremium = $amountPremium;
 
         return $this;
     }
@@ -1319,24 +1319,24 @@ class Hosts
    /**
     * @return Collection<int, TTxt>
     */
-   public function getTTsts(): Collection
+   public function getTTxts(): Collection
    {
-       return $this->tTsts;
+       return $this->tTxts;
    }
 
-   public function addTTst(TTxt $tTst): static
+   public function addTTxt(TTxt $tTst): static
    {
-       if (!$this->tTsts->contains($tTst)) {
-           $this->tTsts->add($tTst);
+       if (!$this->tTxts->contains($tTst)) {
+           $this->tTxts->add($tTst);
            $tTst->setHost($this);
        }
 
        return $this;
    }
 
-   public function removeTTst(TTxt $tTst): static
+   public function removeTTxt(TTxt $tTst): static
    {
-       if ($this->tTsts->removeElement($tTst)) {
+       if ($this->tTxts->removeElement($tTst)) {
            // set the owning side to null (unless already changed)
            if ($tTst->getHost() === $this) {
                $tTst->setHost(null);

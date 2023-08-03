@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TCmsBlocRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,6 +45,14 @@ class TCmsBloc
     /* Contenu HTML du bloc CMS
       $cmsBloHtml */
     private ?string $content = null;
+
+    #[ORM\OneToMany(mappedBy: 'tcmsBloc', targetEntity: TAHostCmsBloc::class, orphanRemoval: true)]
+    private Collection $tAHostCmsBlocs;
+
+    public function __construct()
+    {
+        $this->tAHostCmsBlocs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -190,4 +200,34 @@ class TCmsBloc
 
 //        return $tCmsBloc;
 //    }
+
+/**
+ * @return Collection<int, TAHostCmsBloc>
+ */
+public function getTcmsDiapo(): Collection
+{
+    return $this->tcmsDiapo;
+}
+
+public function addTcmsDiapo(TAHostCmsBloc $tcmsDiapo): static
+{
+    if (!$this->tcmsDiapo->contains($tcmsDiapo)) {
+        $this->tcmsDiapo->add($tcmsDiapo);
+        $tcmsDiapo->setTcmsBloc($this);
+    }
+
+    return $this;
+}
+
+public function removeTcmsDiapo(TAHostCmsBloc $tcmsDiapo): static
+{
+    if ($this->tcmsDiapo->removeElement($tcmsDiapo)) {
+        // set the owning side to null (unless already changed)
+        if ($tcmsDiapo->getTcmsBloc() === $this) {
+            $tcmsDiapo->setTcmsBloc(null);
+        }
+    }
+
+    return $this;
+}
 }

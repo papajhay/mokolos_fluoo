@@ -125,11 +125,15 @@ class TOption
     #[ORM\OneToMany(mappedBy: 'TOption', targetEntity: TAProductOption::class)]
     private Collection $tAProductOptions;
 
+    #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TAOptionProvider::class)]
+    private Collection $tAOptionProviders;
+
     public function __construct()
     {
         $this->taOptionValueProviders = new ArrayCollection();
         $this->tOptionValues = new ArrayCollection();
         $this->tAProductOptions = new ArrayCollection();
+        $this->tAOptionProviders = new ArrayCollection();
     }
     // private $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD;
 
@@ -593,6 +597,36 @@ class TOption
             // set the owning side to null (unless already changed)
             if ($tAProductOption->getTOption() === $this) {
                 $tAProductOption->setTOption(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAOptionProvider>
+     */
+    public function getTAOptionProviders(): Collection
+    {
+        return $this->tAOptionProviders;
+    }
+
+    public function addTAOptionProvider(TAOptionProvider $tAOptionProvider): static
+    {
+        if (!$this->tAOptionProviders->contains($tAOptionProvider)) {
+            $this->tAOptionProviders->add($tAOptionProvider);
+            $tAOptionProvider->setTOption($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAOptionProvider(TAOptionProvider $tAOptionProvider): static
+    {
+        if ($this->tAOptionProviders->removeElement($tAOptionProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($tAOptionProvider->getTOption() === $this) {
+                $tAOptionProvider->setTOption(null);
             }
         }
 
