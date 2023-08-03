@@ -184,7 +184,7 @@ class Hosts
     private Collection $tAVariantOptionValues;
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TProductHostMoreViewed::class)]
-    private Collection $tProductHostMoreVieweds
+    private Collection $tProductHostMoreVieweds;
 
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAHostCmsBloc::class)]
@@ -205,7 +205,7 @@ class Hosts
         $this->tAProductMetas = new ArrayCollection();
         $this->tAProductOptions = new ArrayCollection();
         $this->tAProductOptionValues = new ArrayCollection();
-        $this->tTsts = new ArrayCollection();
+        $this->tTxts = new ArrayCollection();
         $this->tCmsPages = new ArrayCollection();
         $this->tProductHosts = new ArrayCollection();
         $this->tAVariantOptionValues = new ArrayCollection();

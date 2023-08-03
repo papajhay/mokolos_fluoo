@@ -21,6 +21,9 @@ class TProductHostMoreViewed
     // private ?int $idHost;
     private ?Hosts $host = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tProductHostMoreVieweds')]
+    private ?TProductHost $productHost = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -38,32 +41,6 @@ class TProductHostMoreViewed
         return $this;
     }
 
-    /**
-     * Getter pour l'attribut $idProduitHost  (id du produit host).
-     * @return mediumint(8) unsigned
-     */
-    public function getIdProductHost()
-    {
-        return $this->idProductHost;
-    }
-
-    /**
-     * Setter pour l'attribut $idProduitHost  (id du produit host).
-     * @param mediumint(8) unsigned $idProduitHost
-     * @return TProduitHostMoreViewed
-     */
-    public function setIdProductHost($idProductHost)
-    {
-        $this->idProductHost = $idProductHost;
-
-        return $this;
-    }
-
-    public function getHost(): ?Hosts
-    {
-        return $this->host;
-    }
-
     public function setHost(?Hosts $host): static
     {
         $this->host = $host;
@@ -71,7 +48,19 @@ class TProductHostMoreViewed
         return $this;
     }
 
-    //TODO  repository
+    public function getProductHost(): ?TProductHost
+    {
+        return $this->productHost;
+    }
+
+    public function setProductHost(?TProductHost $productHost): static
+    {
+        $this->productHost = $productHost;
+
+        return $this;
+    }
+
+    //TODO:  repository
     /*
      * Retourne le compteur de visualisation pour un  produit host
      * @param String $idProduitHost     Id du produit host
@@ -93,7 +82,7 @@ class TProductHostMoreViewed
 //        }
 //    }
 
-    //TODO Service
+//    Todo: Service
     /*
      * Retourne le compteur de visualisation pour un  produit host
      * @param String		$idProduitHost     Id du produit host
@@ -136,6 +125,4 @@ class TProductHostMoreViewed
 //
 //        return TRUE;
 //    }
-
-
 }
