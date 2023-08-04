@@ -28,7 +28,6 @@ final class Version20230801140406 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_D0D2B6B91FB8D185 ON taproduct_meta (host_id)');
         $this->addSql('ALTER TABLE tonline_product_rule ADD product_index VARCHAR(255) NOT NULL, ADD hide_row VARCHAR(255) NOT NULL, ADD if_every_is_selected VARCHAR(255) NOT NULL');
     }
-
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
