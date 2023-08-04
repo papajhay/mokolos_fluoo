@@ -23,9 +23,9 @@ class TCombinaisonPrice
     #[ORM\OneToOne(mappedBy: 'tCombinaisonPrice', cascade: ['persist', 'remove'])]
     private ?TCombinaison $tCombinaison = null;
 
-    //private $idFournisseur;
-    //private $idCombinaison;
-    //private $_combinaison;
+    #[ORM\ManyToOne(inversedBy: 'tCombinaisonPrice')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Provider $provider = null;
 
     public function getId(): ?int
     {
@@ -52,6 +52,29 @@ class TCombinaisonPrice
     public function setPrice(float $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+    public function getProvider(): ?Provider
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(?Provider $provider): static
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getCombinaison(): ?TCombinaison
+    {
+        return $this->combinaison;
+    }
+
+    public function setCombinaison(?TCombinaison $combinaison): static
+    {
+        $this->combinaison = $combinaison;
 
         return $this;
     }
@@ -157,25 +180,4 @@ class TCombinaisonPrice
 //        DB::prepareDeleteAndExecute(self::$_SQL_TABLE_NAME, array(array('com_pri_date_maj', $date->format(DateHeure::DATETIMEMYSQL), 's', '<')));
 //    }
 
-public function getTCombinaison(): ?TCombinaison
-{
-    return $this->tCombinaison;
-}
-
-public function setTCombinaison(?TCombinaison $tCombinaison): static
-{
-    // unset the owning side of the relation if necessary
-    if ($tCombinaison === null && $this->tCombinaison !== null) {
-        $this->tCombinaison->setTCombinaisonPrice(null);
-    }
-
-    // set the owning side of the relation if necessary
-    if ($tCombinaison !== null && $tCombinaison->getTCombinaisonPrice() !== $this) {
-        $tCombinaison->setTCombinaisonPrice($this);
-    }
-
-    $this->tCombinaison = $tCombinaison;
-
-    return $this;
-}
 }

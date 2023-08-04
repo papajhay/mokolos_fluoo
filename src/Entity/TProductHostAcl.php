@@ -20,6 +20,9 @@ class TProductHostAcl
     #[ORM\Column]
     private ?bool $active = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tProductHostAcl')]
+    private ?TProductHost $tProductHost = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -111,4 +114,16 @@ class TProductHostAcl
 //            $produitAcl->delete();
 //        }
 //    }
+
+public function getTProductHost(): ?TProductHost
+{
+    return $this->tProductHost;
+}
+
+public function setTProductHost(?TProductHost $tProductHost): static
+{
+    $this->tProductHost = $tProductHost;
+
+    return $this;
+}
 }

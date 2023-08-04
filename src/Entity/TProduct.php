@@ -47,9 +47,6 @@ class TProduct
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: TAProductOption::class)]
     private Collection $tAProductOptions;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: TAProductProvider::class)]
-    private Collection $tAProductProviders;
-
     #[ORM\OneToMany(mappedBy: 'tProduct', targetEntity: TAOptionProvider::class)]
     private Collection $tAOptionProviders;
 
@@ -59,10 +56,16 @@ class TProduct
     #[ORM\OneToMany(mappedBy: 'tProduct', targetEntity: TCombinaison::class, orphanRemoval: true)]
     private Collection $tCombinaisons;
 
+    #[ORM\OneToOne(inversedBy: 'tProduct', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TAProductProvider $tAProductProvider = null;
+
+    #[ORM\OneToOne(mappedBy: 'tProduct', cascade: ['persist', 'remove'])]
+    private ?TProductHost $tProductHost = null;
+
     public function __construct()
     {
         $this->tAProductOptions = new ArrayCollection();
-        $this->tAProductProviders = new ArrayCollection();
         $this->tAOptionProviders = new ArrayCollection();
         $this->tAProductOptionValueProviders = new ArrayCollection();
         $this->tCombinaisons = new ArrayCollection();
@@ -118,6 +121,17 @@ class TProduct
     public function setSpecialQuantity(int $specialQuantity): static
     {
         $this->specialQuantity = $specialQuantity;
+
+        return $this;
+    }
+    public function getTAProductProvider(): ?TAProductProvider
+    {
+        return $this->tAProductProvider;
+    }
+
+    public function setTAProductProvider(TAProductProvider $tAProductProvider): static
+    {
+        $this->tAProductProvider = $tAProductProvider;
 
         return $this;
     }
@@ -1181,36 +1195,6 @@ class TProduct
     }
 
     /**
-     * @return Collection<int, TAOptionProvider>
-     */
-    public function getTAOptionProviders(): Collection
-    {
-        return $this->tAOptionProviders;
-    }
-
-    public function addTAOptionProvider(TAOptionProvider $tAOptionProvider): static
-    {
-        if (!$this->tAOptionProviders->contains($tAOptionProvider)) {
-            $this->tAOptionProviders->add($tAOptionProvider);
-            $tAOptionProvider->setTProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTAOptionProvider(TAOptionProvider $tAOptionProvider): static
-    {
-        if ($this->tAOptionProviders->removeElement($tAOptionProvider)) {
-            // set the owning side to null (unless already changed)
-            if ($tAOptionProvider->getTProduct() === $this) {
-                $tAOptionProvider->setTProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, TAProductOptionValueProvider>
      */
     public function getTAProductOptionValueProviders(): Collection
@@ -1269,4 +1253,22 @@ class TProduct
 
         return $this;
     }
+
+    public function getTProductHost(): ?TProductHost
+    {
+        return $this->tProductHost;
+    }
+
+    public function setTProductHost(TProductHost $tProductHost): static
+    {
+        // set the owning side of the relation if necessary
+        if ($tProductHost->getTProduct() !== $this) {
+            $tProductHost->setTProduct($this);
+        }
+
+        $this->tProductHost = $tProductHost;
+
+        return $this;
+    }
+
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TCombinaisonRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TCombinaisonRepository::class)]
@@ -36,6 +38,11 @@ class TCombinaison
      */
     #[ORM\OneToOne(inversedBy: 'tCombinaison', cascade: ['persist', 'remove'])]
     private ?TCombinaisonPrice $tCombinaisonPrice = null;
+
+    public function __construct()
+    {
+        $this->tCombinaisonPrices = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -490,5 +497,35 @@ class TCombinaison
 //
 //        return $data;
 //    }
+
+/**
+ * @return Collection<int, TCombinaisonPrice>
+ */
+public function getTCombinaisonPrices(): Collection
+{
+    return $this->tCombinaisonPrices;
+}
+
+public function addTCombinaisonPrice(TCombinaisonPrice $tCombinaisonPrice): static
+{
+    if (!$this->tCombinaisonPrices->contains($tCombinaisonPrice)) {
+        $this->tCombinaisonPrices->add($tCombinaisonPrice);
+        $tCombinaisonPrice->setCombinaison($this);
+    }
+
+    return $this;
+}
+
+public function removeTCombinaisonPrice(TCombinaisonPrice $tCombinaisonPrice): static
+{
+    if ($this->tCombinaisonPrices->removeElement($tCombinaisonPrice)) {
+        // set the owning side to null (unless already changed)
+        if ($tCombinaisonPrice->getCombinaison() === $this) {
+            $tCombinaisonPrice->setCombinaison(null);
+        }
+    }
+
+    return $this;
+}
 
 }

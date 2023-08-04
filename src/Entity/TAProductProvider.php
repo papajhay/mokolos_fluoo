@@ -13,9 +13,6 @@ class TAProductProvider
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'provider')]
-    private ?TProduct $product = null;
-
     #[ORM\ManyToOne(inversedBy: 'tAProductProviders')]
     private ?Provider $provider = null;
 
@@ -28,21 +25,15 @@ class TAProductProvider
     #[ORM\Column(length: 255)]
     private ?string $libelleSource = null;
 
+    #[ORM\OneToOne(mappedBy: 'tAProductProvider', cascade: ['persist', 'remove'])]
+    private ?TProduct $tProduct = null;
+
+    #[ORM\OneToOne(mappedBy: 'tAProductProvider', cascade: ['persist', 'remove'])]
+    private ?TProductHost $tProductHost = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProduct(): ?TProduct
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?TProduct $product): static
-    {
-        $this->product = $product;
-
-        return $this;
     }
 
     public function getProvider(): ?Provider
@@ -89,6 +80,40 @@ class TAProductProvider
     public function setLibelleSource(string $libelleSource): static
     {
         $this->libelleSource = $libelleSource;
+
+        return $this;
+    }
+
+    public function getTProduct(): ?TProduct
+    {
+        return $this->tProduct;
+    }
+
+    public function setTProduct(TProduct $tProduct): static
+    {
+        // set the owning side of the relation if necessary
+        if ($tProduct->getTAProductProvider() !== $this) {
+            $tProduct->setTAProductProvider($this);
+        }
+
+        $this->tProduct = $tProduct;
+
+        return $this;
+    }
+
+    public function getTProductHost(): ?TProductHost
+    {
+        return $this->tProductHost;
+    }
+
+    public function setTProductHost(TProductHost $tProductHost): static
+    {
+        // set the owning side of the relation if necessary
+        if ($tProductHost->getTAProductProvider() !== $this) {
+            $tProductHost->setTAProductProvider($this);
+        }
+
+        $this->tProductHost = $tProductHost;
 
         return $this;
     }
