@@ -32,22 +32,24 @@ class TCmsBloc
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+
     /* Identifiant du type de bloc CMS
       $idCmsBlocType */
+    #[ORM\Column]
     private ?int $idType = null;
 
-    #[ORM\Column]
-//    Identifiant du bloc CMS
-    private ?int $idCmsDiapo = null;
-
-    #[ORM\Column(type: Types::TEXT)]
     /* Contenu HTML du bloc CMS
       $cmsBloHtml */
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
     #[ORM\OneToMany(mappedBy: 'tcmsBloc', targetEntity: TAHostCmsBloc::class, orphanRemoval: true)]
     private Collection $tAHostCmsBlocs;
+
+    //    Identifiant du bloc CMS
+    #[ORM\ManyToOne(inversedBy: 'tCmsBlocs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TCmsDiapo $tCmsDiapo = null;
 
     public function __construct()
     {
@@ -83,19 +85,95 @@ class TCmsBloc
         return $this;
     }
 
-    public function getIdCmsDiapo(): ?int
+    public function getTcmsDiapo(): TCmsDiapo
     {
-        return $this->idCmsDiapo;
+        return $this->tcmsDiapo;
     }
 
-    public function setIdCmsDiapo(int $idCmsDiapo): static
+    public function setTCmsDiapo(?TCmsDiapo $tCmsDiapo): static
     {
-        $this->idCmsDiapo = $idCmsDiapo;
+        $this->tCmsDiapo = $tCmsDiapo;
 
         return $this;
     }
+    //  Todo Repository
+    /**
+     * Sauvegarder le contenu HTML d'un bloc CMS pour un site
+     * @param string $idHost                    Identifiant du site
+     * @param int $idCmsBloc                    Identifiant du bloc
+     * @param int $idCmsBlocType                Identifiant du type de bloc
+     * @param string $cmsBloHtml                Contenu HTML du bloc
+     * @return TCmsBloc
+     */
+//    public static function saveForHostFrom($idHost, $idCmsBloc, $idCmsBlocType, $cmsBloHtml = '')
+//    {
+//        $tCmsBloc = NULL;
+//
+//        if(intval($idCmsBloc) > 0)
+//        {
+//     //rechercher le bloc CMS existant
+//            $tCmsBloc = TCmsBloc::findById(array($idCmsBloc));
+//        }
+//
+//        if($tCmsBloc === NULL)
+//        {
+//     //creer un nouveau bloc CMS pour le site selectionne
+//            $tCmsBloc = TCmsBloc::createNew($idCmsBlocType, $cmsBloHtml);
+//
+//     //creer l'association du bloc CMS au site
+//            TAHostCmsBloc::createNew($idHost, $tCmsBloc->getIdCmsBloc());
+//        }
+//        else
+//        {
+//     //modifier le contenu HTML du bloc CMS existant
+//            $tCmsBloc->setCmsBloHtml($cmsBloHtml);
+//            $tCmsBloc->save();
+//        }
+//
+//        return $tCmsBloc;
+//    }
 
-//    Todo : Service
+
+    /**
+     * Sauvegarder le diaporama d'un bloc CMS pour un site
+     * @param string $idHost                    Identifiant du site
+     * @param int $idCmsBloc                    Identifiant du bloc
+     * @param int $idCmsBlocType                Identifiant du type de bloc
+     * @param string $cmsBloHtml                Contenu HTML du bloc
+     * @param int $cmsDiaHeight                 Hauteur du diaporama en px
+     * @param int $cmsDiaWidth                  Largeur du diaporama en px
+     * @return TCmsBloc
+     */
+//    public static function saveDiapoForHostFrom($idHost, $idCmsBloc, $idCmsBlocType, $cmsBloHtml, $cmsDiaHeight, $cmsDiaWidth)
+//    {
+//     //sauvegarder le contenu HTML du bloc CMS du diaporama du site
+//        $tCmsBloc = self::saveForHostFrom($idHost, $idCmsBloc, $idCmsBlocType, $cmsBloHtml);
+//
+//     //recuperer l'identifiant du diaporama CMS
+//        $idCmsDiapo = $tCmsBloc->getIdCmsDiapo();
+//
+//     //si aucun diaporama n'est associe a ce bloc CMS
+//        if($idCmsDiapo <= 0)
+//        {
+//     //ajouter le diaporama au bloc CMS
+//            $tCmsDiapo = TCmsDiapo::createNew(TCmsBloc::cmsDiaUrlFromBlocType($idCmsBlocType), $cmsDiaHeight, $cmsDiaWidth);
+//
+//            $tCmsBloc->setIdCmsDiapo($tCmsDiapo->getIdCmsDiapo());
+//            $tCmsBloc->save();
+//        }
+//        else
+//        {
+//     //recuperer le diaporama CMS
+//            $tCmsDiapo = TCmsDiapo::findById(array($idCmsDiapo));
+//            $tCmsDiapo->setCmsDiaHeight($cmsDiaHeight);
+//            $tCmsDiapo->setCmsDiaWidth($cmsDiaWidth);
+//            $tCmsDiapo->save();
+//        }
+//
+//        return $tCmsBloc;
+//    }
+
+    //    Todo  Service
     /**
      * Tableau des Url relatives pour le diaporama a partir du type de bloc CMS
      * @var array
@@ -124,107 +202,30 @@ class TCmsBloc
 //        return $cmsDiaRepUrl;
 //    }
 
-//     Todo : repository
-    /**
-     * Sauvegarder le contenu HTML d'un bloc CMS pour un site
-     * @param string $idHost                    Identifiant du site
-     * @param int $idCmsBloc                    Identifiant du bloc
-     * @param int $idCmsBlocType                Identifiant du type de bloc
-     * @param string $cmsBloHtml                Contenu HTML du bloc
-     * @return TCmsBloc
-     */
-//    public static function saveForHostFrom($idHost, $idCmsBloc, $idCmsBlocType, $cmsBloHtml = '')
-//    {
-//        $tCmsBloc = NULL;
-//
-//        if(intval($idCmsBloc) > 0)
-//        {
-            // rechercher le bloc CMS existant
-//            $tCmsBloc = TCmsBloc::findById(array($idCmsBloc));
-//        }
-
-//        if($tCmsBloc === NULL)
-//        {
-            // creer un nouveau bloc CMS pour le site selectionne
-//            $tCmsBloc = TCmsBloc::createNew($idCmsBlocType, $cmsBloHtml);
-
-            // creer l'association du bloc CMS au site
-//            TAHostCmsBloc::createNew($idHost, $tCmsBloc->getIdCmsBloc());
-//        }
-//        else
-//        {
-            // modifier le contenu HTML du bloc CMS existant
-//            $tCmsBloc->setCmsBloHtml($cmsBloHtml);
-//            $tCmsBloc->save();
-//        }
-//
-//        return $tCmsBloc;
-//    }
-
-
-    /**
-     * Sauvegarder le diaporama d'un bloc CMS pour un site
-     * @param string $idHost                    Identifiant du site
-     * @param int $idCmsBloc                    Identifiant du bloc
-     * @param int $idCmsBlocType                Identifiant du type de bloc
-     * @param string $cmsBloHtml                Contenu HTML du bloc
-     * @param int $cmsDiaHeight                 Hauteur du diaporama en px
-     * @param int $cmsDiaWidth                  Largeur du diaporama en px
-     * @return TCmsBloc
-     */
-//    public static function saveDiapoForHostFrom($idHost, $idCmsBloc, $idCmsBlocType, $cmsBloHtml, $cmsDiaHeight, $cmsDiaWidth)
-//    {
-        // sauvegarder le contenu HTML du bloc CMS du diaporama du site
-//        $tCmsBloc = self::saveForHostFrom($idHost, $idCmsBloc, $idCmsBlocType, $cmsBloHtml);
-
-        // recuperer l'identifiant du diaporama CMS
-//        $idCmsDiapo = $tCmsBloc->getIdCmsDiapo();
-
-        // si aucun diaporama n'est associe a ce bloc CMS
-//        if($idCmsDiapo <= 0)
-//        {
-            // ajouter le diaporama au bloc CMS
-//            $tCmsDiapo = TCmsDiapo::createNew(TCmsBloc::cmsDiaUrlFromBlocType($idCmsBlocType), $cmsDiaHeight, $cmsDiaWidth);
-//
-//            $tCmsBloc->setIdCmsDiapo($tCmsDiapo->getIdCmsDiapo());
-//            $tCmsBloc->save();
-//        }
-//        else
-//        {
-            // recuperer le diaporama CMS
-//            $tCmsDiapo = TCmsDiapo::findById(array($idCmsDiapo));
-//            $tCmsDiapo->setCmsDiaHeight($cmsDiaHeight);
-//            $tCmsDiapo->setCmsDiaWidth($cmsDiaWidth);
-//            $tCmsDiapo->save();
-//        }
-
-//        return $tCmsBloc;
-//    }
-
 /**
  * @return Collection<int, TAHostCmsBloc>
  */
-public function getTcmsDiapo(): Collection
+public function getTAHostCmsBlocs(): Collection
 {
-    return $this->tcmsDiapo;
+    return $this->tAHostCmsBlocs;
 }
 
-public function addTcmsDiapo(TAHostCmsBloc $tcmsDiapo): static
+public function addTAHostCmsBloc(TAHostCmsBloc $tAHostCmsBloc): static
 {
-    if (!$this->tcmsDiapo->contains($tcmsDiapo)) {
-        $this->tcmsDiapo->add($tcmsDiapo);
-        $tcmsDiapo->setTcmsBloc($this);
+    if (!$this->tAHostCmsBlocs->contains($tAHostCmsBloc)) {
+        $this->tAHostCmsBlocs->add($tAHostCmsBloc);
+        $tAHostCmsBloc->setTcmsDiapo($this);
     }
 
     return $this;
 }
 
-public function removeTcmsDiapo(TAHostCmsBloc $tcmsDiapo): static
+public function removeTAHostCmsBloc(TAHostCmsBloc $tAHostCmsBloc): static
 {
-    if ($this->tcmsDiapo->removeElement($tcmsDiapo)) {
+    if ($this->tAHostCmsBlocs->removeElement($tAHostCmsBloc)) {
         // set the owning side to null (unless already changed)
-        if ($tcmsDiapo->getTcmsBloc() === $this) {
-            $tcmsDiapo->setTcmsBloc(null);
+        if ($tAHostCmsBloc->getTcmsDiapo() === $this) {
+            $tAHostCmsBloc->setTcmsDiapo(null);
         }
     }
 
