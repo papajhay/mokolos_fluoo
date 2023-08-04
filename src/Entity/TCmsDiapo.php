@@ -33,7 +33,6 @@ class TCmsDiapo
     #[ORM\OneToMany(mappedBy: 'tCmsDiapo', targetEntity: TCmsBloc::class, orphanRemoval: true)]
     private Collection $tCmsBlocs;
 
-
     public function __construct()
     {
         $this->tAHostCmsBlocs = new ArrayCollection();
@@ -494,5 +493,4 @@ public function removeTCmsBloc(TCmsBloc $tCmsBloc): static
 
     return $this;
 }
-
 }

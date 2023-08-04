@@ -18,18 +18,18 @@ class TTechnicalSheet
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?int $idProduct;
-
-    #[ORM\Column]
-    private ?int $idOptionValue;
-
     #[ORM\Column(length: 255)]
     private ?string $technicalSheetParent = null;
 
     #[ORM\Column(length: 255)]
 //    $produitOptionValuelig
     private ?string $productOptionValueLig = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tTechnicalSheets')]
+    private ?TProduct $product = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tTechnicalSheets')]
+    private ?TOptionValue $optionValue = null;
 
 //    #[ORM\Column(length: 255)]
 //    $ficheTechParent
@@ -50,24 +50,6 @@ class TTechnicalSheet
         $this->description = $description;
 
         return $this;
-    }
-
-    /**
-     * Retrieves the value from the field id_produit
-     * @return String with the value of the field
-     */
-    public function getIdProduct()
-    {
-        return $this->idProduct;
-    }
-
-    /**
-     * Retrieves the value from the field id_option_value
-     * @return String with the value of the field
-     */
-    public function getIdOptionValue()
-    {
-        return $this->idOptionValue;
     }
 
     public function getTechnicalSheetParent(): ?string
@@ -93,6 +75,31 @@ class TTechnicalSheet
             $this->productOptionValueLig = TAProductOptionValue::findById(array($this->getIdProduct(), $this->getIdOptionValue(), 'lig'));
         }
         return $this->produitOptionValueLig;
+    }
+
+
+    public function getProduct(): ?TProduct
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?TProduct $product): static
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    public function getOptionValue(): ?TOptionValue
+    {
+        return $this->optionValue;
+    }
+
+    public function setOptionValue(?TOptionValue $optionValue): static
+    {
+        $this->optionValue = $optionValue;
+
+        return $this;
     }
 
     /**

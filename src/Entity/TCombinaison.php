@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\TCombinaisonRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TCombinaisonRepository::class)]
@@ -527,5 +525,4 @@ public function removeTCombinaisonPrice(TCombinaisonPrice $tCombinaisonPrice): s
 
     return $this;
 }
-
 }
