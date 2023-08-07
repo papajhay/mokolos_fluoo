@@ -4,15 +4,19 @@ namespace App\Service\Provider\RealizedPrint;
 
 use App\Entity\Provider;
 use App\Entity\Ttransporter;
+use App\Service\OrderService;
 use App\Service\Provider\OrderSupplierOrderService;
 use App\Service\Provider\SupplierOrderService;
+use App\Service\TtransporterService;
 
 class ManageMail extends BaseRealizedPrint
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SupplierOrderService $supplierOrderService,
-        private OrderSupplierOrderService $orderSupplierOrderService
+        private OrderSupplierOrderService $orderSupplierOrderService,
+        private TtransporterService $ttransporterService,
+        private OrderService $orderService
 
     ) {
     }
@@ -22,11 +26,10 @@ class ManageMail extends BaseRealizedPrint
      * @param int $orderId l'id de la commande chez nous
      * @return bool true en cas de succés et false en cas de probléme
      */
-    private function _manageMailFileReceived(AchattodbEmail $achattodbEmail,string $supplierOrderId, int $orderId): bool
+    private function _manageMailFileReceived(Provider $provider,AchattodbEmail $achattodbEmail,string $supplierOrderId, int $orderId): bool
     {
         // on met à jour la commande fournisseur ou la créé au besoin
-        // TODO service updateOrderSupplier
-        return $this->updateOrderSupplier($supplierOrderId, TSupplierOrderStatus::ID_STATUS_FILE_RECEIVED, $achattodbEmail, $orderId);
+        return $this->supplierOrderService->updateOrderSupplier($provider,$supplierOrderId, TSupplierOrderStatus::ID_STATUS_FILE_RECEIVED, $achattodbEmail, $orderId);
     }
 
     /**
@@ -57,8 +60,9 @@ class ManageMail extends BaseRealizedPrint
      * @param string $supplierOrderId numéro de la commande chez le fournisseur
      * @param int|null $orderId [=null] l'id de la commande chez nous ou null si non disponible
      * @return bool true en cas de succés et false en cas de probléme
+     * @throws \Exception
      */
-    private function _manageMailDispatched(AchattodbEmail $achattodbEmail, string $supplierOrderId,int $orderId = null): bool
+    private function _manageMailDispatched(Provider $provider,AchattodbEmail $achattodbEmail, string $supplierOrderId,int $orderId = null): bool
     {
         $comments = '';
 
@@ -72,7 +76,7 @@ class ManageMail extends BaseRealizedPrint
         if(!$json || !isset($json['tracking']) || !isset($json['tracking']['sent']) || !isset($json['tracking']['sent_date']) || !isset($json['tracking']['carrier']) || !isset($json['tracking']['tracking_numbers']) || !isset($json['tracking']['tracking_url']))
         {
             // on ajoute un commentaire
-            $comments = 'Impossible de récupérer les informations de tracking pour cette commande. Elle n\'a probablement pas été créé via l\'API chez '. $this->getNomFour();
+            $comments = 'Impossible de récupérer les informations de tracking pour cette commande. Elle n\'a probablement pas été créé via l\'API chez '. $provider->getName();
         }
         // si la comande n'a pas encore été expédié
         elseif($json['tracking']['sent'] != true)
@@ -88,8 +92,7 @@ class ManageMail extends BaseRealizedPrint
             {
                 case 'GLS':
                     // récupération du transporteur
-                    // TODO TTransporter Service
-                    $transporter = TTransporter::findByIdWithChildObject(TTransporter::ID_CARRIER_GLS);
+                    $transporter = $this->ttransporterService->findByIdWithChildObject(TTransporter::ID_CARRIER_GLS);
 
                     // ajout d'info au log
                     //$this->getLog()->addLogContent('Livré par ' . $transporteur->getTraNomComplet());
@@ -106,7 +109,7 @@ class ManageMail extends BaseRealizedPrint
 
                 case 'DPD':
                     // récupération du transporteur
-                    $transporter = TTransporter::findByIdWithChildObject(TTransporter::ID_CARRIER_DPD_FRANCE);
+                    $transporter = $this->ttransporterService->findByIdWithChildObject(TTransporter::ID_CARRIER_DPD_FRANCE);
 
                     // ajout d'info au log
                     //$this->getLog()->addLogContent('Livré par ' . $transporteur->getTraNomComplet());
@@ -123,7 +126,7 @@ class ManageMail extends BaseRealizedPrint
 
                 case 'France Express':
                     // récupération du transporteur
-                    $transporter = TTransporter::findByIdWithChildObject(TTransporter::ID_CARRIER_FRANCE_EXPRESS);
+                    $transporter = $this->ttransporterService->findByIdWithChildObject(TTransporter::ID_CARRIER_FRANCE_EXPRESS);
 
                     // ajout d'info au log
                     //$this->getLog()->addLogContent('Livré par ' . $transporteur->getTraNomComplet());
@@ -140,7 +143,7 @@ class ManageMail extends BaseRealizedPrint
 
                 case 'Ciblex':
                     // récupération du transporteur
-                    $transporteur = TTransporter::findByIdWithChildObject(TTransporter::ID_CARRIER_CIBLEX);
+                    $transporteur = $this->ttransporterService->findByIdWithChildObject(TTransporter::ID_CARRIER_CIBLEX);
 
                     // ajout d'info au log
                     //$this->getLog()->addLogContent('Livré par ' . $transporteur->getTraNomComplet());
@@ -165,7 +168,7 @@ class ManageMail extends BaseRealizedPrint
         }
 
         // on met à jour la commande fournisseur ou la créé au besoin
-        return $this->updateOrderSupplier($supplierOrderId, TSupplierOrderStatus::ID_STATUS_DISPATCHED, $achattodbEmail, $orderId, null, null, null, $comments, OrdersStatus::STATUS_EXPEDITION, $aDeliveryInformation);
+        return $this->supplierOrderService->updateOrderSupplier($provider,$supplierOrderId, TSupplierOrderStatus::ID_STATUS_DISPATCHED, $achattodbEmail, $orderId, null, null, null, $comments, OrdersStatus::STATUS_EXPEDITION, $aDeliveryInformation);
     }
 
 
@@ -176,10 +179,10 @@ class ManageMail extends BaseRealizedPrint
      * @param int $orderId l'id de la commande chez nous
      * @return bool true en cas de succés et false en cas de probléme
      */
-    private function _manageMailError(AchattodbEmail $achattodbEmail, string $supplierOrderId, int $orderId): bool
+    private function _manageMailError(Provider $provider,AchattodbEmail $achattodbEmail, string $supplierOrderId, int $orderId): bool
     {
         // on met à jour la commande fournisseur ou la créé au besoin
-        return $this->updateOrderSupplier($supplierOrderId, TSupplierOrderStatus::ID_STATUS_ERROR, $achattodbEmail, $orderId, null, null, null, $achattodbEmail->getMessage(), OrdersStatus::STATUS_DEPART_FAB_RETOUR);
+        return $this->supplierOrderService->updateOrderSupplier($provider,$supplierOrderId, TSupplierOrderStatus::ID_STATUS_ERROR, $achattodbEmail, $orderId, null, null, null, $achattodbEmail->getMessage(), OrdersStatus::STATUS_DEPART_FAB_RETOUR);
     }
 
     /**
@@ -214,12 +217,11 @@ class ManageMail extends BaseRealizedPrint
             $aIdOrders[] = $orderSupplierOrder->getIdOrder();
 
             // on passe la commande en retour
-            //TODO updateStatus in OrderService and create OrdersStatusHistory
-            $orderSupplierOrder->getTOrder()->updateStatus(OrdersStatus::STATUS_DEPART_FAB_RETOUR, 'Une Reimpression a été lancé.', OrdersStatusHistory::TYPE_ENVOI_MAIL_PAS_D_ENVOI, '', '', $this->getNomFour());
+            $this->orderService->updateStatus($orderSupplierOrder->getTOrder(),OrdersStatus::STATUS_DEPART_FAB_RETOUR, 'Une Reimpression a été lancé.', OrdersStatusHistory::TYPE_ENVOI_MAIL_PAS_D_ENVOI, '', '', $provider->getName());
         }
 
         // si la commande d'origine est toujours en production
-        if($originalSupplierOrder->getIdSupplierOrderStatus() == TSupplierOrderStatus::ID_STATUS_PRODUCTION)
+        if($originalSupplierOrder->getSupplierOrderStatus()->getId() == TSupplierOrderStatus::ID_STATUS_PRODUCTION)
         {
             // on la passe en statut expédié
             $this->supplierOrderService->updateStatusIfAfterCurrent($originalSupplierOrder,TSupplierOrderStatus::ID_STATUS_DISPATCHED);
@@ -239,16 +241,16 @@ class ManageMail extends BaseRealizedPrint
         else
         {
             // par défaut J+5
-            // TODO
-            $deliveryDate = DateHeure::jPlusX(5);
+           //$deliveryDate = DateHeure::jPlusX(5);
+            $today=new \DateTimeImmutable();
+            $deliveryDate = $today->modify('+5 days');
         }
 
         // on calcul le prix sans TVA
         $buyingPriceWithoutTax = $buyingPriceWithTax / (1 + $provider->getVATRate() / 100);
 
         // on créé la commande fournisseur
-        //TODO OrderSupplier in ProviderService
-        $supplierOrder = $this->orderSupplier($supplierOrderId, null, $aIdOrders[0], TSupplierOrderStatus::ID_STATUS_PRODUCTION, $deliveryDate, $buyingPriceWithoutTax);
+        $supplierOrder = $this->supplierOrderService->orderSupplier($provider,$supplierOrderId, null, $aIdOrders[0], TSupplierOrderStatus::ID_STATUS_PRODUCTION, $deliveryDate, $buyingPriceWithoutTax);
 
         // on supprime la 1er commande qu'on a lié à notre commande fournisseur
         unset($aIdOrders[0]);

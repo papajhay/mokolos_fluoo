@@ -98,6 +98,12 @@ class Ttransporter
      */
     // const MAX_TRACKING_DELAY = 0;
 
+    /**
+     * tableau pour mettre en cache les transporteur avec leur objet enfant
+     * @var TTransporteur|transporteurDPD[]
+     */
+    public TTransporteur|array $_cacheFindAllWithChild = array();
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -128,11 +134,11 @@ class Ttransporter
      * liaison entre les id de fournisseur et leur classe spécifique.
      * @var array
      */
-    //    private static $_classeDeTransporteur = array(
-    //        TTransporteur::ID_CARRIER_DPD_EUROPE => 'transporteurDPD',
-    //        TTransporteur::ID_TRANSPORTEUR_DHL	 => 'transporteurDHL',
-    //        TTransporteur::ID_CARRIER_COLISSIMO	 => 'transporteurColissimo'
-    //    );
+        private array $_classeDeTransporteur = array(
+            TTransporteur::ID_CARRIER_DPD_EUROPE => 'transporteurDPD',
+            TTransporteur::ID_TRANSPORTEUR_DHL	 => 'transporteurDHL',
+            TTransporteur::ID_CARRIER_COLISSIMO	 => 'transporteurColissimo'
+        );
 
     public function getId(): ?int
     {
