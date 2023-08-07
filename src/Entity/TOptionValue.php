@@ -50,6 +50,9 @@ class TOptionValue
     #[ORM\OneToMany(mappedBy: 'tOptionValue', targetEntity: TCombinaison::class, orphanRemoval: true)]
     private Collection $tCombinaisons;
 
+    #[ORM\OneToMany(mappedBy: 'optionValue', targetEntity: TTechnicalSheet::class)]
+    private Collection $tTechnicalSheets;
+
     public function __construct()
     {
         $this->tAProductOptionValues = new ArrayCollection();
@@ -57,6 +60,7 @@ class TOptionValue
         $this->tAProductOptionValueProviders = new ArrayCollection();
         $this->tAVariantOptionValues = new ArrayCollection();
         $this->tCombinaisons = new ArrayCollection();
+        $this->tTechnicalSheets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -244,6 +248,36 @@ class TOptionValue
             // set the owning side to null (unless already changed)
             if ($tCombinaison->getTOptionValue() === $this) {
                 $tCombinaison->setTOptionValue(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TTechnicalSheet>
+     */
+    public function getTTechnicalSheets(): Collection
+    {
+        return $this->tTechnicalSheets;
+    }
+
+    public function addTTechnicalSheet(TTechnicalSheet $tTechnicalSheet): static
+    {
+        if (!$this->tTechnicalSheets->contains($tTechnicalSheet)) {
+            $this->tTechnicalSheets->add($tTechnicalSheet);
+            $tTechnicalSheet->setOptionValue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTTechnicalSheet(TTechnicalSheet $tTechnicalSheet): static
+    {
+        if ($this->tTechnicalSheets->removeElement($tTechnicalSheet)) {
+            // set the owning side to null (unless already changed)
+            if ($tTechnicalSheet->getOptionValue() === $this) {
+                $tTechnicalSheet->setOptionValue(null);
             }
         }
 

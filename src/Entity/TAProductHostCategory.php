@@ -12,39 +12,19 @@ class TAProductHostCategory
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-    #[ORM\Column]
-    private ?int $idProductHost;
 
     #[ORM\Column]
     private ?string $tProductHost = null;
 
-    #[ORM\Column]
-    private ?int $idCategory;
+    #[ORM\ManyToOne(inversedBy: 'tAProductHostCategories')]
+    private ?TProductHost $productHost = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tAProductHostCategories')]
+    private ?TCategory $category = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * Getter pour l'attribut $idProduitHost  (Identifiant du produit)
-     * @return int(11)
-     */
-    public function getIdProductHost()
-    {
-        return $this->idProductHost;
-    }
-
-
-    /**
-     * Setter pour l'attribut $idProduitHost  (Identifiant du produit)
-     * @param int(11) $idProduitHost
-     * @return TAProduitHostCategorie
-     */
-    public function setIdProductHost($idProductHost)
-    {
-        $this->idProductHost = $idProductHost;
-        return $this;
     }
 
     /**
@@ -73,24 +53,27 @@ class TAProductHostCategory
         return $this;
     }
 
-    /**
-     * Getter pour l'attribut $idCategorie  (Identifiant de la categorie)
-     * @return int(11)
-     */
-    public function getIdCategory()
+    public function getProductHost(): ?TProductHost
     {
-        return $this->idCategory;
+        return $this->productHost;
     }
 
-
-    /**
-     * Setter pour l'attribut $idCategorie  (Identifiant de la categorie)
-     * @param int(11) $idCategorie
-     * @return TAProduitHostCategorie
-     */
-    public function setIdCategory($idCategory)
+    public function setProductHost(?TProductHost $productHost): static
     {
-        $this->idCategory = $idCategory;
+        $this->productHost = $productHost;
+
+        return $this;
+    }
+
+    public function getCategory(): ?TCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?TCategory $category): static
+    {
+        $this->category = $category;
+
         return $this;
     }
 }
