@@ -197,4 +197,42 @@ class BaseProvider
         // on n'a rien trouvé
         return false;
     }
+
+    /**
+     * fait un findById mais renvoi l'objet spécifique du fournisseur comme fournisseurPrint24 pour p24 ou renvoi un objet fournisseur par défaut
+     * @param int $idFour type de fournisseur
+     * @return fournisseur|fournisseurPrint24|FournisseurLgi|FournisseurOnline et de nombreux autres
+     */
+    public static function findByIdWithChildObject(Provider $provider,int $idProvider):Provider
+    {
+        // si ce fournisseur à sa propre classe
+        if(isset($provider::$_classeDeFournisseur[$idProvider]))
+        {
+            // on renverra un objet de cette classe
+            $classeName = $provider::$_classeDeFournisseur[$idProvider];
+        }
+        // pas de classe spécifique
+        else
+        {
+            // on renvoi un objet fournisseur
+            $classeName = __CLASS__;
+        }
+
+        // on renvoi notre objet
+        return $classeName::findById($idProvider);
+    }
+    /**
+     * indique si le fournisseur est actif
+     * @return boolean true si le fournisseur est actif et false sinon
+     */
+    public function isActive(Provider $provider): bool
+    {
+        // fournisseur inactif
+        if($provider->getActive() < Provider::SUPPLIER_ACTIVE)
+        {
+            return false;
+        }
+
+        return true;
+    }
 }

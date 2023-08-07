@@ -223,6 +223,13 @@ class Order
         $this->taOrderSupplierOrders = new ArrayCollection();
     }
 
+    // TODO create entity and Relation
+    /**
+     * objet customer à mettre en private
+     * @var customer
+     */
+    //private $client = null;
+
     /**
      * objet selectionFournisseur lié à cette commande.
      * @var SelectionFournisseur

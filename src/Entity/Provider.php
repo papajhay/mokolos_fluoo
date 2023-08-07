@@ -116,7 +116,7 @@ class Provider
     /**
      * constante pour le fournisseur actif.
      */
-    // const SUPPLIER_ACTIVE = 1;
+     const SUPPLIER_ACTIVE = 1;
 
     /**
      * constante pour le fournisseur inactif.
