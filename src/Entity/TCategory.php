@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TCategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,6 +26,14 @@ class TCategory
     #[ORM\ManyToOne(inversedBy: 'tCategories')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Hosts $host = null;
+
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: TAProductHostCategory::class)]
+    private Collection $tAProductHostCategories;
+
+    public function __construct()
+    {
+        $this->tAProductHostCategories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,6 +71,37 @@ class TCategory
     public function setHost(?Hosts $host): static
     {
         $this->host = $host;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, TAProductHostCategory>
+     */
+    public function getTAProductHostCategories(): Collection
+    {
+        return $this->tAProductHostCategories;
+    }
+
+    public function addTAProductHostCategory(TAProductHostCategory $tAProductHostCategory): static
+    {
+        if (!$this->tAProductHostCategories->contains($tAProductHostCategory)) {
+            $this->tAProductHostCategories->add($tAProductHostCategory);
+            $tAProductHostCategory->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductHostCategory(TAProductHostCategory $tAProductHostCategory): static
+    {
+        if ($this->tAProductHostCategories->removeElement($tAProductHostCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductHostCategory->getCategory() === $this) {
+                $tAProductHostCategory->setCategory(null);
+            }
+        }
 
         return $this;
     }
