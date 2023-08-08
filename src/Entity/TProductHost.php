@@ -610,6 +610,180 @@ class TProductHost
         return $this;
     }
 
+    /**
+     * @return Collection<int, TAVariantOptionValue>
+     */
+    public function getTAVariantOptionValues(): Collection
+    {
+        return $this->tAVariantOptionValues;
+    }
+
+    public function addTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+    {
+        if (!$this->tAVariantOptionValues->contains($tAVariantOptionValue)) {
+            $this->tAVariantOptionValues->add($tAVariantOptionValue);
+            $tAVariantOptionValue->setTProductHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+    {
+        if ($this->tAVariantOptionValues->removeElement($tAVariantOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tAVariantOptionValue->getTProductHost() === $this) {
+                $tAVariantOptionValue->setTProductHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTProduct(): ?TProduct
+    {
+        return $this->tProduct;
+    }
+
+    public function setTProduct(TProduct $tProduct): static
+    {
+        $this->tProduct = $tProduct;
+
+        return $this;
+    }
+
+    public function getTAProductProvider(): ?TAProductProvider
+    {
+        return $this->tAProductProvider;
+    }
+
+    public function setTAProductProvider(TAProductProvider $tAProductProvider): static
+    {
+        $this->tAProductProvider = $tAProductProvider;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TProductHostAcl>
+     */
+    public function getTProductHostAcl(): Collection
+    {
+        return $this->tProductHostAcl;
+    }
+
+    public function addTProductHostAcl(TProductHostAcl $tProductHostAcl): static
+    {
+        if (!$this->tProductHostAcl->contains($tProductHostAcl)) {
+            $this->tProductHostAcl->add($tProductHostAcl);
+            $tProductHostAcl->setTProductHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTProductHostAcl(TProductHostAcl $tProductHostAcl): static
+    {
+        if ($this->tProductHostAcl->removeElement($tProductHostAcl)) {
+            // set the owning side to null (unless already changed)
+            if ($tProductHostAcl->getTProductHost() === $this) {
+                $tProductHostAcl->setTProductHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TCmsDiapo>
+     */
+    public function getSliderProductAds(): Collection
+    {
+        return $this->sliderProductAds;
+    }
+
+    public function addSliderProductAd(TCmsDiapo $sliderProductAd): static
+    {
+        if (!$this->sliderProductAds->contains($sliderProductAd)) {
+            $this->sliderProductAds->add($sliderProductAd);
+        }
+
+        return $this;
+    }
+
+    public function removeSliderProductAd(TCmsDiapo $sliderProductAd): static
+    {
+        $this->sliderProductAds->removeElement($sliderProductAd);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TCmsDiapo>
+     */
+    public function getSliderProductDetail(): Collection
+    {
+        return $this->sliderProductDetail;
+    }
+
+    public function addSliderProductDetail(TCmsDiapo $sliderProductDetail): static
+    {
+        if (!$this->sliderProductDetail->contains($sliderProductDetail)) {
+            $this->sliderProductDetail->add($sliderProductDetail);
+        }
+
+        return $this;
+    }
+
+    public function removeSliderProductDetail(TCmsDiapo $sliderProductDetail): static
+    {
+        $this->sliderProductDetail->removeElement($sliderProductDetail);
+
+        return $this;
+    }
+
+    public function getProduitMetaParent(): ?self
+    {
+        return $this->produitMetaParent;
+    }
+
+    public function setProduitMetaParent(?self $produitMetaParent): static
+    {
+        $this->produitMetaParent = $produitMetaParent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getTProductHosts(): Collection
+    {
+        return $this->tProductHosts;
+    }
+
+    public function addTProductHost(self $tProductHost): static
+    {
+        if (!$this->tProductHosts->contains($tProductHost)) {
+            $this->tProductHosts->add($tProductHost);
+            $tProductHost->setProduitMetaParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTProductHost(self $tProductHost): static
+    {
+        if ($this->tProductHosts->removeElement($tProductHost)) {
+            // set the owning side to null (unless already changed)
+            if ($tProductHost->getProduitMetaParent() === $this) {
+                $tProductHost->setProduitMetaParent(null);
+            }
+        }
+
+        return $this;
+    }
+
     // Todo: Repository
     /*
      * renvoi le dernier idProduitHost utilisé
@@ -1988,178 +2162,4 @@ class TProductHost
     //        // on renvoi l'id de produit host
     //        return $this->getIdProduitHost();
     //    }
-
-    /**
-     * @return Collection<int, TAVariantOptionValue>
-     */
-    public function getTAVariantOptionValues(): Collection
-    {
-        return $this->tAVariantOptionValues;
-    }
-
-    public function addTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
-    {
-        if (!$this->tAVariantOptionValues->contains($tAVariantOptionValue)) {
-            $this->tAVariantOptionValues->add($tAVariantOptionValue);
-            $tAVariantOptionValue->setTProductHost($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
-    {
-        if ($this->tAVariantOptionValues->removeElement($tAVariantOptionValue)) {
-            // set the owning side to null (unless already changed)
-            if ($tAVariantOptionValue->getTProductHost() === $this) {
-                $tAVariantOptionValue->setTProductHost(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getTProduct(): ?TProduct
-    {
-        return $this->tProduct;
-    }
-
-    public function setTProduct(TProduct $tProduct): static
-    {
-        $this->tProduct = $tProduct;
-
-        return $this;
-    }
-
-    public function getTAProductProvider(): ?TAProductProvider
-    {
-        return $this->tAProductProvider;
-    }
-
-    public function setTAProductProvider(TAProductProvider $tAProductProvider): static
-    {
-        $this->tAProductProvider = $tAProductProvider;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, TProductHostAcl>
-     */
-    public function getTProductHostAcl(): Collection
-    {
-        return $this->tProductHostAcl;
-    }
-
-    public function addTProductHostAcl(TProductHostAcl $tProductHostAcl): static
-    {
-        if (!$this->tProductHostAcl->contains($tProductHostAcl)) {
-            $this->tProductHostAcl->add($tProductHostAcl);
-            $tProductHostAcl->setTProductHost($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTProductHostAcl(TProductHostAcl $tProductHostAcl): static
-    {
-        if ($this->tProductHostAcl->removeElement($tProductHostAcl)) {
-            // set the owning side to null (unless already changed)
-            if ($tProductHostAcl->getTProductHost() === $this) {
-                $tProductHostAcl->setTProductHost(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, TCmsDiapo>
-     */
-    public function getSliderProductAds(): Collection
-    {
-        return $this->sliderProductAds;
-    }
-
-    public function addSliderProductAd(TCmsDiapo $sliderProductAd): static
-    {
-        if (!$this->sliderProductAds->contains($sliderProductAd)) {
-            $this->sliderProductAds->add($sliderProductAd);
-        }
-
-        return $this;
-    }
-
-    public function removeSliderProductAd(TCmsDiapo $sliderProductAd): static
-    {
-        $this->sliderProductAds->removeElement($sliderProductAd);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, TCmsDiapo>
-     */
-    public function getSliderProductDetail(): Collection
-    {
-        return $this->sliderProductDetail;
-    }
-
-    public function addSliderProductDetail(TCmsDiapo $sliderProductDetail): static
-    {
-        if (!$this->sliderProductDetail->contains($sliderProductDetail)) {
-            $this->sliderProductDetail->add($sliderProductDetail);
-        }
-
-        return $this;
-    }
-
-    public function removeSliderProductDetail(TCmsDiapo $sliderProductDetail): static
-    {
-        $this->sliderProductDetail->removeElement($sliderProductDetail);
-
-        return $this;
-    }
-
-    public function getProduitMetaParent(): ?self
-    {
-        return $this->produitMetaParent;
-    }
-
-    public function setProduitMetaParent(?self $produitMetaParent): static
-    {
-        $this->produitMetaParent = $produitMetaParent;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, self>
-     */
-    public function getTProductHosts(): Collection
-    {
-        return $this->tProductHosts;
-    }
-
-    public function addTProductHost(self $tProductHost): static
-    {
-        if (!$this->tProductHosts->contains($tProductHost)) {
-            $this->tProductHosts->add($tProductHost);
-            $tProductHost->setProduitMetaParent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTProductHost(self $tProductHost): static
-    {
-        if ($this->tProductHosts->removeElement($tProductHost)) {
-            // set the owning side to null (unless already changed)
-            if ($tProductHost->getProduitMetaParent() === $this) {
-                $tProductHost->setProduitMetaParent(null);
-            }
-        }
-
-        return $this;
-    }
 }

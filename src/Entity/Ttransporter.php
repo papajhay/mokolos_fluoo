@@ -134,11 +134,11 @@ class Ttransporter
      * liaison entre les id de fournisseur et leur classe spécifique.
      * @var array
      */
-        private array $_classeDeTransporteur = array(
-            TTransporteur::ID_CARRIER_DPD_EUROPE => 'transporteurDPD',
-            TTransporteur::ID_TRANSPORTEUR_DHL	 => 'transporteurDHL',
-            TTransporteur::ID_CARRIER_COLISSIMO	 => 'transporteurColissimo'
-        );
+//        private array $_classeDeTransporteur = array(
+//            TTransporteur::ID_CARRIER_DPD_EUROPE => 'transporteurDPD',
+//            TTransporteur::ID_TRANSPORTEUR_DHL	 => 'transporteurDHL',
+//            TTransporteur::ID_CARRIER_COLISSIMO	 => 'transporteurColissimo'
+//        );
 
     public function getId(): ?int
     {

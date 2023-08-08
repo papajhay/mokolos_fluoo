@@ -12,32 +12,18 @@ class TProductHostAcl
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $idHost = null;
-
-    //private $idProduitHost;
     #[ORM\Column]
     private ?bool $active = null;
 
     #[ORM\ManyToOne(inversedBy: 'tProductHostAcl')]
     private ?TProductHost $tProductHost = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tProductHostAcls')]
+    private ?Hosts $host = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdHost(): ?string
-    {
-        return $this->idHost;
-    }
-
-    public function setIdHost(string $idHost): static
-    {
-        $this->idHost = $idHost;
-
-        return $this;
     }
 
     public function isActive(): ?bool
@@ -48,6 +34,30 @@ class TProductHostAcl
     public function setActive(bool $active): static
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getTProductHost(): ?TProductHost
+    {
+        return $this->tProductHost;
+    }
+
+    public function setTProductHost(?TProductHost $tProductHost): static
+    {
+        $this->tProductHost = $tProductHost;
+
+        return $this;
+    }
+
+    public function getHost(): ?Hosts
+    {
+        return $this->host;
+    }
+
+    public function setHost(?Hosts $host): static
+    {
+        $this->host = $host;
 
         return $this;
     }
@@ -114,16 +124,4 @@ class TProductHostAcl
 //            $produitAcl->delete();
 //        }
 //    }
-
-public function getTProductHost(): ?TProductHost
-{
-    return $this->tProductHost;
-}
-
-public function setTProductHost(?TProductHost $tProductHost): static
-{
-    $this->tProductHost = $tProductHost;
-
-    return $this;
-}
 }
