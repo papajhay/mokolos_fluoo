@@ -202,6 +202,9 @@ class Hosts
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TCategory::class, orphanRemoval: true)]
     private Collection $tCategories;
 
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TProductHostAcl::class)]
+    private Collection $tProductHostAcls;
+
     public function __construct()
     {
         $this->tAHostCmsBlocs = new ArrayCollection();
@@ -214,6 +217,7 @@ class Hosts
         $this->tAVariantOptionValues = new ArrayCollection();
         $this->tProductHostMoreVieweds = new ArrayCollection();
         $this->tCategories = new ArrayCollection();
+        $this->tProductHostAcls = new ArrayCollection();
     }
   
     public function getId(): ?int
@@ -846,6 +850,217 @@ class Hosts
         return $this;
     }
 
+
+    /**
+     * @return Collection<int, TTxt>
+     */
+    public function getTTxts(): Collection
+    {
+        return $this->tTxts;
+    }
+
+    public function addTTxt(TTxt $tTst): static
+    {
+        if (!$this->tTxts->contains($tTst)) {
+            $this->tTxts->add($tTst);
+            $tTst->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTTxt(TTxt $tTst): static
+    {
+        if ($this->tTxts->removeElement($tTst)) {
+            // set the owning side to null (unless already changed)
+            if ($tTst->getHost() === $this) {
+                $tTst->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TCmsPage>
+     */
+    public function getTCmsPages(): Collection
+    {
+        return $this->tCmsPages;
+    }
+
+    public function addTCmsPage(TCmsPage $tCmsPage): static
+    {
+        if (!$this->tCmsPages->contains($tCmsPage)) {
+            $this->tCmsPages->add($tCmsPage);
+            $tCmsPage->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTCmsPage(TCmsPage $tCmsPage): static
+    {
+        if ($this->tCmsPages->removeElement($tCmsPage)) {
+            // set the owning side to null (unless already changed)
+            if ($tCmsPage->getHost() === $this) {
+                $tCmsPage->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TProductHost>
+     */
+    public function getTProductHosts(): Collection
+    {
+        return $this->tProductHosts;
+    }
+
+    public function addTProductHost(TProductHost $tProductHost): static
+    {
+        if (!$this->tProductHosts->contains($tProductHost)) {
+            $this->tProductHosts->add($tProductHost);
+            $tProductHost->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTProductHost(TProductHost $tProductHost): static
+    {
+        if ($this->tProductHosts->removeElement($tProductHost)) {
+            // set the owning side to null (unless already changed)
+            if ($tProductHost->getHost() === $this) {
+                $tProductHost->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TAVariantOptionValue>
+     */
+    public function getTAVariantOptionValues(): Collection
+    {
+        return $this->tAVariantOptionValues;
+    }
+
+    public function addTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+    {
+        if (!$this->tAVariantOptionValues->contains($tAVariantOptionValue)) {
+            $this->tAVariantOptionValues->add($tAVariantOptionValue);
+            $tAVariantOptionValue->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
+    {
+        if ($this->tAVariantOptionValues->removeElement($tAVariantOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tAVariantOptionValue->getHost() === $this) {
+                $tAVariantOptionValue->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TProductHostMoreViewed>
+     */
+    public function getTProductHostMoreVieweds(): Collection
+    {
+        return $this->tProductHostMoreVieweds;
+    }
+
+    public function addTProductHostMoreViewed(TProductHostMoreViewed $tProductHostMoreViewed): static
+    {
+        if (!$this->tProductHostMoreVieweds->contains($tProductHostMoreViewed)) {
+            $this->tProductHostMoreVieweds->add($tProductHostMoreViewed);
+            $tProductHostMoreViewed->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTProductHostMoreViewed(TProductHostMoreViewed $tProductHostMoreViewed): static
+    {
+        if ($this->tProductHostMoreVieweds->removeElement($tProductHostMoreViewed)) {
+            // set the owning side to null (unless already changed)
+            if ($tProductHostMoreViewed->getHost() === $this) {
+                $tProductHostMoreViewed->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TCategory>
+     */
+    public function getTCategories(): Collection
+    {
+        return $this->tCategories;
+    }
+
+    public function addTCategory(TCategory $tCategory): static
+    {
+        if (!$this->tCategories->contains($tCategory)) {
+            $this->tCategories->add($tCategory);
+            $tCategory->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTCategory(TCategory $tCategory): static
+    {
+        if ($this->tCategories->removeElement($tCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($tCategory->getHost() === $this) {
+                $tCategory->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TProductHostAcl>
+     */
+    public function getTProductHostAcls(): Collection
+    {
+        return $this->tProductHostAcls;
+    }
+
+    public function addTProductHostAcl(TProductHostAcl $tProductHostAcl): static
+    {
+        if (!$this->tProductHostAcls->contains($tProductHostAcl)) {
+            $this->tProductHostAcls->add($tProductHostAcl);
+            $tProductHostAcl->setHost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTProductHostAcl(TProductHostAcl $tProductHostAcl): static
+    {
+        if ($this->tProductHostAcls->removeElement($tProductHostAcl)) {
+            // set the owning side to null (unless already changed)
+            if ($tProductHostAcl->getHost() === $this) {
+                $tProductHostAcl->setHost(null);
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * renvoi l'objet du pays
      * @return Countries
@@ -1319,184 +1534,4 @@ class Hosts
 //            }
 //        }
    // }
-
-   /**
-    * @return Collection<int, TTxt>
-    */
-   public function getTTxts(): Collection
-   {
-       return $this->tTxts;
-   }
-
-   public function addTTxt(TTxt $tTst): static
-   {
-       if (!$this->tTxts->contains($tTst)) {
-           $this->tTxts->add($tTst);
-           $tTst->setHost($this);
-       }
-
-       return $this;
-   }
-
-   public function removeTTxt(TTxt $tTst): static
-   {
-       if ($this->tTxts->removeElement($tTst)) {
-           // set the owning side to null (unless already changed)
-           if ($tTst->getHost() === $this) {
-               $tTst->setHost(null);
-           }
-       }
-
-       return $this;
-   }
-
-   /**
-    * @return Collection<int, TCmsPage>
-    */
-   public function getTCmsPages(): Collection
-   {
-       return $this->tCmsPages;
-   }
-
-   public function addTCmsPage(TCmsPage $tCmsPage): static
-   {
-       if (!$this->tCmsPages->contains($tCmsPage)) {
-           $this->tCmsPages->add($tCmsPage);
-           $tCmsPage->setHost($this);
-       }
-
-       return $this;
-   }
-
-   public function removeTCmsPage(TCmsPage $tCmsPage): static
-   {
-       if ($this->tCmsPages->removeElement($tCmsPage)) {
-           // set the owning side to null (unless already changed)
-           if ($tCmsPage->getHost() === $this) {
-               $tCmsPage->setHost(null);
-           }
-       }
-
-       return $this;
-   }
-
-   /**
-    * @return Collection<int, TProductHost>
-    */
-   public function getTProductHosts(): Collection
-   {
-       return $this->tProductHosts;
-   }
-
-   public function addTProductHost(TProductHost $tProductHost): static
-   {
-       if (!$this->tProductHosts->contains($tProductHost)) {
-           $this->tProductHosts->add($tProductHost);
-           $tProductHost->setHost($this);
-       }
-
-       return $this;
-   }
-
-   public function removeTProductHost(TProductHost $tProductHost): static
-   {
-       if ($this->tProductHosts->removeElement($tProductHost)) {
-           // set the owning side to null (unless already changed)
-           if ($tProductHost->getHost() === $this) {
-               $tProductHost->setHost(null);
-           }
-       }
-
-       return $this;
-   }
-
-   /**
-    * @return Collection<int, TAVariantOptionValue>
-    */
-   public function getTAVariantOptionValues(): Collection
-   {
-       return $this->tAVariantOptionValues;
-   }
-
-   public function addTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
-   {
-       if (!$this->tAVariantOptionValues->contains($tAVariantOptionValue)) {
-           $this->tAVariantOptionValues->add($tAVariantOptionValue);
-           $tAVariantOptionValue->setHost($this);
-       }
-
-       return $this;
-   }
-
-   public function removeTAVariantOptionValue(TAVariantOptionValue $tAVariantOptionValue): static
-   {
-       if ($this->tAVariantOptionValues->removeElement($tAVariantOptionValue)) {
-           // set the owning side to null (unless already changed)
-           if ($tAVariantOptionValue->getHost() === $this) {
-               $tAVariantOptionValue->setHost(null);
-           }
-       }
-
-       return $this;
-   }
-
-   /**
-    * @return Collection<int, TProductHostMoreViewed>
-    */
-   public function getTProductHostMoreVieweds(): Collection
-   {
-       return $this->tProductHostMoreVieweds;
-   }
-
-   public function addTProductHostMoreViewed(TProductHostMoreViewed $tProductHostMoreViewed): static
-   {
-       if (!$this->tProductHostMoreVieweds->contains($tProductHostMoreViewed)) {
-           $this->tProductHostMoreVieweds->add($tProductHostMoreViewed);
-           $tProductHostMoreViewed->setHost($this);
-       }
-
-       return $this;
-   }
-
-   public function removeTProductHostMoreViewed(TProductHostMoreViewed $tProductHostMoreViewed): static
-   {
-       if ($this->tProductHostMoreVieweds->removeElement($tProductHostMoreViewed)) {
-           // set the owning side to null (unless already changed)
-           if ($tProductHostMoreViewed->getHost() === $this) {
-               $tProductHostMoreViewed->setHost(null);
-           }
-       }
-
-       return $this;
-   }
-
-   /**
-    * @return Collection<int, TCategory>
-    */
-   public function getTCategories(): Collection
-   {
-       return $this->tCategories;
-   }
-
-   public function addTCategory(TCategory $tCategory): static
-   {
-       if (!$this->tCategories->contains($tCategory)) {
-           $this->tCategories->add($tCategory);
-           $tCategory->setHost($this);
-       }
-
-       return $this;
-   }
-
-   public function removeTCategory(TCategory $tCategory): static
-   {
-       if ($this->tCategories->removeElement($tCategory)) {
-           // set the owning side to null (unless already changed)
-           if ($tCategory->getHost() === $this) {
-               $tCategory->setHost(null);
-           }
-       }
-
-       return $this;
-   }
 }
