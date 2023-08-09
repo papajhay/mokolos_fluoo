@@ -15,12 +15,12 @@ class TProduct
     /**
      * id pour les quantité personnalisé quand on a que les quantité standard.
      */
-    // const ID_SPECIAL_QUANTITY_ONLY_STANDARD = 0;
+     const ID_SPECIAL_QUANTITY_ONLY_STANDARD = 0;
 
     /**
      * id pour les quantité personnalisé quand la quantité est géré en tant qu'option standard.
      */
-    // const ID_SPECIAL_QUANTITY_IN_OPTION = 3;
+    const ID_SPECIAL_QUANTITY_IN_OPTION = 3;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

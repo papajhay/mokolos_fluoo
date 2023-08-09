@@ -2,6 +2,7 @@
 
 namespace App\Service\Provider\RealizedPrint;
 
+use App\Entity\TProduct;
 use App\Helper\Supplier\Dependency;
 use App\Service\Provider\BaseProvider;
 
@@ -457,4 +458,6 @@ class BaseRealizedPrint extends BaseProvider
         // envoi une requête à l'API configuurations
         return $this->_apiRequest('get_price', $aParameters);
     }
+
+
 }

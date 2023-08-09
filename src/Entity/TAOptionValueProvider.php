@@ -155,24 +155,6 @@ class TAOptionValueProvider
 
     // TODO Repository
 
-    /**
-     * créé un nouvel objet et le renvoi.
-     * @return TAOptionValueFournisseur le nouvel objet
-     */
-    //    public static function createNew($idOptionValue, $idFournisseur, $idOptionValueSource, $nomOptionValue, $idOption, $productAlias = '', $elementId = '')
-    //    {
-    //        $ovf = new TAOptionValueFournisseur;
-    //        $ovf->setIdOptionValue($idOptionValue)
-    //            ->setIdFournisseur($idFournisseur)
-    //            ->setOptValFouIdSource($idOptionValueSource)
-    //            ->setOptValFouDescription($nomOptionValue)
-    //            ->setIdOption($idOption)
-    //            ->setOptValFouProductAlias($productAlias)
-    //            ->setOptValFouElementId($elementId)
-    //            ->save();
-    //
-    //        return $ovf;
-    //    }
 
     /**
      * renvoi un optionValueFournieur à partir d'un idOption du fournisseur et un id fournisseur.

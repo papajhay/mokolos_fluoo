@@ -11,14 +11,14 @@ class TAOptionProviderService
     }
 
     /** Retourne TRUE si ce TAOptionFournisseur existe. Certains paramétres supplémentaires existent pour certains fournisseurs.
-     * @param string   $idOptionFourSrc id de l'option chez le fournisseur
-     * @param int      $idProvider      id du fournisseur
-     * @param int|null $idProduct       [=null] id du porduit
+     * @param int $idOptionFourSrc id de l'option chez le fournisseur
+     * @param int $idProvider id du fournisseur
+     * @param int|null $idProduct [=null] id du porduit
+     * @return bool
      */
     public function existByIdOptionSrc(string $idOptionFourSrc, int $idProvider, ?int $idProduct = 0): bool
     {
-        // TODO existBy
-        return $this->optionProviderRepository->existBy(['id_fournisseur', 'opt_fou_id_source', 'id_produit'], [$idProvider, $idOptionFourSrc, $idProduct]);
+        return $this->optionProviderRepository->existBy($idOptionFourSrc,$idProvider, $idProduct);
     }
 
     /** Retourne un TAOptionFournisseur en fonction de l'id du fournissseur et de l'id de l'option chez le fournisseur ou null si rien n'a était trouvé. Certains paramétres supplémentaires existent pour certains fournisseurs.

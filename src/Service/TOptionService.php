@@ -18,16 +18,16 @@ class TOptionService
     /**
      * Retourne un boolean qui indique si cette option existe en fonction de l'id du fournissseur et de l'id de l'option chez le fournisseur. Certains paramétres supplémentaires existent pour certains fournisseurs.
      */
-    public function existByIdOptionSrc($idOptionFourSrc, $idFour, $idProduct = 0): bool
+    public function existByIdOptionSrc(string $idOptionProviderSrc, int $idProvider, $idProduct = 0): bool
     {
-        return $this->optionProviderService->existByIdOptionSrc($idOptionFourSrc, $idFour, $idProduct);
+        return $this->optionProviderService->existByIdOptionSrc($idOptionProviderSrc, $idProvider, $idProduct);
     }
 
     /**
      * renvoi le prochain ordre disponible à inséré en base.
      * @return int l'ordre à inséré en base (il aura était multiplié par 100)
      */
-    public static function ordreForNewOption(int $ordre = 100): float|int
+    public function ordreForNewOption(int $ordre = 100): float|int
     {
         // si notre ordre n'est pas numerique
         if (!is_numeric($ordre)) {
@@ -49,6 +49,7 @@ class TOptionService
         $ordreCible = $ordre * 100;
 
         // on récupére en base tous les ordres utilisé
+        //TODO create function prepareSelectAndExecuteAndFetchAll
         $allOrdreDB = DB::prepareSelectAndExecuteAndFetchAll(self::$_SQL_TABLE_NAME, ['opt_ordre'], [], 0, ['opt_ordre']);
 
         $allOrdre = [];
@@ -73,21 +74,21 @@ class TOptionService
     public function findByIdOptionSrc(string $idOptionProviderSrc, int $idProvider, int $idProduct = null): TOption|int|null
     {
         // on récupére l'option fournisseur
-        $optionFournisseur = $this->optionProviderService->findByIdOptionSrc($idOptionProviderSrc, $idProvider, $idProduct);
+        $optionProvider = $this->optionProviderService->findByIdOptionSrc($idOptionProviderSrc, $idProvider, $idProduct);
 
         // si on n'a pas trouvé d'option fournisseur
-        if (null === $optionFournisseur || null === $optionFournisseur->getIdOption()) {
+        if (null === $optionProvider || null === $optionProvider->getIdOption()) {
             // on quitte la fonction
             return null;
         }
 
         // on récupére l'option value correspondante
-        $option = self::findById($optionFournisseur->getIdOption());
+        $option = $this->OptionRepository->findById($optionProvider->getIdOption());
 
         // si elle n'a pas était récupéré (localisation manquante)
-        if (null === $option->getIdOption()) {
+        if (null === $option->getId()) {
             // on renverra l'id
-            $option = $optionFournisseur->getIdOption();
+            $option = $optionProvider->getId();
         }
 
         return $option;
@@ -97,7 +98,7 @@ class TOptionService
      * créé un option et le optionfournisseur associé si il n'existe pas.
      * @return TOption
      */
-    public function createIfNotExist(string $idOptionSource, int $idProvider, string $nomOption, int $ordre = 100, $idProduct = 0, int $typeOption = TOption::TYPE_OPTION_SELECT, $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
+    public function createIfNotExist(string $idOptionSource, int $idProvider, string $nameOption, int $order = 100, $idProduct = 0, int $typeOption = TOption::TYPE_OPTION_SELECT, $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
     {
         // on fait un trim sur l'id option value source pour éviter des bugs avec des espaces qui pourrait être ajouter
         $idOptionSourceTrim = trim($idOptionSource);
@@ -112,20 +113,21 @@ class TOptionService
             if (is_numeric($o)) {
                 // on sauvegarde la localisation
                 $option = new TOption();
-                $option->setOptLibelle($nomOption)
-                    ->setIdOption($o)
-                    ->setOptTypeOption($typeOption)
+                $option->setLibelle($nameOption)
+                    ->setId($o)
+                    ->setTypeOption($typeOption)
                     ->saveJustLocalization();
+
             }
         }
         // si l'option n'existe pas encore
         else {
             // on récupére l'ordre qu'on va assigné à l'option
-            $newOrdre = $this->ordreForNewOption($ordre);
+            $newOrdre = $this->ordreForNewOption($order);
 
             // création de l'option
             $option = new TOption();
-            $option->setLibelle($nomOption)
+            $option->setLibelle($nameOption)
                 ->setOptionOrder($newOrdre)
                 ->setTypeOption($typeOption)
                 ->setSpecialOption($optSpecialOption);

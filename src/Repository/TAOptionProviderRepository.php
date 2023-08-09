@@ -52,4 +52,26 @@ class TAOptionProviderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function existsBy(string $idSource, int $idProvider, ?int $idProduct = 0): bool
+    {
+        $queryBuilder = $this->createQueryBuilder('t')
+            ->where('t.provider = :idProvider')
+            ->andWhere('t.optIdSource = :idSource')
+            ->setParameter('idProvider', $idProvider)
+            ->setParameter('idSource', $idSource);
+
+        if ($idProduct !== null && $idProduct !== 0) {
+            $queryBuilder
+                ->andWhere('t.idProduct = :idProduct')
+                ->setParameter('idProduct', $idProduct);
+        }
+
+        $result = $queryBuilder
+            ->getQuery()
+            ->getResult();
+
+        return !empty($result);
+    }
+
 }

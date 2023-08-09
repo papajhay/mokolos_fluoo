@@ -25,13 +25,13 @@ class TAProductOptionService
     {
         $today = new \DateTimeImmutable();
         // on recherche notre TAProduitOption
-        $produitOption = $this->productOptionRepository->findById($idProduct, $option->getIdOption(), $idHost);
+        $productOption = $this->productOptionRepository->findById($idProduct, $option->getIdOption(), $idHost);
 
         // si notre produit option n'existe pas encore
-        if (null === $produitOption->getIdProduct()) {
+        if (null === $productOption->getIdProduct()) {
             // on va donc créé ce produit option
-            $produitOption = new TAProduitOption();
-            $produitOption->setIdProduit($idProduct)
+            $productOption = new TAProduitOption();
+            $productOption->setIdProduit($idProduct)
                     ->setIdOption($option->getIdOption())
                     ->setIdHost($idHost)
                     ->setLibelle($option->getOptLibelle())
@@ -39,27 +39,30 @@ class TAProductOptionService
                     ->setOptionMinValue($minValue)
                     ->setOptionMaxValue($maxValue)
                     ->setIsActif($proOptIsActif)
-                    ->setDateLastSeen($today)
-                    ->reloadPrimaryValue();
+                    ->setDateLastSeen($today);
+            $this->entityManager->persist($productOption);
+            $this->entityManager->flush();
 
-            // si une ligne existe dans la table hors localisation
-            // TODO existRow
-            if ($produitOption->existRow()) {
-                //  TODO saveJustLocalization
-                // on sauvegarde uniquement la localisation
-                $produitOption->saveJustLocalization();
-            }
-            // ce produit option value n'existe pas du tout
-            else {
-                // on le créé
-                $this->productOptionRepository->save($produitOption);
-            }
+//            $objectId = $this->entityManager->getClassMetadata(get_class($productOption))->getIdentifierValues($productOption);
+//
+//            // si une ligne existe dans la table hors localisation
+//            // TODO existRow
+//            if ($productOption->existRow()) {
+//                //  TODO saveJustLocalization
+//                // on sauvegarde uniquement la localisation
+//                $productOption->saveJustLocalization();
+//            }
+//            // ce produit option value n'existe pas du tout
+//            else {
+//                // on le créé
+//                $this->productOptionRepository->save($productOption);
+//            }
         }
         // si on a déjà ce produit option et que la derniere vu et plus ancienne que le jour meme
-        elseif ($produitOption->lastSeenString() !== $today) {
+        elseif ($productOption->lastSeenString() !== $today) {
             // on met à jour la date de derniére vu
-            $produitOption->setDateLastSeen($today);
-            $this->productOptionRepository->save($produitOption);
+            $productOption->setDateLastSeen($today);
+            $this->productOptionRepository->save($productOption);
         }
     }
 }
