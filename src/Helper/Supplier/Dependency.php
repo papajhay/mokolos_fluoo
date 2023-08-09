@@ -14,7 +14,7 @@ class Dependency
      * tableau des id options avec en clef les id options source.
      * @var int[]
      */
-    private static array $_aIdOptionByIdOptionSource = [];
+    private array $_aIdOptionByIdOptionSource = [];
 
     /**
      * tableau contenant les dépendance : des id options values.

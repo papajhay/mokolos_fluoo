@@ -13,20 +13,20 @@ class TAProductOptionValueProviderService
 
     /**
      * Cré un nouvel objet "TAProductOptionValueFournisseur" et le retourne
-     * @param smallint(6) $idFournisseur id du fournisseur
-     * @param int(11) $idOptionValue id de l'option value
-     * @param mediumint(9) $idProduct id du produit
-     * @param varchar(250) $proOptValFouIdSource id de l'option value chez le fournisseur
-     * @return TAProductOptionValueFournisseur Nouvel Objet inseré en base
+     * @param int $idProvider id du fournisseur
+     * @param int $idOptionValue id de l'option value
+     * @param int $idProduct id du produit
+     * @param string $idSource id de l'option value chez le fournisseur
+     * @return TAProductOptionValueProvider Nouvel Objet inseré en base
      */
-    public function createNew($idProvider, $idOptionValue, $idProduct, $id)
+    public function createNew(int $idProvider, int $idOptionValue, int $idProduct, string $idSource): TAProductOptionValueProvider
     {
         $productOptionValueProvider = new TAProductOptionValueProvider();
 
         $productOptionValueProvider->setIdProvider($idProvider)
                                     ->setIdOptionValue($idOptionValue)
                                     ->setIdProduct($idProduct)
-                                    ->setId($id);
+                                    ->setIdSource($idSource);
         $this->productOptionValueProviderRepository->save($productOptionValueProvider);
 
         return $productOptionValueProvider;

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Repository\ProviderRepository;
 use App\Repository\TAOptionValueProviderRepository;
 use App\Repository\TOptionValueRepository;
 use App\Service\Provider\TAOptionValueProviderService;
@@ -12,6 +13,7 @@ class TOptionValueService
         private EntityManagerInterface $entityManager,
         private TOptionValueRepository $optionValueRepository,
         private TAOptionValueProviderRepository $optionValueProviderRepository,
+        private ProviderRepository $providerRepository,
         private TAOptionValueProviderService $optionValueProviderService
     ) {
     }
@@ -33,7 +35,7 @@ class TOptionValueService
         $optionValueProvider = $this->optionValueProviderService->findByIdOptionValueSrc($idOptionValueSourceTrim, $idProvider, $option->getIdOption());
 
         // on verifie si cette option value de fournisseur existe chez nous
-        if (null !== $optionValueProvider && null !== $optionValueProvider->getIdOptionValue()) {
+        if (empty($optionValueProvider) && empty($optionValueProvider->getIdOptionValue())) {
             // on récupére l'option value correspondante
             $optionValue = $optionValueProvider->getOptionValue();
 
@@ -70,7 +72,7 @@ class TOptionValueService
             $this->optionValueRepository->save($optionValue);
 
             // création de la liaison entre le fournisseur et l'option value
-            $this->optionValueProviderService->createNew($optionValue->getIdOptionValue(), $idProvider, $idOptionValueSourceTrim, $nomOptionValue, $option->getIdOption(), $productAlias, $elementId);
+            $this->optionValueProviderService->createNew( $optionValue,$this->providerRepository->find($idProvider), $idOptionValueSourceTrim, $nomOptionValue, $option, $productAlias, $elementId);
         }
 
         // on renvoi l'optionValue
