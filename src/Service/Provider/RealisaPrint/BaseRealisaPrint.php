@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Provider\RealizedPrint;
+namespace App\Service\Provider\RealisaPrint;
 
 use App\Entity\TProduct;
 use App\Helper\Supplier\Dependency;
 use App\Service\Provider\BaseProvider;
 
-class BaseRealizedPrint extends BaseProvider
+class BaseRealisaPrint extends BaseProvider
 {
     /**
      * nombre de jour à rajouter pour la livraison.
@@ -446,7 +446,7 @@ class BaseRealizedPrint extends BaseProvider
      * @param  string          $countryCode [=FournisseurRealisaprint::COUNTRY_DEFAULT_ID] le code ISO pour la livraison
      * @return bool|array|json la réponse JSON ou false en cas de gros soucis
      */
-    protected function _apiGetPrice(int $productCode, int $quantity, string $countryCode = BaseRealizedPrint::COUNTRY_DEFAULT_ID): bool|array|json
+    protected function _apiGetPrice(int $productCode, int $quantity, string $countryCode = BaseRealisaPrint::COUNTRY_DEFAULT_ID): bool|array|json
     {
         $aParameters = [];
 

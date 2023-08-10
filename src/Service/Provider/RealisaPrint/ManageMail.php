@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Provider\RealizedPrint;
+namespace App\Service\Provider\RealisaPrint;
 
 use App\Entity\Provider;
 use App\Entity\Ttransporter;
@@ -9,7 +9,7 @@ use App\Service\Provider\OrderSupplierOrderService;
 use App\Service\Provider\SupplierOrderService;
 use App\Service\TtransporterService;
 
-class ManageMail extends BaseRealizedPrint
+class ManageMail extends BaseRealisaPrint
 {
     public function __construct(
         private EntityManagerInterface $entityManager,

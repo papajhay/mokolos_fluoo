@@ -73,7 +73,7 @@ class TAProductOption
 
     #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
     // old: $idHost
-    private ?hosts $host = null;
+    private ?Hosts $host = null;
 
     public function __construct()
     {
