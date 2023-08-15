@@ -56,7 +56,7 @@ class TAProductOptionValue
 
     #[ORM\ManyToOne(inversedBy: 'tAProductOptionValues')]
     // old: $idHost
-    private ?hosts $host = null;
+    private ?Hosts $host = null;
 
     public function getId(): ?int
     {

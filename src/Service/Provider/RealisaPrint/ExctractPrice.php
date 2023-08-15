@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Service\Provider\RealizedPrint;
+namespace App\Service\Provider\RealisaPrint;
 
 use App\Entity\Provider;
 use App\Entity\TProduct;
@@ -16,7 +16,7 @@ use App\Service\TProductHostService;
 use App\Service\TProductService;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ExctractPrice extends BaseRealizedPrint
+class ExctractPrice extends BaseRealisaPrint
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -219,7 +219,7 @@ class ExctractPrice extends BaseRealizedPrint
         }
 
         // on créé l'option et le produit option si elles n'existe pas
-        $option = $this->optionService->createIfNotExist(BaseRealizedPrint::CONFIGURATION_COUNTRY, $provider->getId(), 'Pays de livraison', 200, 0, TOption::TYPE_OPTION_SELECT, TOption::SPECIAL_OPTION_DELIVERY_COUNTRY);
+        $option = $this->optionService->createIfNotExist(BaseRealisaPrint::CONFIGURATION_COUNTRY, $provider->getId(), 'Pays de livraison', 200, 0, TOption::TYPE_OPTION_SELECT, TOption::SPECIAL_OPTION_DELIVERY_COUNTRY);
         $this->productOptionService->createIfNotExist($productHost->getIdProduit(), $option, $idHost, null, TAProduitOption::STATUS_ACTIF, '', '');
 
         // on ajoute notre option à notre tableau de retour
@@ -232,7 +232,7 @@ class ExctractPrice extends BaseRealizedPrint
             $optionValue = $this->optionValueService->createIfNotExist($idCountry, $provider->getId(), $option, $countryName);
 
             // si notre option correspond à l'option par défaut
-            if (BaseRealizedPrint::COUNTRY_DEFAULT_ID === $idCountry) {
+            if (BaseRealisaPrint::COUNTRY_DEFAULT_ID === $idCountry) {
                 // on la met en premier pour séléctionner par défaut
                 $order = 10;
             }

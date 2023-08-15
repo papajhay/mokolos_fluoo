@@ -5,16 +5,17 @@ namespace App\Repository;
 use App\Entity\TOptionValue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\BaseRepository;
 
 /**
- * @extends ServiceEntityRepository<TOptionValue>
+ * @extends \App\Repository\BaseRepository
  *
  * @method TOptionValue|null find($id, $lockMode = null, $lockVersion = null)
  * @method TOptionValue|null findOneBy(array $criteria, array $orderBy = null)
  * @method TOptionValue[]    findAll()
  * @method TOptionValue[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TOptionValueRepository extends ServiceEntityRepository
+class TOptionValueRepository extends \App\Repository\BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

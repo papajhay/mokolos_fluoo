@@ -7,9 +7,14 @@ use App\Repository\TOptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use Doctrine\Common\Util\ClassUtils;
 
 #[ORM\Entity(repositoryClass: TOptionRepository::class)]
-class TOption
+#[ORM\Table(name: "toption")]
+class TOption extends BaseEntity
 {
     /**
      * id de l'option pour la quantité.
@@ -632,4 +637,5 @@ class TOption
 
         return $this;
     }
+
 }
