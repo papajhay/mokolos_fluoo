@@ -27,7 +27,7 @@ class BaseProvider
         private AchattodbEmailService $achattodbEmailService,
         private OrderSupplierOrderService $orderSupplierOrderService,
         private TOptionService $toptionService,
-        private TOptionValueService $optionValueService,
+        //private TOptionValueService $optionValueService,
         private TAProductOptionService $productOptionService,
         private TAProductOptionValueService $productOptionValueService
     ) {
@@ -66,22 +66,22 @@ class BaseProvider
      * @param string  $idOptionValueSource l'id de l'option value chez le fournisseur
      * @param string  $idHostFusion        id du site
      */
-    public function createOptionValue(Provider $provider, TOption $option, string $nomOptionValue, string $idOptionValueSource, int $idProduct, string $idHostFusion = 'lig'): void
-    {
-        // création de l'option value si elle n'existe pas
-        $optionValue = $this->optionValueService->createIfNotExist($idOptionValueSource, $provider->getId(), $option, $nomOptionValue);
-
-        // on charge notre objet produitOption ou on le créé si il n'existe pas
-        $this->productOptionService->createIfNotExist($idProduct, $option, $idHostFusion, null, TAProduitOption::STATUS_ACTIF, '', '');
-
-        // liaison de l'option value avec le produit
-        $produitOptionValue = $this->productOptionValueService->createIfNotExist($idProduct, $optionValue, $idHostFusion);
-
-        // modification de la date de derniére vue pour ne pas la supprimer automatiquement car elle n'est pas créé automatiquement
-        $futur = new \DateTimeImmutable('01/01/2050');
-        $produitOptionValue->setProOptDateLastSeen($futur)
-            ->save();
-    }
+//    public function createOptionValue(Provider $provider, TOption $option, string $nomOptionValue, string $idOptionValueSource, int $idProduct, string $idHostFusion = 'lig'): void
+//    {
+//        // création de l'option value si elle n'existe pas
+//        $optionValue = $this->optionValueService->createIfNotExist($idOptionValueSource, $provider->getId(), $option, $nomOptionValue);
+//
+//        // on charge notre objet produitOption ou on le créé si il n'existe pas
+//        $this->productOptionService->createIfNotExist($idProduct, $option, $idHostFusion, null, TAProduitOption::STATUS_ACTIF, '', '');
+//
+//        // liaison de l'option value avec le produit
+//        $produitOptionValue = $this->productOptionValueService->createIfNotExist($idProduct, $optionValue, $idHostFusion);
+//
+//        // modification de la date de derniére vue pour ne pas la supprimer automatiquement car elle n'est pas créé automatiquement
+//        $futur = new \DateTimeImmutable('01/01/2050');
+//        $produitOptionValue->setProOptDateLastSeen($futur)
+//            ->save();
+//    }
 
     /**
      * Recherche un id Provider par rapport a son nom.

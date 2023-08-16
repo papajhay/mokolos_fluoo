@@ -2,6 +2,9 @@
 
 namespace App\Service\Provider;
 
+use App\Repository\TAOptionProviderRepository;
+use Doctrine\ORM\EntityManagerInterface;
+
 class TAOptionProviderService
 {
     public function __construct(

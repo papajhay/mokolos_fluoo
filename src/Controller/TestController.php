@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\TOption;
 use App\Entity\TOptionValue;
 use App\Repository\TOptionValueRepository;
+use App\Service\Provider\RealisaPrint\BaseRealisaPrint;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -42,5 +43,11 @@ class TestController extends AbstractController
         $entity = $optionValueRepository->insert($arrayData);
         dump($entity);
         return new Response();
+    }
+    #[Route('/testApi', name: 'api_test', methods:['get'])]
+    public function getProduct(BaseRealisaPrint $baseRealisaPrint): Response
+    {
+        $data=$baseRealisaPrint->_apiProduct();
+        return $this->json($data);
     }
 }

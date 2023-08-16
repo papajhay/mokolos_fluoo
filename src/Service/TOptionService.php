@@ -4,6 +4,9 @@ namespace App\Service;
 
 use App\Entity\TOption;
 use App\Repository\TAProductOptionRepository;
+use App\Repository\TOptionRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Service\Provider\TAOptionProviderService;
 
 class TOptionService
 {

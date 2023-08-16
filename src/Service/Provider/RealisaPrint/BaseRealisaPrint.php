@@ -3,6 +3,8 @@
 namespace App\Service\Provider\RealisaPrint;
 
 use App\Entity\TProduct;
+use App\Helper\Client;
+use App\Helper\Curl;
 use App\Helper\Supplier\Dependency;
 use App\Service\Provider\BaseProvider;
 
@@ -71,7 +73,9 @@ class BaseRealisaPrint extends BaseProvider
     /**
      * objet Curl qui va gérer tous les appels à l'API.
      */
-    private Curl $_curl;
+    protected Curl $_curl;
+
+    protected Client $_client;
 
     /**
      * sous objet gérant les dépendance.
@@ -82,27 +86,34 @@ class BaseRealisaPrint extends BaseProvider
     /**
      * renvoi l'objet curl pour aller sur l'API.
      */
-    private function getCurl(): Curl
+    public function getCurl(string $url,  array $param): Curl
     {
         // si on n'a pas initialisé le curl
-        if (null === $this->_curl) {
-            // on initialise le curl
-            $this->_initCurl();
-        }
+//        if (null === $this->_curl) {
+//            // on initialise le curl
+//            $this->_initCurl();
+//        }
 
-        return $this->_curl;
+         $this->_initCurl($url, $param);
+         return $this->_curl;
+    }
+
+    public function getClient(string $url, array $param): Client
+    {
+        $this->_client= new Client($url, $param);
+        return $this->_client;
     }
 
     /**
      * initialise la requête curl avec les bons paramétres.
      */
-    private function _initCurl(): void
+    protected function _initCurl(string $url, array $param): void
     {
         // initialisation de la requête curl
-        $this->_curl = new Curl();
+        $this->_curl = new Curl($url, $param);
 
         // gestion des cookie
-        $this->_curl->setOptCookieFile($this->curlCookiePath(rand(0, 10000)));
+        //$this->_curl->setOptCookieFile($this->curlCookiePath(rand(0, 10000)));
     }
 
     /**
@@ -396,20 +407,21 @@ class BaseRealisaPrint extends BaseProvider
      * @param  array|type  $aParameters paramétres de l'API
      * @return array|false un tableau avec la réponse de l'API ou false en cas de probléme
      */
-    protected function _apiRequest(type $url, type|array $aParameters = []): bool|array
+    protected function _apiRequest(string $url): array
     {
-        // on ajoute les paramétres de connexion
-        $aParameters['shop_id'] = $this->getSiteLogin();
-        $aParameters['api_key'] = $this->getSitePass();
 
-        // on met la bonne url
-        $this->getCurl()->setOptUrl($this->getSiteAdresse().$url);
+        $aParameters = [
+            'shop_id' => 75,
+            'api_key' => 'f9f9030e6e2b7975770fe02f175a5627'
+        ];
 
-        // on ajoute les paramétre post
-        $this->getCurl()->setOptPost(1, http_build_query($aParameters));
+        $finalUrl='https://www.realisaprint.com/api/'.$url;
+
 
         // on récupére la réponse
-        $page = $this->getCurl()->exec();
+        $client = $this->getClient($finalUrl, $aParameters);
+
+        $page = $client->execute();
 
         // décodage du json
         $json = json_decode($page, true);
@@ -457,6 +469,16 @@ class BaseRealisaPrint extends BaseProvider
 
         // envoi une requête à l'API configuurations
         return $this->_apiRequest('get_price', $aParameters);
+    }
+
+    /**
+     * appel de l'API product
+     * @return bool|array|json la réponse JSON ou false en cas de gros soucis
+     */
+    public function _apiProduct(): json|array
+    {
+        // envoi une requête à l'API products
+        return $this->_apiRequest("products");
     }
 
 
