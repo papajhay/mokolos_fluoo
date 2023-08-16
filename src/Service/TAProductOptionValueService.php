@@ -2,10 +2,12 @@
 
 namespace App\Service;
 
+use App\Repository\TAProductOptionValueRepository;
 use App\Service\Provider\DateHeure;
 use App\Service\Provider\System;
 use App\Service\Provider\TAProduitOptionValue;
 use App\Service\Provider\TOptionValue;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TAProductOptionValueService
 {

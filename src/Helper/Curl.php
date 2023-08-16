@@ -4,6 +4,10 @@ namespace App\Helper;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpClient\CurlHttpClient;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class Curl
@@ -12,7 +16,7 @@ class Curl
      * url utilisé pour la requête curl.
      * @var string
      */
-    protected $url;
+    protected string $url;
 
     /**
      * paramétre permettant de savoir si il faut faire un utf8encode à la fin du exec.
@@ -40,25 +44,48 @@ class Curl
 
     protected $curlOptions = [];
 
-    protected CurlHttpClient $client;
+    protected $client;
 
     protected $httpMethod = 'POST';
 
-    protected $error;
+    protected string $error;
 
     protected \CurlHandle $curlHandle;
+
 
     /**
      * Constructeur, créé la requête curl.
      */
     public function __construct(
         string $url,
-        string $httpMethod = 'POST'
-    ) {
-        $this->client = new CurlHttpClient();
+        array $param = null
+     ) {
+        $this->url=$url;
+        $this->client = HttpClient::create();
+        if (null !== $param) {
+            $this->setBody($param);
+        }
     }
 
-    public function exec($followLocation = false, $disablePostAfterLocation = false, $nbrRedirectionRestante = 5, $showHeader = false)
+
+    /**
+     * @throws \JsonException
+     */
+    public function setBody(array $body): self
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function execute(bool $followLocation = false, $disablePostAfterLocation = false, int $nbrRedirectionRestante = 5, bool $showHeader = false):string
     {
         $options = [
             'extra' => [
@@ -68,95 +95,108 @@ class Curl
             ],
         ];
 
-        $this->client->request($this->httpMethod, $this->url, $options);
+        $response = $this->client->request(
+            $this->httpMethod,
+            $this->url,
+            [
+                'body' => $this->body,
+            ]
+        );
 
-        $resultatExtractUrl = [];
+        //$resultatExtractUrl = [];
 
         // si on doit suivre les redirection
-        if ($followLocation) {
-            // on active les header et le return transferer pour pouvoir voir les Location
-            $this->setOptHeader(true)
-                ->setOptReturnTransferer(true);
-        }
+//        if ($followLocation) {
+//            // on active les header et le return transferer pour pouvoir voir les Location
+//            $this->setOptHeader(true)
+//                ->setOptReturnTransferer(true);
+//        }
 
         // execution de la requête curl
         //   $this->reponseExec = curl_exec($this->_connection);
-        $response = $this->client->request('POST', $this->url);
 
-        // on extrait la location si on a une
-        $location = $this->headerLocation();
+        $statusCode = $response->getStatusCode();
 
-        // si on doit suivre les redirection, qu'on a pas atteint la limitte et qu'il y a une redirection
-        if ($followLocation && $nbrRedirectionRestante > 0 && false !== $location) {
-            // on diminue le nombre de redirection restante
-            --$nbrRedirectionRestante;
+        $content = $response->getContent();
 
-            // si on doit désactiver le post pour les redirection
-            if ($disablePostAfterLocation) {
-                // désactivation du post
-                $this->setOptPost(0);
-            }
+        return $content;
 
-            // on regarde si il s'agit d'une url en absolu
-            if (preg_match('#^https?://#', $location)) {
-                // maj de l'url avec celle dans le location
-                $this->setOptUrl($location);
-            }
-            // url en relatif commencant pat un /
-            elseif (preg_match('#^/#', $location)) {
-                // si on extrait l'adresse du site de la derniére url
-                if (preg_match('#^((?:https?://)[^/]+)/#', $this->url, $resultatExtractUrl)) {
-                    // maj de l'url
-                    $this->setOptUrl($resultatExtractUrl[1].$location);
-                }
-                // sinon pas l'url ne contenait que le nom du site
-                else {
-                    // maj de l'url
-                    $this->setOptUrl($this->url.$location);
-                }
-            }
-            // url en relatif ne commencant pas pat un /
-            else {
-                // on extrait l'adresse du site de la derniére url avec tous les repertoire
-                if (preg_match('#^(.*)/[^/]*$#', $this->url, $resultatExtractUrl)) {
-                    // 	// maj de l'url
-                    $this->setOptUrl($resultatExtractUrl[1].$location);
-                }
-                // sinon pas l'url ne contenait que le nom du site
-                else {
-                    // maj de l'url
-                    $this->setOptUrl($this->url.'/'.$location);
-                }
-            }
-
-            // on fait le exec sur l'url du location
-            $exec = $this->exec($followLocation, $disablePostAfterLocation, $nbrRedirectionRestante, $showHeader);
-
-            // si on doit faire un utf8encode
-            if ($this->utf8encode) {
-                return 'UTF-8'($exec);
-            }
-            // pas de utf8encode
-            else {
-                return $exec;
-            }
-        }
-
-        // si on doit suivre les redirection
-        if ($followLocation) {
-            // on met à jour la propriété des header à la fin
-            $this->setOptHeader($showHeader);
-        }
-
-        // si on doit faire un utf8encode
-        if ($this->utf8encode) {
-            return 'UTF-8'($this->reponseExec);
-        }
-        // pas de utf8encode
-        else {
-            return $this->reponseExec;
-        }
+//
+//        // on extrait la location si on a une
+//        $location = $this->headerLocation();
+//
+//        // si on doit suivre les redirection, qu'on a pas atteint la limitte et qu'il y a une redirection
+//        if ($followLocation && $nbrRedirectionRestante > 0 && false !== $location) {
+//            // on diminue le nombre de redirection restante
+//            --$nbrRedirectionRestante;
+//
+//            // si on doit désactiver le post pour les redirection
+//            if ($disablePostAfterLocation) {
+//                // désactivation du post
+//                $this->setOptPost(0);
+//            }
+//
+//            // on regarde si il s'agit d'une url en absolu
+//            if (preg_match('#^https?://#', $location)) {
+//                // maj de l'url avec celle dans le location
+//                $this->setOptUrl($location);
+//            }
+//            // url en relatif commencant pat un /
+//            elseif (preg_match('#^/#', $location)) {
+//                // si on extrait l'adresse du site de la derniére url
+//                if (preg_match('#^((?:https?://)[^/]+)/#', $this->url, $resultatExtractUrl)) {
+//                    // maj de l'url
+//                    $this->setOptUrl($resultatExtractUrl[1].$location);
+//                }
+//                // sinon pas l'url ne contenait que le nom du site
+//                else {
+//                    // maj de l'url
+//                    $this->setOptUrl($this->url.$location);
+//                }
+//            }
+//            // url en relatif ne commencant pas pat un /
+//            else {
+//                // on extrait l'adresse du site de la derniére url avec tous les repertoire
+//                if (preg_match('#^(.*)/[^/]*$#', $this->url, $resultatExtractUrl)) {
+//                    // 	// maj de l'url
+//                    $this->setOptUrl($resultatExtractUrl[1].$location);
+//                }
+//                // sinon pas l'url ne contenait que le nom du site
+//                else {
+//                    // maj de l'url
+//                    $this->setOptUrl($this->url.'/'.$location);
+//                }
+//            }
+//
+//            // on fait le exec sur l'url du location
+//            $exec = $this->exec($followLocation, $disablePostAfterLocation, $nbrRedirectionRestante, $showHeader);
+//
+//            // si on doit faire un utf8encode
+//            if ($this->utf8encode) {
+//                return 'UTF-8'($exec);
+//            }
+//            // pas de utf8encode
+//            else {
+//                return $exec;
+//            }
+//        }
+//
+//        // si on doit suivre les redirection
+//        if ($followLocation) {
+//            // on met à jour la propriété des header à la fin
+//            $this->setOptHeader($showHeader);
+//        }
+//
+//        // si on doit faire un utf8encode
+//        if ($this->utf8encode) {
+//            return 'UTF-8'($this->reponseExec);
+//        }
+//        // pas de utf8encode
+//        else {
+//            return $this->reponseExec;
+//        }
     }
+
 
     /**
      * Retourne une chaîne contenant le dernier message d'erreur cURL.
@@ -277,7 +317,7 @@ class Curl
      */
     public function setOpt($option, $value)
     {
-        $this->curlOptions[$option] = $value;
+        //$this->curlOptions[$option] = $value;
 
         return $this;
     }
@@ -299,18 +339,18 @@ class Curl
      * indique le fichier dans lequel le cookie va être sauvegardé.
      * @return Curl
      */
-    // public function setOptCookieFile($filename = '/tmp/curl_cookie/cookie.txt')
-    // {
-    // création d'un nouvel objet fichier
-    // $fichier = new Fichier();
-    // $fichier->setCheminComplet($filename);
-
-    // on créé le répertoire qui va contenir le fichier si besoin
-    //  	$fichier->getRepertoire()->mk();
-
-    // 	$this->curlOptions[CURLOPT_COOKIEJAR] = $fichier->getCheminComplet();
-    // 	return $this;
-    //  }
+//     public function setOptCookieFile($filename = '/tmp/curl_cookie/cookie.txt')
+//     {
+//     //création d'un nouvel objet fichier
+//     $fichier = new Fichier();
+//     $fichier->setCheminComplet($filename);
+//
+//    // on créé le répertoire qui va contenir le fichier si besoin
+//      	$fichier->getRepertoire()->mk();
+//
+//     	$this->curlOptions[CURLOPT_COOKIEJAR] = $fichier->getCheminComplet();
+//     	return $this;
+//      }
 
     /**
      * contenu du cookie.
@@ -341,10 +381,10 @@ class Curl
 
     /**
      * actve ou desactive l'envoi des header.
-     * @param  bool $enable veux-t-on activer cette option ?
+     * @param bool $enable veux-t-on activer cette option ?
      * @return Curl
      */
-    public function setOptHeader($enable = true)
+    public function setOptHeader(bool $enable = true): static
     {
         $this->curlOptions[CURLOPT_HEADER] = $enable;
 
@@ -386,10 +426,10 @@ class Curl
 
     /**
      * renvoi les donnée au lieu de les affiché si $enable est à TRUE.
-     * @param  bool $enable
+     * @param bool $enable
      * @return Curl
      */
-    public function setOptReturnTransferer($enable = true)
+    public function setOptReturnTransferer(bool $enable = true): static
     {
         // si on active la fonction
         if (true === $enable) {
