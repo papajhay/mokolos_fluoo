@@ -1,11 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Test\Realisa;
 
 use App\Entity\TAProductProvider;
 use App\Entity\TOption;
 use App\Entity\TOptionValue;
 use App\Entity\TProduct;
+use App\Repository\TOptionRepository;
 use App\Repository\TOptionValueRepository;
 use App\Service\Provider\RealisaPrint\BaseRealisaPrint;
 use Doctrine\DBAL\Exception;
@@ -14,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\TOptionRepository;
+
 
 
 class TestController extends AbstractController
@@ -31,7 +32,7 @@ class TestController extends AbstractController
      * @throws MappingException
      */
     #[Route('/test', name: 'app_test')]
-    public function index(TOptionRepository $optionRepository,TOptionValueRepository $optionValueRepository,ManagerRegistry $doctrine): Response
+    public function index(TOptionRepository $optionRepository, TOptionValueRepository $optionValueRepository, PersistenceManagerRegistry $doctrine): Response
     {
         /** @var TOption $option */
         $option = $optionRepository->find(2);
@@ -46,12 +47,20 @@ class TestController extends AbstractController
         dump($entity);
         return new Response();
     }
-    #[Route('/testApi', name: 'api_test', methods:['get'])]
+    #[Route('/product', name: 'api_test', methods:['get'])]
     public function getProduct(BaseRealisaPrint $baseRealisaPrint): Response
     {
         $data=$baseRealisaPrint->_apiProduct();
         return $this->json($data);
     }
+
+    #[Route('/price', name: 'get_price', methods:['get'])]
+    public function getPrice(BaseRealisaPrint $baseRealisaPrint): Response
+    {
+       $price = $baseRealisaPrint->_apiGetPrice(11667, 2 );
+        return $this->json($price);
+    }
+
 
     #[Route('/configurations', name: 'api_configurations', methods:['get'])]
     public function getConfigurations(BaseRealisaPrint $baseRealisaPrint): Response
