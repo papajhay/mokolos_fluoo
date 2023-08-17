@@ -65,28 +65,6 @@ class ExctractPrice extends BaseRealisaPrint
             $this->getDependency()->addDependency($optionValue->getIdOptionValue());
         }
     }
-    /**
-     * appel de l'API configurationsr
-     * @param TProduct $product L'objet de produit ou le code de l'API
-     * @return bool|array|json la réponse JSON ou false en cas de gros soucis
-     */
-    public function _apiConfigurations(TProduct $product): bool|array|json
-    {
-        // si on a un objet
-        if(is_object($product))
-        {
-            // on envoi l'id source du produit dans l'API
-            $aParameters = array('product' => $this->productService->getIdProductSrc($product));
-        }
-        else
-        {
-            // on renvoi directement le code dans l'API
-            $aParameters = array('product' => $product);
-        }
-
-        // envoi une requête à l'API configuurations
-        return $this->_apiRequest('configurations', $aParameters);
-    }
 
     /**
      * créé et met à jour les options et optionsValues en faisant un appel à l'API du fournisseur.

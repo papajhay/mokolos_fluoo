@@ -403,14 +403,14 @@ class BaseRealisaPrint extends BaseProvider
 
     /**
      * Envoi une requête à l'API du fournisseur.
-     * @param  type        $url         url de l'API
-     * @param  array|type  $aParameters paramétres de l'API
-     * @return array|false un tableau avec la réponse de l'API ou false en cas de probléme
+     * @param string $url url de l'API
+     * @param array $aParameters paramétres de l'API
+     * @return array un tableau avec la réponse de l'API ou false en cas de probléme
      */
-    protected function _apiRequest(string $url): array
+    protected function _apiRequest(string $url, array $aParameters): array
     {
 
-        $aParameters = [
+        $aParameters += [
             'shop_id' => 75,
             'api_key' => 'f9f9030e6e2b7975770fe02f175a5627'
         ];
@@ -473,7 +473,7 @@ class BaseRealisaPrint extends BaseProvider
 
     /**
      * appel de l'API product
-     * @return bool|array|json la réponse JSON ou false en cas de gros soucis
+     * @return array|json la réponse JSON ou false en cas de gros soucis
      */
     public function _apiProduct(): json|array
     {
@@ -481,5 +481,31 @@ class BaseRealisaPrint extends BaseProvider
         return $this->_apiRequest("products");
     }
 
+    /**
+     * appel de l'API configurationsr
+     * @param string|TProduct $product L'objet de produit ou le code de l'API
+     * @return bool|array|json la réponse JSON ou false en cas de gros soucis
+     */
+    public function _apiConfigurations(TProduct|string $product): bool|array|json
+    {
+        // si on a un objet
+        if(is_object($product))
+        {
+            // on envoi l'id source du produit dans l'API
+            $aParameters = [
+                'product' => $product->getTAProductProvider()->getIdSource(),
+            ];
+        }
+        else
+        {
+            // on renvoi directement le code dans l'API
+            $aParameters = [
+                'product' => $product,
+            ];
+        }
+
+        // envoi une requête à l'API configuurations
+        return $this->_apiRequest('configurations', $aParameters);
+    }
 
 }

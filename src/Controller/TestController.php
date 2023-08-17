@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\TAProductProvider;
 use App\Entity\TOption;
 use App\Entity\TOptionValue;
+use App\Entity\TProduct;
 use App\Repository\TOptionValueRepository;
 use App\Service\Provider\RealisaPrint\BaseRealisaPrint;
 use Doctrine\DBAL\Exception;
@@ -13,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TOptionRepository;
-use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+
 
 class TestController extends AbstractController
 {
@@ -50,4 +52,16 @@ class TestController extends AbstractController
         $data=$baseRealisaPrint->_apiProduct();
         return $this->json($data);
     }
+
+    #[Route('/configurations', name: 'api_configurations', methods:['get'])]
+    public function getConfigurations(BaseRealisaPrint $baseRealisaPrint): Response
+    {
+        $product= new TProduct();
+        $productProvider= new TAProductProvider();
+        $productProvider->setIdSource(293);
+        $product->setTAProductProvider($productProvider);
+        $data=$baseRealisaPrint->_apiConfigurations($product);
+        return $this->json($data);
+    }
+
 }
