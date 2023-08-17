@@ -33,7 +33,13 @@ class TCmsDiapo
     #[ORM\OneToMany(mappedBy: 'tCmsDiapo', targetEntity: TCmsBloc::class, orphanRemoval: true)]
     private Collection $tCmsBlocs;
 
+    #[ORM\ManyToOne(targetEntity: TProductHost::class, inversedBy: "sliderProductAds")]
+    #[ORM\JoinColumn(name: "slider_product_ads_host_id", referencedColumnName: "id")]
+    private ?TProductHost $sliderProductAdsHost = null;
 
+    #[ORM\ManyToOne(targetEntity: TProductHost::class, inversedBy: "sliderProductDetail")]
+    #[ORM\JoinColumn(name: "slider_product_detail_host_id", referencedColumnName: "id")]
+    private ?TProductHost $sliderProductDetailHost = null;
     public function __construct()
     {
         $this->tAHostCmsBlocs = new ArrayCollection();
@@ -494,5 +500,23 @@ public function removeTCmsBloc(TCmsBloc $tCmsBloc): static
 
     return $this;
 }
+
+    public function getSliderProductAdsHost(): ?TProductHost {
+        return $this->sliderProductAdsHost;
+    }
+
+    public function setSliderProductAdsHost(?TProductHost $productHost): self {
+        $this->sliderProductAdsHost = $productHost;
+        return $this;
+    }
+
+    public function getSliderProductDetailHost(): ?TProductHost {
+        return $this->sliderProductDetailHost;
+    }
+
+    public function setSliderProductDetailHost(?TProductHost $productHost): self {
+        $this->sliderProductDetailHost = $productHost;
+        return $this;
+    }
 
 }

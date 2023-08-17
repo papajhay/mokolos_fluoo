@@ -179,16 +179,14 @@ class TProductHost
      * Renvoi le diaporama des images de pub du produit
      * @var TCmsDiapo
      */
-    // private $_sliderProductAds = null;
-    #[ORM\ManyToMany(targetEntity: TCmsDiapo::class)]
+    #[ORM\OneToMany(targetEntity: TCmsDiapo::class, mappedBy: "sliderProductAdsHost")]
     private Collection $sliderProductAds;
 
     /**
      * Renvoi le diaporama des images de détails du produit
      * @var TCmsDiapo
      */
-    // private $_sliderProductDetail = null;
-    #[ORM\ManyToMany(targetEntity: TCmsDiapo::class)]
+    #[ORM\OneToMany(targetEntity: TCmsDiapo::class, mappedBy: "sliderProductDetailHost")]
     private Collection $sliderProductDetail;
 
     /**
@@ -702,14 +700,41 @@ class TProductHost
         return $this->sliderProductAds;
     }
 
-    public function addSliderProductAd(TCmsDiapo $sliderProductAd): static
+    public function addSliderProductAds(TCmsDiapo $diapo): self {
+        if (!$this->sliderProductAds->contains($diapo)) {
+            $this->sliderProductAds[] = $diapo;
+            $diapo->setSliderProductAdsHost($this);
+        }
+        return $this;
+    }
+
+    public function removeSliderProductAds(TCmsDiapo $diapo): self {
+        if ($this->sliderProductAds->contains($diapo)) {
+            $this->sliderProductAds->removeElement($diapo);
+            if ($diapo->getSliderProductAdsHost() === $this) {
+                $diapo->setSliderProductAdsHost(null);
+            }
+        }
+        return $this;
+    }
+    /*public function removeSliderProductAds(TCmsDiapo $diapo): self {
+        if ($this->sliderProductAds->contains($diapo)) {
+            $this->sliderProductAds->removeElement($diapo);
+            if ($diapo->getSliderProductAdsHost() === $this) {
+                $diapo->setSliderProductAdsHost(null);
+            }
+        }
+        return $this;
+    }*/
+
+    /*public function addSliderProductAd(TCmsDiapo $sliderProductAd): static
     {
         if (!$this->sliderProductAds->contains($sliderProductAd)) {
             $this->sliderProductAds->add($sliderProductAd);
         }
 
         return $this;
-    }
+    }*/
 
     public function removeSliderProductAd(TCmsDiapo $sliderProductAd): static
     {
@@ -726,21 +751,45 @@ class TProductHost
         return $this->sliderProductDetail;
     }
 
-    public function addSliderProductDetail(TCmsDiapo $sliderProductDetail): static
+    public function addSliderProductDetail(TCmsDiapo $diapo): self {
+        if (!$this->sliderProductDetail->contains($diapo)) {
+            $this->sliderProductDetail[] = $diapo;
+            $diapo->setSliderProductDetailHost($this);
+        }
+        return $this;
+    }
+
+    public function removeSliderProductDetail(TCmsDiapo $diapo): self {
+        if ($this->sliderProductDetail->contains($diapo)) {
+            $this->sliderProductDetail->removeElement($diapo);
+            if ($diapo->getSliderProductDetailHost() === $this) {
+                $diapo->setSliderProductDetailHost(null);
+            }
+        }
+        return $this;
+    }
+
+    /*public function setSliderProductDetail(Collection $sliderProductDetail): void
+    {
+        $this->sliderProductDetail = $sliderProductDetail;
+    }*/
+
+
+    /*public function addSliderProductDetail(TCmsDiapo $sliderProductDetail): static
     {
         if (!$this->sliderProductDetail->contains($sliderProductDetail)) {
             $this->sliderProductDetail->add($sliderProductDetail);
         }
 
         return $this;
-    }
+    }*/
 
-    public function removeSliderProductDetail(TCmsDiapo $sliderProductDetail): static
+   /* public function removeSliderProductDetail(TCmsDiapo $sliderProductDetail): static
     {
         $this->sliderProductDetail->removeElement($sliderProductDetail);
 
         return $this;
-    }
+    }*/
 
     public function getProduitMetaParent(): ?self
     {
