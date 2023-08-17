@@ -44,7 +44,7 @@ class TestController extends AbstractController
 
         $arrayData = $optionValue->toArray($doctrine);
         $entity = $optionValueRepository->insert($arrayData);
-
+        dump($entity);
         return new Response();
     }
     #[Route('/product', name: 'api_test', methods:['get'])]
