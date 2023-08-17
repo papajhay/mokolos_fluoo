@@ -407,10 +407,10 @@ class BaseRealisaPrint extends BaseProvider
      * @param  array|type  $aParameters paramétres de l'API
      * @return array|false un tableau avec la réponse de l'API ou false en cas de probléme
      */
-    protected function _apiRequest(string $url): array
+    protected function _apiRequest(string $url,?array $aParameters = []): array
     {
 
-        $aParameters = [
+        $aParameters += [
             'shop_id' => 75,
             'api_key' => 'f9f9030e6e2b7975770fe02f175a5627'
         ];
@@ -458,14 +458,15 @@ class BaseRealisaPrint extends BaseProvider
      * @param  string          $countryCode [=FournisseurRealisaprint::COUNTRY_DEFAULT_ID] le code ISO pour la livraison
      * @return bool|array|json la réponse JSON ou false en cas de gros soucis
      */
-    protected function _apiGetPrice(int $productCode, int $quantity, string $countryCode = BaseRealisaPrint::COUNTRY_DEFAULT_ID): bool|array|json
+    public function _apiGetPrice(int $productCode, int $quantity, string $countryCode = BaseRealisaPrint::COUNTRY_DEFAULT_ID): bool|array|json
     {
-        $aParameters = [];
 
         // ajout du produit dans les paramétre de l'API
-        $aParameters['code'] = $productCode;
-        $aParameters['quantity'] = $quantity;
-        $aParameters['country'] = $countryCode;
+        $aParameters = [
+            'code' => $productCode,
+            'quantity' => $quantity,
+            'country' => $countryCode
+        ];
 
         // envoi une requête à l'API configuurations
         return $this->_apiRequest('get_price', $aParameters);
@@ -473,7 +474,7 @@ class BaseRealisaPrint extends BaseProvider
 
     /**
      * appel de l'API product
-     * @return bool|array|json la réponse JSON ou false en cas de gros soucis
+     * @return json|array la réponse JSON ou false en cas de gros soucis
      */
     public function _apiProduct(): json|array
     {
