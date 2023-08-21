@@ -145,7 +145,7 @@ class Provider
     // $masterFournisseurId
     private ?int $masterId = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
 //    $numberTva
     private ?int $numberVAT = null;
 
@@ -156,7 +156,7 @@ class Provider
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $accessLogin = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $comment = null;
 
     #[ORM\Column]
@@ -167,25 +167,25 @@ class Provider
 //    $tvaRécupérable
     private ?int $recoverableVAT = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $billingCompany = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $billingStreetAdress = null;
 
     #[ORM\Column]
     private ?int $billingPostCode = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $billingCity = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $billingName = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $billingTelephone = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $salutation = null;
 
     #[ORM\Column(length: 255)]
@@ -266,7 +266,7 @@ class Provider
     // 	Provider::ID_SUPPLIER_ZOPIM					 => 'FournisseurZopim',
     // );
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateHourValidCachePrice = null;
 
     #[ORM\OneToMany(mappedBy: 'provider', targetEntity: TAOptionValueProvider::class)]
@@ -615,12 +615,12 @@ class Provider
 
     public function getWebSiteAddress(): ?string
     {
-        return $this->webSiteAdress;
+        return $this->webSiteAddress;
     }
 
-    public function setWebSiteAdress(string $webSiteAdress): static
+    public function setWebSiteAddress(string $webSiteAddress): static
     {
-        $this->webSiteAdress = $webSiteAdress;
+        $this->webSiteAddress = $webSiteAddress;
 
         return $this;
     }
