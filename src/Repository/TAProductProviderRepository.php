@@ -14,11 +14,20 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method TAProductProvider[]    findAll()
  * @method TAProductProvider[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TAProductProviderRepository extends ServiceEntityRepository
+class TAProductProviderRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TAProductProvider::class);
+    }
+
+    public function save(TAProductProvider $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
 }

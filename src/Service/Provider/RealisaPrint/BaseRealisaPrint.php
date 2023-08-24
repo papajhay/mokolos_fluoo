@@ -466,7 +466,7 @@ class BaseRealisaPrint extends BaseProvider
             'code' => $productCode,
             'quantity' => $quantity,
             'country' => $countryCode
-        ];
+    ];
 
         // envoi une requête à l'API configuurations
         return $this->_apiRequest('get_price', $aParameters);

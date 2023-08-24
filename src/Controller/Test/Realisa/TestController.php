@@ -28,6 +28,10 @@ class TestController extends AbstractController
     }
 
     /**
+     * @param TOptionRepository $optionRepository
+     * @param TOptionValueRepository $optionValueRepository
+     * @param PersistenceManagerRegistry $doctrine
+     * @return Response
      * @throws Exception
      * @throws MappingException
      */
