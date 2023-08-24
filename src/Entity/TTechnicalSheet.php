@@ -70,8 +70,7 @@ class TTechnicalSheet
      */
     public function getProductOptionValueLig()
     {
-        if(!isset($this->productOptionValueLig))
-        {
+        if (!isset($this->productOptionValueLig)) {
             $this->productOptionValueLig = TAProductOptionValue::findById(array($this->getIdProduct(), $this->getIdOptionValue(), 'lig'));
         }
         return $this->produitOptionValueLig;
@@ -121,14 +120,14 @@ class TTechnicalSheet
      * @param int $idProduit id du produit
      * @return TFicheTechnique[]
      */
-    static public function findAllRootForIdProduit($idProduit)
+    /*static public function findAllRootForIdProduit($idProduit)
     {
         $whereField = array('t.id_produit', 't.id_fiche_technique_parent', 'pov.id_code_pays', 'pov.id_host');
         $whereValue = array($idProduit, 0, 'fr_FR', 'lig');
         $join = array(array('table' => TAProduitOptionValue::$_SQL_LOCALIZATION_TABLE_NAME , 'alias' => 'pov', 'joinCondition' => 't.id_produit = pov.id_produit AND t.id_option_value = pov.id_option_value'));
 
         return TFicheTechnique::findAllBy($whereField, $whereValue, array('pov.pro_opt_val_libelle'), 0, $join);
-    }
+    }*/
 
 //    Todo : repository
     /**
@@ -163,17 +162,17 @@ class TTechnicalSheet
      */
 //    public function maquetteEnVolumeExiste()
 //    {
-        // si on a pas de fiche technique
+    // si on a pas de fiche technique
 //        if($this->getFicTecDescription() == '')
 //        {
 //            return FALSE;
 //        }
 
-        // création d'un nouvel objet fichier
+    // création d'un nouvel objet fichier
 //        $fichier = new Fichier();
 //        $fichier->setCheminComplet('/home/limprime/' . SUB_DOMAIN . '/assets/data/techniques/maquettes/' . $this->getFicTecDescription());
 
-        // on renvoi TRUE si le fichier exist
+    // on renvoi TRUE si le fichier exist
 //        return $fichier->exist();
 //    }
 
@@ -184,17 +183,17 @@ class TTechnicalSheet
      */
 //    public function gabaritsExiste()
 //    {
-        // si on a pas de fiche technique
+    // si on a pas de fiche technique
 //        if($this->getFicTecDescription() == '')
 ////        {
 ////            return FALSE;
 ////        }
 
-        // création d'un nouvel objet fichier
+    // création d'un nouvel objet fichier
 //        $fichier = new Fichier();
 //        $fichier->setCheminComplet('/home/limprime/' . SUB_DOMAIN . '/assets/data/techniques/gabarits/' . str_replace('.jpg', '.zip', $this->getFicTecDescription()));
 
-        // on renvoi TRUE si le fichier exist
+    // on renvoi TRUE si le fichier exist
 //        return $fichier->exist();
 //    }
 
@@ -208,24 +207,24 @@ class TTechnicalSheet
      */
 //    static public function OptionsValuesAAjouter($tabFicheTechnique, $tabProduitOptionValue)
 //    {
-        // initialisation des tableaux de retour et d'id
+    // initialisation des tableaux de retour et d'id
 //        $retour = array();
 //        $tabIdOptionValueDansFicheTechnique = array();
 
-        // pour chaque fiche technique
+    // pour chaque fiche technique
 //        foreach($tabFicheTechnique AS $ficheTech)
 //        {
-            // on récupére sont idOptionValue
+    // on récupére sont idOptionValue
 //            $tabIdOptionValueDansFicheTechnique[] = $ficheTech->getProductOptionValueLig()->getIdOptionValue();
 //        }
 
-        // pour chaque produit option value
+    // pour chaque produit option value
 //        foreach($tabProductOptionValue AS $productOptionValue)
 //        {
-            // si cette option n'est pas déjà présente dans la fiche technique et si on est dans l'option correspondant aux fiche technique
+    // si cette option n'est pas déjà présente dans la fiche technique et si on est dans l'option correspondant aux fiche technique
 //            if(!in_array($productOptionValue->getIdOptionValue(), $tabIdOptionValueDansFicheTechnique) && $productOptionValue->getOptionValue()->getIdOption() == $technicalSheet->getProduitOptionValueLig()->getOptionValue()->getIdOption())
 //            {
-                // on ajoute au tableau de retour
+    // on ajoute au tableau de retour
 //                $retour[] = $productOptionValue;
 //            }
 //        }
@@ -242,16 +241,16 @@ class TTechnicalSheet
 //    {
 //        $tabOptionUtilise = array();
 
-        // on met notre objet dans une nouvelle variable pour un traitement récursif
+    // on met notre objet dans une nouvelle variable pour un traitement récursif
 //        $technicalSheetParent = $this;
 
-        // on remonte notre arbre
+    // on remonte notre arbre
 //        while($$technicalSheetParent->getId() !== NULL)
 //        {
-            // on ajoute dans le tableau des options utilisé l'id d'option de cette banche
+    // on ajoute dans le tableau des options utilisé l'id d'option de cette banche
 //            $tabOptionUtilise[] = $technicalSheetParent->getProductOptionValueLig()->getOptionValue()->getIdOption();
 
-            // pour traitement récursif
+    // pour traitement récursif
 //            $TechnicalSheetParent = $technicalSheetParent->getTechnicalSheetParent();
 //        }
 //

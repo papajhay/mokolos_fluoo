@@ -9,4 +9,5 @@
 /vendor/
 /.idea
 /.php-cs-fixer.cache
+/migrations/*
 ###< symfony/framework-bundle ###

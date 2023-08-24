@@ -24,7 +24,7 @@ class TAProductMeta
      * @var string
      */
     #[ORM\ManyToOne(inversedBy: 'tAProductMetas')]
-    private ?hosts $host = null;
+    private ?Hosts $host = null;
 
     public function getId(): ?int
     {

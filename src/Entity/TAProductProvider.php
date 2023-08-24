@@ -6,7 +6,7 @@ use App\Repository\TAProductProviderRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TAProductProviderRepository::class)]
-class TAProductProvider
+class TAProductProvider extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,7 +19,7 @@ class TAProductProvider
     #[ORM\Column]
     private ?int $idSource = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?int $idGroup = null;
 
     #[ORM\Column(length: 255)]
