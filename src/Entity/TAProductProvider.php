@@ -23,7 +23,7 @@ class TAProductProvider extends BaseEntity
     private ?int $idGroup = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $libelleSource = null;
+    private ?string $labelSource = null;
 
     #[ORM\OneToOne(mappedBy: 'tAProductProvider', cascade: ['persist', 'remove'])]
     private ?TProduct $tProduct = null;
@@ -72,14 +72,14 @@ class TAProductProvider extends BaseEntity
         return $this;
     }
 
-    public function getLibelleSource(): ?string
+    public function getLabelSource(): ?string
     {
-        return $this->libelleSource;
+        return $this->labelSource;
     }
 
-    public function setLibelleSource(string $libelleSource): static
+    public function setLabelSource(string $labelSource): static
     {
-        $this->libelleSource = $libelleSource;
+        $this->labelSource = $labelSource;
 
         return $this;
     }

@@ -11,25 +11,32 @@ use Doctrine\ORM\EntityManagerInterface;
 class TAProductProviderService
 {
     private EntityManagerInterface $entityManager;
+    private $productProviderRepository;
 
     /**
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-    ) {
+        TAProductProviderRepository $productProviderRepository
+    ){
         $this->entityManager = $entityManager;
+        $this->productProviderRepository = $productProviderRepository;
     }
-    public function save(Provider $provider, int $idSource, string $libelle):void
+    public function save(Provider $provider, int $idSource, int $idGroup, string $label): void
     {
 
-        $productProvider = new TAProductProvider();
-        $productProvider->setProvider($provider);
-        $productProvider->setIdSource($idSource);
-        $productProvider->setLibelleSource($libelle);
+        $result = $this->productProviderRepository->findOneBy(['idSource'=>$idSource,'idGroup'=>$idGroup,'labelSource'=>$label]);
 
-        $this->entityManager->persist($productProvider);
-        $this->entityManager->flush();
+        if(!isset($result)){
+            $productProvider = new TAProductProvider();
+            $productProvider->setProvider($provider);
+            $productProvider->setIdSource($idSource);
+            $productProvider->setIdGroup($idGroup);
+            $productProvider->setLabelSource($label);
 
+            $this->entityManager->persist($productProvider);
+            $this->entityManager->flush();
+        }
     }
 }

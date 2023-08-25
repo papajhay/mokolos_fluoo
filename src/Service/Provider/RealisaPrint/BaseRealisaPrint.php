@@ -2,6 +2,8 @@
 
 namespace App\Service\Provider\RealisaPrint;
 
+use App\Entity\Provider;
+use App\Entity\TAProductProvider;
 use App\Entity\TProduct;
 use App\Helper\Client;
 use App\Helper\Curl;
@@ -18,7 +20,7 @@ class BaseRealisaPrint extends BaseProvider
     /**
      * Option pour la gestion des pays.
      */
-    public const CONFIGURATION_COUNTRY = 'country';
+    const CONFIGURATION_COUNTRY = 'country';
 
     /**
      * id du code pays par défaut.
@@ -86,7 +88,7 @@ class BaseRealisaPrint extends BaseProvider
     /**
      * renvoi l'objet curl pour aller sur l'API.
      */
-    public function getCurl(string $url,  array $param): Curl
+    public function getCurl(string $url, array $param): Curl
     {
         // si on n'a pas initialisé le curl
 //        if (null === $this->_curl) {
@@ -94,13 +96,13 @@ class BaseRealisaPrint extends BaseProvider
 //            $this->_initCurl();
 //        }
 
-         $this->_initCurl($url, $param);
-         return $this->_curl;
+        $this->_initCurl($url, $param);
+        return $this->_curl;
     }
 
     public function getClient(string $url, array $param): Client
     {
-        $this->_client= new Client($url, $param);
+        $this->_client = new Client($url, $param);
         return $this->_client;
     }
 
@@ -317,7 +319,7 @@ class BaseRealisaPrint extends BaseProvider
 
     /**
      * Renvoi un nom d'option value e modifiant les '------' du fournisseur.
-     * @param  string $name le nom du fournisseur
+     * @param string $name le nom du fournisseur
      * @return string le nom pour nous
      */
     public static function optionValueNameFromSupplier(string $name): string
@@ -334,30 +336,31 @@ class BaseRealisaPrint extends BaseProvider
 
     /**
      * Transforme la selection fournisseur pour l'API.
-     * @param  array       $aSelectionSource selection fournisseur
+     * @param array $aSelectionSource selection fournisseur
      * @return array|false le tableau pour l'API ou false en cas de probléme
      */
-    private function _parametersForApi(array $aSelectionSource): bool|array
+    public function _parametersForApi(array $aSelectionSource): bool|array
     {
         // paramétre pour l'API
         $return = [];
 
         // on supprime la variable de pays
-        unset($aSelectionSource[$this->CONFIGURATION_COUNTRY]);
+        unset($aSelectionSource[BaseRealisaPrint::CONFIGURATION_COUNTRY]);
 
         // on ajoute les variables
-        $return['variables'] = $aSelectionSource;
+        $return = [
+            'variables' => $aSelectionSource];
 
         return $return;
     }
 
     /**
      * appel de l'API qui affiche les variables a utiliser.
-     * @param  TProduit   $product          L'objet de produit
-     * @param  array      $aSelectionSource paramétre pour l'API
-     * @return json|false la réponse JSON ou false en cas de gros soucis
+     * @param TAProductProvider $product L'objet de produit
+     * @param array $aSelectionSource paramétre pour l'API
+     * @return array|false la réponse JSON ou false en cas de gros soucis
      */
-    protected function _apiShowVariables(TProduit $product, array $aSelectionSource): bool|json
+    public function _apiShowVariables(TAProductProvider $product, array $aSelectionSource): bool|array
     {
         // paramétre pour l'API
         $aParameters = $this->_parametersForApi($aSelectionSource);
@@ -369,8 +372,10 @@ class BaseRealisaPrint extends BaseProvider
         }
 
         // ajout du produit dans les paramétre de l'API
-        $aParameters['product'] = $product->getIdProduitSrc();
-        $aParameters['stock'] = $product->getIdProduitSrcGroup();
+        $aParameters += [
+            'product' => $product->getIdSource(),
+            'stock' => $product->getIdGroup()
+        ];
 
         // envoi une requête à l'API show variables
         return $this->_apiRequest('show_variables', $aParameters);
@@ -378,11 +383,11 @@ class BaseRealisaPrint extends BaseProvider
 
     /**
      * appel de l'API save_configuration.
-     * @param  TProduct   $product          L'objet de produit
-     * @param  array      $aSelectionSource paramétre pour l'API
-     * @return json|false la réponse JSON ou false en cas de gros soucis
+     * @param TProduct $product L'objet de produit
+     * @param array $aSelectionSource paramétre pour l'API
+     * @return array|false la réponse JSON ou false en cas de gros soucis
      */
-    protected function _apiSaveConfiguration(TProduct $product, array $aSelectionSource): bool|json
+    protected function _apiSaveConfiguration(TProduct $product, array $aSelectionSource): bool|array
     {
         // paramétre pour l'API
         $aParameters = $this->_parametersForApi($aSelectionSource);
@@ -407,7 +412,7 @@ class BaseRealisaPrint extends BaseProvider
      * @param array $aParameters paramétres de l'API
      * @return array un tableau avec la réponse de l'API ou false en cas de probléme
      */
-    protected function _apiRequest(string $url,?array $aParameters = []): array
+    protected function _apiRequest(string $url, ?array $aParameters = []): array
     {
 
         $aParameters += [
@@ -415,8 +420,7 @@ class BaseRealisaPrint extends BaseProvider
             'api_key' => 'f9f9030e6e2b7975770fe02f175a5627'
         ];
 
-        $finalUrl='https://www.realisaprint.com/api/'.$url;
-
+        $finalUrl = 'https://www.realisaprint.com/api/' . $url;
 
         // on récupére la réponse
         $client = $this->getClient($finalUrl, $aParameters);
@@ -453,9 +457,9 @@ class BaseRealisaPrint extends BaseProvider
 
     /**
      * appel de l'API get_price.
-     * @param  int             $productCode Le code du produit chez le fournisseur provenant de l'API
-     * @param  int             $quantity    La quantité de produit désiré
-     * @param  string          $countryCode [=FournisseurRealisaprint::COUNTRY_DEFAULT_ID] le code ISO pour la livraison
+     * @param int $productCode Le code du produit chez le fournisseur provenant de l'API
+     * @param int $quantity La quantité de produit désiré
+     * @param string $countryCode [=FournisseurRealisaprint::COUNTRY_DEFAULT_ID] le code ISO pour la livraison
      * @return bool|array|json la réponse JSON ou false en cas de gros soucis
      */
     public function _apiGetPrice(int $productCode, int $quantity, string $countryCode = BaseRealisaPrint::COUNTRY_DEFAULT_ID): bool|array|json
@@ -466,7 +470,7 @@ class BaseRealisaPrint extends BaseProvider
             'code' => $productCode,
             'quantity' => $quantity,
             'country' => $countryCode
-    ];
+        ];
 
         // envoi une requête à l'API configuurations
         return $this->_apiRequest('get_price', $aParameters);
@@ -484,21 +488,18 @@ class BaseRealisaPrint extends BaseProvider
 
     /**
      * appel de l'API configurationsr
-     * @param string|TProduct $product L'objet de produit ou le code de l'API
+     * @param int|TProduct $product L'objet de produit ou le code de l'API
      * @return bool|array|json la réponse JSON ou false en cas de gros soucis
      */
-    public function _apiConfigurations(TProduct|string $product): bool|array|json
+    public function _apiConfigurations(TProduct|int $product): bool|array|json
     {
         // si on a un objet
-        if(is_object($product))
-        {
+        if (is_object($product)) {
             // on envoi l'id source du produit dans l'API
             $aParameters = [
                 'product' => $product->getTAProductProvider()->getIdSource(),
             ];
-        }
-        else
-        {
+        } else {
             // on renvoi directement le code dans l'API
             $aParameters = [
                 'product' => $product,
@@ -508,5 +509,4 @@ class BaseRealisaPrint extends BaseProvider
         // envoi une requête à l'API configuurations
         return $this->_apiRequest('configurations', $aParameters);
     }
-
 }
