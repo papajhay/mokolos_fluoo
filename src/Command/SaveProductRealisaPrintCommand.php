@@ -41,21 +41,41 @@ class SaveProductRealisaPrintCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+
+        $output->writeln([
+            'Save Product REALISAPRINT',
+        ]);
+
         do{
             try{
-                $relance = false;
 
+                $relance = false;
+                $dataCount=0;
                 $provider = $this->providerRepository->findOneBy(['name'=>"REALISAPRINT"]);
 
                 $data = $this->baseRealisaPrint->_apiProduct();
-                $dataCount = count($data["products"]);
+
+                // Get Total Data to Save
+                foreach ($data["products"] as $idSource=>$label) {
+                    //recuperation idGroup et labelSource
+                    $configurations = $this->baseRealisaPrint->_apiConfigurations($idSource);
+                    $dataCount += count($configurations['stocks'],COUNT_RECURSIVE);
+                }
 
                 $progressBar = new ProgressBar($output, $dataCount);
+                $output->writeln([
+                    $dataCount.' Products found',
+                ]);
 
+                foreach ($data["products"] as $idSource=>$label) {
 
-                foreach ($data["products"] as $idSource=>$libelle) {
-                    $this->productProviderService->save($provider, $idSource, $libelle);
-                    $progressBar->advance();
+                    //recuperation idGroup et labelSource
+                    $configurations = $this->baseRealisaPrint->_apiConfigurations($idSource);
+
+                    foreach ($configurations['stocks'] as $idGroup => $labelSource ){
+                        $this->productProviderService->save($provider, $idSource, $idGroup,$labelSource);
+                        $progressBar->advance();
+                    }
                 }
                 $progressBar->finish();
 
