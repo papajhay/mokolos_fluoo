@@ -387,7 +387,7 @@ class BaseRealisaPrint extends BaseProvider
      * @param array $aSelectionSource paramétre pour l'API
      * @return array|false la réponse JSON ou false en cas de gros soucis
      */
-    protected function _apiSaveConfiguration(TProduct $product, array $aSelectionSource): bool|array
+    public function _apiSaveConfiguration(TAProductProvider $product, array $aSelectionSource): bool|array
     {
         // paramétre pour l'API
         $aParameters = $this->_parametersForApi($aSelectionSource);
@@ -399,8 +399,10 @@ class BaseRealisaPrint extends BaseProvider
         }
 
         // ajout du produit dans les paramétre de l'API
-        $aParameters['product'] = $product->getIdProduitSrc();
-        $aParameters['stock'] = $product->getIdProduitSrcGroup();
+        $aParameters += [
+            'product' => $product->getIdSource(),
+            'stock' => $product->getIdGroup()
+        ];
 
         // envoi une requête à l'API configuurations
         return $this->_apiRequest('save_configuration', $aParameters);

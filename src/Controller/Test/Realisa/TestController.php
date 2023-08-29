@@ -78,6 +78,31 @@ class TestController extends AbstractController
         return $this->json($data);
     }
 
+    #[Route('/apiSaveConfiguration', name: 'app_testSaveConfiguration')]
+    public function apiSaveConfiguration(BaseRealisaPrint $baseRealisaPrint,TAProductProviderRepository $productProviderRepository): Response
+    {
+        $parametre = [
+            'country'=>'FR',
+            'VARTICLE_16818_' => [
+                'name' =>  'Hauteur (cm)',
+                'type' =>  'float',
+                'default' =>  false,
+                'values' => false,
+                'readonly'=> false,
+                'quantity'=> false,
+                'production_time'=> false,
+                'area'=> 1,
+                'position'=> 111
+            ]
+        ];
+
+        $productprovider = $productProviderRepository->findOneBy(['labelSource'=>'Affiche','idSource'=>231,'idGroup'=>838]);
+
+        $data=$baseRealisaPrint->_apiSaveConfiguration($productprovider,$parametre);
+
+        return $this->json($data);
+    }
+
     #[Route('/product', name: 'api_test', methods:['get'])]
     public function getProduct(BaseRealisaPrint $baseRealisaPrint): Response
     {
@@ -98,7 +123,7 @@ class TestController extends AbstractController
     {
         $product= new TProduct();
         $productProvider= new TAProductProvider();
-        $productProvider->setIdSource(88);
+        $productProvider->setIdSource(231);
         $product->setTAProductProvider($productProvider);
 
         $data=$baseRealisaPrint->_apiConfigurations($product);
