@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method TAProductOption[]    findAll()
  * @method TAProductOption[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TAProductOptionRepository extends ServiceEntityRepository
+class TAProductOptionRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -74,4 +74,29 @@ class TAOptionProviderRepository extends ServiceEntityRepository
         return !empty($result);
     }
 
+    /** Retourne un TAOptionFournisseur en fonction de l'id du fournissseur et de l'id de l'option chez le fournisseur ou null si rien n'a était trouvé. Certains paramétres supplémentaires existent pour certains fournisseurs.
+     * @param string   $idOptionProviderSrc id de l'option chez le fournisseur
+     * @param int|null $idProduct           [=null] id du porduit ou null si non applicable
+     * @param bool     $likeSearch          [=false] mettre TRUE si on veux chercher le opt_fou_id_source avec un like
+     */
+    public function findByIdOptionSrc(string $idOptionProviderSrc, int $idProvider, int $idProduct = null, bool $likeSearch = false): TAOptionProvider
+    {
+        // paramétre de base de la requête
+        $parametre = [
+            'idProvider' => $idProvider,
+            'idSource' => $idOptionProviderSrc
+        ];
+
+        // si on a id de produit
+        if (null !== $idProduct) {
+            // on ajoute les paramétre
+            $parametre += [
+              'idProduct' => $idProduct
+            ];
+        }
+
+        // on renvoi le résultat du findBy
+        return $this->findOneBy($parametre);
+    }
+
 }

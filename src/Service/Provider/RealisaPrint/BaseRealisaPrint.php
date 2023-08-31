@@ -511,4 +511,14 @@ class BaseRealisaPrint extends BaseProvider
         // envoi une requête à l'API configuurations
         return $this->_apiRequest('configurations', $aParameters);
     }
+
+    /**
+     * appel de l'API get_iso_countries
+     * @return array la réponse JSON ou false en cas de gros soucis
+     */
+    protected function _apiGetIsoCountries(): array
+    {
+        // envoi une requête à l'API get_iso_countries
+        return $this->_apiRequest('get_iso_countries');
+    }
 }

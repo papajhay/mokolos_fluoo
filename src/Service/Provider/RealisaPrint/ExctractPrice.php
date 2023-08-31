@@ -3,7 +3,12 @@
 namespace App\Service\Provider\RealisaPrint;
 
 use App\Entity\Provider;
+use App\Entity\TAProductOption;
+use App\Entity\TAProductProvider;
+use App\Entity\TOption;
+use App\Entity\TOptionValue;
 use App\Entity\TProduct;
+use App\Entity\TProductHost;
 use App\Helper\Supplier\Dependency;
 use App\Helper\Supplier\Message;
 use App\Repository\TAOptionValueProviderRepository;
@@ -43,7 +48,6 @@ class ExctractPrice extends BaseRealisaPrint
             // on la met en premier pour la séléctionner par défaut
             return 10;
         }
-
         // ordre standard
         return 100;
     }
@@ -78,7 +82,7 @@ class ExctractPrice extends BaseRealisaPrint
         $return = [];
 
         // appel de l'api pour récupéré les configuration
-        $jsonConfiguration = $this->_apiConfigurations($productHost);
+        $jsonConfiguration = $this->_apiConfigurations($productHost->getTProduct());
 
         // si on a un probléme ou si il nous manque les variables
         if (false === $jsonConfiguration || !isset($jsonConfiguration['variables'])) {
@@ -132,7 +136,7 @@ class ExctractPrice extends BaseRealisaPrint
 
             // on créé l'option et le produit option si elles n'existe pas
             $option = $this->optionService->createIfNotExist($idOptionSource, $provider->getId(), $optionData['name'], $ordre, 0, $typeOption, $optSpecialOption);
-            $this->productOptionService->createIfNotExist($productHost->getId(), $option, $idHost, $defaultValue, TAProduitOption::STATUS_ACTIF, '', '');
+            $this->productOptionService->createIfNotExist($productHost->getTProduct()->getId(), $option, $idHost, $defaultValue,TAProductOption::STATUS_ACTIF, '', '');
 
             // on ajoute à notre tableau de traduction des id option source en id option
             Dependency::addIdOptionByIdOptionSource($option->getId(), $idOptionSource);
@@ -198,11 +202,11 @@ class ExctractPrice extends BaseRealisaPrint
 
         // on créé l'option et le produit option si elles n'existe pas
         $option = $this->optionService->createIfNotExist(BaseRealisaPrint::CONFIGURATION_COUNTRY, $provider->getId(), 'Pays de livraison', 200, 0, TOption::TYPE_OPTION_SELECT, TOption::SPECIAL_OPTION_DELIVERY_COUNTRY);
-        $this->productOptionService->createIfNotExist($productHost->getIdProduit(), $option, $idHost, null, TAProduitOption::STATUS_ACTIF, '', '');
+        $this->productOptionService->createIfNotExist($productHost->getTProduct()->getId(), $option, $idHost, null, TAProductOption::STATUS_ACTIF, '', '');
 
         // on ajoute notre option à notre tableau de retour
         $return[$option->getId()]['option'] = $option;
-        $return[$option->getId()]['optionIdSource'] = FournisseurRealisaprint::CONFIGURATION_COUNTRY;
+        $return[$option->getId()]['optionIdSource'] = BaseRealisaPrint::CONFIGURATION_COUNTRY;
 
         // pour chaque pay
         foreach ($allCountries['iso_countries'] as $countryName => $idCountry) {
@@ -238,12 +242,12 @@ class ExctractPrice extends BaseRealisaPrint
     /**
      * Recupere les prix pour les afficher
      * Insere les options/optionsValues qui n'existent pas en base.
-     * @param  TProduitHost $product L'objet de produit
+     * @param  TProductHost $productHost L'objet de produit
      * @param  array        $data    Les donnée nécessaire (provenant de la variable post)
      * @param  string       $idHost  Id du site
      * @return bool|array   un tableau avec beaucoup de trucs dedans
      */
-    public function price(Provider $provider, TProduitHost $productHost, array $data, string $idHost): bool|array
+    public function price(Provider $provider, TProductHost $productHost, array $data, string $idHost): bool|array
     {
         $return = [];
         $aSelectionSourceForShowVariable = [];
@@ -265,18 +269,18 @@ class ExctractPrice extends BaseRealisaPrint
         }
 
         // on commence par vérifier que le produit est correctement configuré pour les quantité
-        if (TProduct::ID_SPECIAL_QUANTITY_IN_OPTION !== $this->productHostService->getSpecialQuantity($productHost)) {
+        if (TProduct::ID_SPECIAL_QUANTITY_IN_OPTION !== $this->productHostService->getProductSpecialQuantity($productHost)) {
             // on modifie le produit
-            $productHost->getProduct()->setSpecialQuantity(TProduct::ID_SPECIAL_QUANTITY_IN_OPTION);
+            $productHost->getTProduct()->setSpecialQuantity(TProduct::ID_SPECIAL_QUANTITY_IN_OPTION);
             $this->entityManager->persist($productHost);
             $this->entityManager->flush();
         }
 
         // On commence par récupéré et mettre à jour les option et option value
-        $aOptions = $this->_createAndUpdateOptionValue($productHost, $idHost);
+        $aOptions = $this->_createAndUpdateOptionValue($provider,$productHost, $idHost);
 
         // si on a un soucis avec les dépendance
-        if (false === $aOptions) {
+        if (!isset($aOptions)) {
             // on quitte la fonction
             return false;
         }
@@ -367,10 +371,10 @@ class ExctractPrice extends BaseRealisaPrint
         }
 
         // récupération des variables à afficher
-        $aShowVariable = $this->_apiShowVariables($productHost, $aSelectionSourceForShowVariable);
+        $aShowVariable = $this->_apiShowVariables($productHost->getTAProductProvider(), $aSelectionSourceForShowVariable);
 
         // si on a un soucis avec la récupération des variables à afficher
-        if (false === $aShowVariable) {
+        if (!isset($aShowVariable)) {
             // on quitte la fonction
             return false;
         }
@@ -473,7 +477,7 @@ class ExctractPrice extends BaseRealisaPrint
         }
 
         // enregistrement de la configuration
-        $configuration = $this->_apiSaveConfiguration($productHost, $aSelectionSource);
+        $configuration = $this->_apiSaveConfiguration($productHost->getTAProductProvider(), $aSelectionSource);
 
         // si on a un soucis avec la configuration
         if (false === $configuration) {
@@ -490,19 +494,19 @@ class ExctractPrice extends BaseRealisaPrint
         // si on a des alerts
         if (isset($configuration['variable_alerts'])) {
             // ajout des alertes
-            Message::addArrayError($this->_changeKeyIdOptionSourceToIdOption($configuration['variable_alerts']));
+            (new \App\Helper\Supplier\Message)->addArrayError($this->_changeKeyIdOptionSourceToIdOption($configuration['variable_alerts']));
         }
 
         // si on a des infos
         if (isset($configuration['variable_infos'])) {
             // ajout des alertes
-            Message::addArrayInfo($this->_changeKeyIdOptionSourceToIdOption($configuration['variable_infos']));
+            (new \App\Helper\Supplier\Message)->addArrayInfo($this->_changeKeyIdOptionSourceToIdOption($configuration['variable_infos']));
         }
 
         // si on a des descriptions
         if (isset($configuration['variable_descriptions'])) {
             // ajout des alertes
-            Message::addArrayInfo($this->_changeKeyIdOptionSourceToIdOption($configuration['variable_descriptions']));
+            (new \App\Helper\Supplier\Message)->addArrayInfo($this->_changeKeyIdOptionSourceToIdOption($configuration['variable_descriptions']));
         }
 
         // ajout du message pour les quantité min
@@ -519,7 +523,9 @@ class ExctractPrice extends BaseRealisaPrint
 
         // gestion des délai (on rajoute une journée car la livraison est en 48h)
         $return['tabDelay'][0]['fabrication'] = $configuration['delai_fab'] + 1;
-        $return['tabDelay'][0]['idDelayProduct'] = Products::ID_DELAI_STANDARD;
+        //TODO create Products entity
+        //lesgrands/Products::ID_DELAI_STANDARD = 0;
+        $return['tabDelay'][0]['idDelayProduct'] = 0;
         $return['tabDelay'][0]['price'] = null;
         $return['idDelaySelected'] = 0;
 
@@ -539,13 +545,14 @@ class ExctractPrice extends BaseRealisaPrint
             $idOptionValueQuantitySelected = $aSelection[$IdOptionSourceQuantity];
 
             // on récupére l'option value fournisseur
-            $optionValueProviderQuantitySelected = $this->optionValueProviderRepository->findByIdProviderAndIdOptionAndIdSource($provider->getId(), $idOptionValueQuantitySelected);
+            $optionValueProviderQuantitySelected = $this->optionValueProviderRepository->findByIdProviderAndIdOption($provider->getId(), $idOptionValueQuantitySelected);
 
             // on récupére la quantité
             $quantity = $optionValueProviderQuantitySelected->getIdSource();
         }
         // si on a récupéré les quantité dans une option de type texte
         elseif (isset($aSelectionTextByIdOptionSource[$IdOptionSourceQuantity]['value'])) {
+            //TODO create Tools
             // on récupére les quantités
             $quantity = Tools::numberFormat2Number($aSelectionTextByIdOptionSource[$IdOptionSourceQuantity]['value']);
         }
@@ -559,14 +566,14 @@ class ExctractPrice extends BaseRealisaPrint
         }
 
         // si on a un pays de livraison
-        if (isset($aSelectionSource[$this->CONFIGURATION_COUNTRY])) {
+        if (isset($aSelectionSource[BaseRealisaPrint::CONFIGURATION_COUNTRY])) {
             // on va prendre ce pays pour la livraison
-            $idCountry = $aSelectionSource[$this->CONFIGURATION_COUNTRY];
+            $idCountry = $aSelectionSource[BaseRealisaPrint::CONFIGURATION_COUNTRY];
         }
         // aucun pays
         else {
             // on prend le pays par défaut
-            $idCountry = $this->COUNTRY_DEFAULT_ID;
+            $idCountry =  BaseRealisaPrint::COUNTRY_DEFAULT_ID;
         }
 
         // appel de l'API de récupération du prix
@@ -580,20 +587,23 @@ class ExctractPrice extends BaseRealisaPrint
 
         // si on a un gabarit
         if (isset($price['template']) && preg_match($this->_pcreTemplateCodeFromeUrl(), $price['template'], $matches)) {
+            //TODO Create System
             // ajout du gabarit au retour
-            $return['templateUrl'] = System::urlTo('produits_menu_deroulant', 'template', 'id_produit_host='.$productHost->getIdProduitHost().'&template_code='.$matches[1]);
+            $return['templateUrl'] = System::urlTo('produits_menu_deroulant', 'template', 'id_produit_host='.$productHost->getId().'&template_code='.$matches[1]);
         }
         // pas de gabarit
         else {
             $return['templateUrl'] = false;
         }
 
+        //TODO create Prix
         // ajout des prix à notre retour
         $return['tabPrice'][$quantity] = ['prix' => new Prix($price['price']), 'quantite' => $quantity];
         $return['idQuantitySelected'] = $quantity;
 
+        //TODO create MSelectionToSelectionSupplier
         // sauvegarde de la selection fournisseur
-        MSelectionToSelectionSupplier::createOrUpdate($productHost->getIdProduitHost(), $return['selection'].'-'.$return['idQuantitySelected'], $return['selectionText'], $idHost, $this->_supplierSelectionToJson($configuration['code'], $return['idQuantitySelected'], $configuration['files']), $this->getIdFour());
+        MSelectionToSelectionSupplier::createOrUpdate($productHost->getId(), $return['selection'].'-'.$return['idQuantitySelected'], $return['selectionText'], $idHost, $this->_supplierSelectionToJson($configuration['code'], $return['idQuantitySelected'], $configuration['files']), $this->getIdFour());
 
         return $return;
     }

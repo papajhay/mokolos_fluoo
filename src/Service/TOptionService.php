@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\Entity\Provider;
+use App\Entity\TAOptionProvider;
 use App\Entity\TOption;
 use App\Repository\TAProductOptionRepository;
 use App\Repository\TOptionRepository;
@@ -77,19 +79,20 @@ class TOptionService
     public function findByIdOptionSrc(string $idOptionProviderSrc, int $idProvider, int $idProduct = null): TOption|int|null
     {
         // on récupére l'option fournisseur
-        $optionProvider = $this->optionProviderService->findByIdOptionSrc($idOptionProviderSrc, $idProvider, $idProduct);
+        /** @var TAOptionProvider $optionProvider */
+        $optionProvider = $this->entityManager->getRepository(TAOptionProvider::class)->findByIdOptionSrc($idOptionProviderSrc, $idProvider, $idProduct);
 
         // si on n'a pas trouvé d'option fournisseur
-        if (null === $optionProvider || null === $optionProvider->getIdOption()) {
+        if (!isset($optionProvider)) {
             // on quitte la fonction
             return null;
         }
 
         // on récupére l'option value correspondante
-        $option = $this->OptionRepository->findById($optionProvider->getIdOption());
+        $option = $this->OptionRepository->find($optionProvider->getTOption()->getId());
 
         // si elle n'a pas était récupéré (localisation manquante)
-        if (null === $option->getId()) {
+        if (!isset($option)) {
             // on renverra l'id
             $option = $optionProvider->getId();
         }
@@ -110,16 +113,16 @@ class TOptionService
         if ($this->existByIdOptionSrc($idOptionSource, $idProvider, $idProduct)) {
             // récupération de l'option value
             $o = $this->findByIdOptionSrc($idOptionSourceTrim, $idProvider, $idProduct);
-            $option = $o;
 
             // si on a pas de localisation
             if (is_numeric($o)) {
                 // on sauvegarde la localisation
                 $option = new TOption();
-                $option->setLibelle($nameOption)
-                    ->setId($o)
-                    ->setTypeOption($typeOption)
-                    ->saveJustLocalization();
+                $option->setLabel($nameOption)
+                    ->setTypeOption($typeOption);
+
+                $this->entityManager->persist($option);
+                $this->entityManager->flush();
 
             }
         }
@@ -130,14 +133,16 @@ class TOptionService
 
             // création de l'option
             $option = new TOption();
-            $option->setLibelle($nameOption)
+            $option->setLabel($nameOption)
                 ->setOptionOrder($newOrdre)
                 ->setTypeOption($typeOption)
                 ->setSpecialOption($optSpecialOption);
             $this->OptionRepository->save($option);
 
+            $provider = $this->entityManager->getRepository(Provider::class)->find($idProvider);
+
             // création de l'objet option fournisseur
-            $this->optionProviderService->createNew($idProvider, $option->getIdOption(), $idOptionSourceTrim, '', $idProduct);
+            $this->optionProviderService->createNew($provider, $option, $idOptionSourceTrim, '', $idProduct);
         }
 
         // on renvoi l'optionValue
