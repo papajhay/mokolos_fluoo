@@ -19,10 +19,10 @@ class TAOptionValueProviderService
     /**
      * renvoi un optionValueProvider[] à partir d'un idOption du fournisseur et un id fournisseur.
      */
-    public function findByIdOptionValueSrc($idOptionValueFourSrc, int $idProvider, int $idOption = null): array
+    public function findByIdOptionValueSrc($idOptionValueFourSrc, int $idProvider, int $idOption = null): array|TAOptionValueProvider
     {
         // si on cherche avec une id option
-        if (null !== $idOption) {
+        if (!isset($idOption)) {
             return $this->optionValueProviderRepository->findByIdProviderAndIdOptionAndIdSource($idProvider, $idOption, $idOptionValueFourSrc);
         } else {
             return $this->optionValueProviderRepository->findByIdProviderAndIdOption($idProvider, $idOption);

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TAProductOptionRepository::class)]
-class TAProductOption
+class TAProductOption extends BaseEntity
 {
     /*
     * *************************************************************************
@@ -24,7 +24,7 @@ class TAProductOption
     /**
      * Statut de cette valeur d'option : actif.
      */
-    // const STATUS_ACTIF = 1;
+     const STATUS_ACTIF = 1;
 
     /**
      * nom du ou des clés primaires OBLIGATOIREMENT un Array.
@@ -44,7 +44,7 @@ class TAProductOption
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $libelle = null;
+    private ?string $label = null;
 
     #[ORM\Column]
     private ?int $isActif = null;
@@ -98,14 +98,14 @@ class TAProductOption
     }
 
 
-    public function getLibelle(): ?string
+    public function getLabel(): ?string
     {
-        return $this->libelle;
+        return $this->label;
     }
 
-    public function setLibelle(string $libelle): static
+    public function setLabel(string $libelle): static
     {
-        $this->libelle = $libelle;
+        $this->label = $libelle;
 
         return $this;
     }
@@ -139,7 +139,7 @@ class TAProductOption
         return $this->optionMinValue;
     }
 
-    public function setMinValue(string $optionMinValue): static
+    public function setOptionMinValue(string $optionMinValue): static
     {
         $this->optionMinValue = $optionMinValue;
 

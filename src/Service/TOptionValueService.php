@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\TOption;
 use App\Repository\ProviderRepository;
 use App\Repository\TAOptionValueProviderRepository;
 use App\Repository\TOptionValueRepository;
@@ -32,7 +33,7 @@ class TOptionValueService
         $idOptionValueSourceTrim = trim($idOptionValueSource);
 
         // on recherche l'option value fournisseur
-        $optionValueProvider = $this->optionValueProviderService->findByIdOptionValueSrc($idOptionValueSourceTrim, $idProvider, $option->getIdOption());
+        $optionValueProvider = $this->optionValueProviderService->findByIdOptionValueSrc($idOptionValueSourceTrim, $idProvider, $option->getId());
 
         // on verifie si cette option value de fournisseur existe chez nous
         if (empty($optionValueProvider) && empty($optionValueProvider->getIdOptionValue())) {

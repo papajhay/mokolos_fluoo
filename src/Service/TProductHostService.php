@@ -15,9 +15,9 @@ class TProductHostService
      * getteur qui indique si le produit autorise les quantité personnalisé. (utilisé par l'API smartlabel)
      * @return int
      */
-    public function getProSpecialQuantity(TProductHost $productHost): int
+    public function getProductSpecialQuantity(TProductHost $productHost): int
     {
-        return $productHost->getProduit()->getSpecialQuantity();
+        return $productHost->getTProduct()->getSpecialQuantity();
     }
     /**
      * indique si le produit est un variant ou un produit original

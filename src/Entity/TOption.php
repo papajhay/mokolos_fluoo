@@ -25,7 +25,7 @@ class TOption extends BaseEntity
     /**
      * type d'option : case à cocher.
      */
-    // const TYPE_OPTION_CHECKBOX = 3;
+     const TYPE_OPTION_CHECKBOX = 3;
 
     /**
      * type d'option : menu déroulant.
@@ -40,7 +40,7 @@ class TOption extends BaseEntity
     /**
      * type d'option : text en lecture seul.
      */
-    // const TYPE_OPTION_READONLY = 2;
+     const TYPE_OPTION_READONLY = 2;
 
     /**
      * option spécial : option standard.
@@ -62,7 +62,7 @@ class TOption extends BaseEntity
     /**
      * option spécial : option des pays de livraison.
      */
-    // const SPECIAL_OPTION_DELIVERY_COUNTRY = 3;
+     const SPECIAL_OPTION_DELIVERY_COUNTRY = 3;
 
     /**
      * option spécial : option des pays de livraison.
@@ -102,7 +102,7 @@ class TOption extends BaseEntity
 
     #[ORM\Column(length: 255)]
     // libéllé de l'option
-    private ?string $libelle = null;
+    private ?string $label = null;
 
     #[ORM\Column(length: 255)]
     // commentaire de l'option
@@ -147,14 +147,14 @@ class TOption extends BaseEntity
         return $this->id;
     }
 
-    public function getLibelle(): ?string
+    public function getLabel(): ?string
     {
-        return $this->libelle;
+        return $this->label;
     }
 
-    public function setLibelle(string $libelle): static
+    public function setLabel(string $libelle): static
     {
-        $this->libelle = $libelle;
+        $this->label = $libelle;
 
         return $this;
     }
