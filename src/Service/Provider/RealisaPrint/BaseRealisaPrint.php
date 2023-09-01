@@ -4,7 +4,10 @@ namespace App\Service\Provider\RealisaPrint;
 
 use App\Entity\Provider;
 use App\Entity\TAProductProvider;
+use App\Entity\TOption;
 use App\Entity\TProduct;
+use App\Enum\RealisaPrint\SpecialOptionEnum;
+use App\Enum\RealisaPrint\TypeOptionEnum;
 use App\Helper\Client;
 use App\Helper\Curl;
 use App\Helper\Supplier\Dependency;
@@ -520,5 +523,60 @@ class BaseRealisaPrint extends BaseProvider
     {
         // envoi une requête à l'API get_iso_countries
         return $this->_apiRequest('get_iso_countries');
+    }
+
+    public function getOptionDetail(array $optionData): array
+    {
+        $resultat=[];
+        // si on a un champ en lecture seul
+        if (true === $optionData['readonly']) {
+            // option de type select
+            $typeOption = TypeOptionEnum::TYPE_OPTION_READONLY;
+            $defaultValue = null;
+        }
+        // si on a une checkbox
+        elseif ('checkbox' === $optionData['type']) {
+            // option de type select
+            $typeOption = TypeOptionEnum::TYPE_OPTION_CHECKBOX;
+            $defaultValue = null;
+        }
+        // si on a un menu déroulant
+        elseif ('select' === $optionData['type']) {
+            // option de type select
+            $typeOption = TypeOptionEnum::TYPE_OPTION_SELECT;
+            $defaultValue = null;
+        } else {
+            // option de type texte
+            $typeOption = TypeOptionEnum::TYPE_OPTION_TEXT;
+            $defaultValue = $optionData['default'];
+        }
+
+        // si nous sommes sur les quantité
+        if (true === $optionData['quantity']){
+            // on va indiqué que nous sommes sur les quantités
+            $optSpecialOption = SpecialOptionEnum::SPECIAL_OPTION_QUANTITY;
+            $order = 300;
+        }
+        // si nous sommes sur les délai
+        elseif (true === $optionData['production_time']) {
+            // on va indiqué que nous sommes sur les délai
+            $optSpecialOption = SpecialOptionEnum::SPECIAL_OPTION_DELAY;
+            $order = 250;
+        }
+        // autre option
+        else {
+            // on va indiqué que nous sommes sur une option standard
+            $optSpecialOption = SpecialOptionEnum::SPECIAL_OPTION_STANDARD;
+            $order = 100;
+        }
+
+        $resultat += [
+            'typeOption' => $typeOption,
+            'defaultValue' => $defaultValue,
+            'optSpecialOption' => $optSpecialOption,
+            'order' => $order
+        ];
+
+        return $resultat;
     }
 }

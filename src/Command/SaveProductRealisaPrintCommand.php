@@ -49,43 +49,47 @@ class SaveProductRealisaPrintCommand extends Command
         do{
             try{
 
-                $relance = false;
-                $dataCount=0;
+                $relaunch = false;
+
                 $provider = $this->providerRepository->findOneBy(['name'=>"REALISAPRINT"]);
 
                 $data = $this->baseRealisaPrint->_apiProduct();
 
-                // Get Total Data to Save
+                $stocks = [];
+
                 foreach ($data["products"] as $idSource=>$label) {
                     //recuperation idGroup et labelSource
                     $configurations = $this->baseRealisaPrint->_apiConfigurations($idSource);
-                    $dataCount += count($configurations['stocks'],COUNT_RECURSIVE);
+                    foreach ($configurations['stocks'] as $idGroup => $labelSource ) {
+                        $stockItem = [
+                            'idSource' => $idSource,
+                            'idGroup' => $idGroup,
+                            'label' => $labelSource
+                        ];
+
+                        $stocks[]= $stockItem;
+                    }
+
                 }
 
-                $progressBar = new ProgressBar($output, $dataCount);
+                $progressBar = new ProgressBar($output, count($stocks));
                 $output->writeln([
-                    $dataCount.' Products found',
+                    count($stocks).' Products found',
                 ]);
 
-                foreach ($data["products"] as $idSource=>$label) {
-
-                    //recuperation idGroup et labelSource
-                    $configurations = $this->baseRealisaPrint->_apiConfigurations($idSource);
-
-                    foreach ($configurations['stocks'] as $idGroup => $labelSource ){
-                        $this->productProviderService->save($provider, $idSource, $idGroup,$labelSource);
-                        $progressBar->advance();
-                    }
+                foreach ($stocks as $stock ){
+                    $this->productProviderService->save($provider, $stock['idSource'], $stock['idGroup'],$stock['label']);
+                    $progressBar->advance();
                 }
                 $progressBar->finish();
 
             }catch (\Throwable ){
                 //wait seconds
                 sleep(5);
-               $relance= true;
+                $relaunch= true;
             }
         }
-        while($relance);
+        while($relaunch);
 
         $io->success('All Products RealisaPrint save very well!');
 

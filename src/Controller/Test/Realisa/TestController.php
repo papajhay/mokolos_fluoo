@@ -53,6 +53,26 @@ class TestController extends AbstractController
         return new Response();
     }
 
+    #[Route('/option', name: 'app_testOption')]
+    public function getOption(BaseRealisaPrint $baseRealisaPrint): Response
+    {
+        $optionData=[
+            'name' =>  'Hauteur (cm)',
+            'type' =>  'float',
+            'default' =>  false,
+            'values' => false,
+            'readonly'=> false,
+            'quantity'=> false,
+            'production_time'=> false,
+            'area'=> 1,
+            'position'=> 111
+        ];
+
+        $result = $baseRealisaPrint->getOptionDetail($optionData);
+
+        return new Response();
+    }
+
     #[Route('/apiShowVariable', name: 'app_testShowVariable')]
     public function apiShowVariable(BaseRealisaPrint $baseRealisaPrint,TAProductProviderRepository $productProviderRepository): Response
     {
@@ -129,5 +149,6 @@ class TestController extends AbstractController
         $data=$baseRealisaPrint->_apiConfigurations($product);
         return $this->json($data);
     }
+
 
 }
