@@ -84,7 +84,7 @@ class TAOptionProviderRepository extends ServiceEntityRepository
         // paramétre de base de la requête
         $parametre = [
             'idProvider' => $idProvider,
-            'idSource' => $idOptionProviderSrc
+            'optIdSource' => $idOptionProviderSrc
         ];
 
         // si on a id de produit
