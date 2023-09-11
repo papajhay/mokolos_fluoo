@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TAProductProviderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TAProductProviderRepository::class)]
@@ -16,20 +18,24 @@ class TAProductProvider extends BaseEntity
     #[ORM\ManyToOne(inversedBy: 'tAProductProviders')]
     private ?Provider $provider = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type:"integer",nullable:true)]
     private ?int $idSource = null;
 
-    #[ORM\Column(nullable:true)]
+    #[ORM\Column(type:"integer",nullable:true)]
     private ?int $idGroup = null;
 
     #[ORM\Column(length: 255)]
     private ?string $labelSource = null;
 
     #[ORM\OneToOne(mappedBy: 'tAProductProvider', cascade: ['persist', 'remove'])]
-    private ?TProduct $tProduct = null;
-
-    #[ORM\OneToOne(mappedBy: 'tAProductProvider', cascade: ['persist', 'remove'])]
     private ?TProductHost $tProductHost = null;
+
+    #[ORM\ManyToMany(targetEntity: TProduct::class, inversedBy: 'tAProductProvider')]
+    private Collection $tProducts;
+    public function __construct()
+    {
+        $this->tProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -48,30 +54,6 @@ class TAProductProvider extends BaseEntity
         return $this;
     }
 
-    public function getIdSource(): ?int
-    {
-        return $this->idSource;
-    }
-
-    public function setIdSource(int $idSource): static
-    {
-        $this->idSource = $idSource;
-
-        return $this;
-    }
-
-    public function getIdGroup(): ?int
-    {
-        return $this->idGroup;
-    }
-
-    public function setIdGroup(int $idGroup): static
-    {
-        $this->idGroup = $idGroup;
-
-        return $this;
-    }
-
     public function getLabelSource(): ?string
     {
         return $this->labelSource;
@@ -80,23 +62,6 @@ class TAProductProvider extends BaseEntity
     public function setLabelSource(string $labelSource): static
     {
         $this->labelSource = $labelSource;
-
-        return $this;
-    }
-
-    public function getTProduct(): ?TProduct
-    {
-        return $this->tProduct;
-    }
-
-    public function setTProduct(TProduct $tProduct): static
-    {
-        // set the owning side of the relation if necessary
-        if ($tProduct->getTAProductProvider() !== $this) {
-            $tProduct->setTAProductProvider($this);
-        }
-
-        $this->tProduct = $tProduct;
 
         return $this;
     }
@@ -116,5 +81,60 @@ class TAProductProvider extends BaseEntity
         $this->tProductHost = $tProductHost;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, TProduct>
+     */
+    public function getTProducts(): Collection
+    {
+        return $this->tProducts;
+    }
+
+    public function addTProduct(TProduct $tProduct): static
+    {
+        if (!$this->tProducts->contains($tProduct)) {
+            $this->tProducts->add($tProduct);
+            $tProduct->addTAProductProvider($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTProduct(TProduct $tProduct): static
+    {
+        if ($this->tProducts->removeElement($tProduct)) {
+            $tProduct->removeTAProductProvider($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TProduct>
+     */
+    public function getTProduct(): Collection
+    {
+        return $this->tProduct;
+    }
+
+    public function getIdSource(): ?int
+    {
+        return $this->idSource;
+    }
+
+    public function setIdSource(?int $idSource): void
+    {
+        $this->idSource = $idSource;
+    }
+
+    public function getIdGroup(): ?int
+    {
+        return $this->idGroup;
+    }
+
+    public function setIdGroup(?int $idGroup): void
+    {
+        $this->idGroup = $idGroup;
     }
 }
