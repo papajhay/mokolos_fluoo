@@ -28,7 +28,7 @@ class TAProductProviderService
 
         $result = $this->productProviderRepository->findOneBy(['idSource'=>$idSource,'idGroup'=>$idGroup,'labelSource'=>$label]);
 
-        if(!isset($result)){
+        if(!isset($result)) {
             $productProvider = new TAProductProvider();
             $productProvider->setProvider($provider);
             $productProvider->setIdSource($idSource);
@@ -37,6 +37,7 @@ class TAProductProviderService
 
             $this->entityManager->persist($productProvider);
             $this->entityManager->flush();
+
         }
     }
 }

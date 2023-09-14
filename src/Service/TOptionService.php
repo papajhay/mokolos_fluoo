@@ -5,8 +5,12 @@ namespace App\Service;
 use App\Entity\Provider;
 use App\Entity\TAOptionProvider;
 use App\Entity\TOption;
+use App\Entity\TProduct;
+use App\Enum\RealisaPrint\SpecialOptionEnum;
+use App\Repository\BaseRepository;
 use App\Repository\TAProductOptionRepository;
 use App\Repository\TOptionRepository;
+use App\Repository\TProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Provider\TAOptionProviderService;
 
@@ -14,9 +18,10 @@ class TOptionService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private TOptionRepository $OptionRepository,
+        private TOptionRepository $optionRepository,
         private TAProductOptionRepository $productOptionRepository,
-        private TAOptionProviderService $optionProviderService
+        private TAOptionProviderService $optionProviderService,
+        private TProductRepository $productRepository
     ) {
     }
 
@@ -32,45 +37,45 @@ class TOptionService
      * renvoi le prochain ordre disponible à inséré en base.
      * @return int l'ordre à inséré en base (il aura était multiplié par 100)
      */
-    public function ordreForNewOption(int $ordre = 100): float|int
+    public function orderForNewOption(int $order = 100): float|int
     {
         // si notre ordre n'est pas numerique
-        if (!is_numeric($ordre)) {
+        if (!is_numeric($order)) {
             // on prend notre ordre par défaut
-            $ordre = 100;
+            $order = 100;
         }
         // on commence par vérifier si notre ordre à une valeur trop grande
-        elseif ($ordre > 300) {
+        elseif ($order > 300) {
             // on le fixe à une valeur max acceptable
-            $ordre = 300;
+            $order = 300;
         }
         // on commence par vérifier si notre ordre à une valeur trop petite
-        elseif ($ordre < -300) {
+        elseif ($order < -300) {
             // on le fixe à une valeur max acceptable
-            $ordre = -300;
+            $order = -300;
         }
 
         // on multiplie notre ordre par 100 car en base on stock des valeurs bien plus grande
-        $ordreCible = $ordre * 100;
+        $orderCible = $order * 100;
 
         // on récupére en base tous les ordres utilisé
         //TODO create function prepareSelectAndExecuteAndFetchAll
-        $allOrdreDB = DB::prepareSelectAndExecuteAndFetchAll(self::$_SQL_TABLE_NAME, ['opt_ordre'], [], 0, ['opt_ordre']);
-
-        $allOrdre = [];
+        $allOrderDB = $this->optionRepository->prepareSelectAndExecuteAndFetchAll(TOption::class, ['option_order'], [['option_order', 2, 'OR', '='], ['option_order', 1, 'OR', '>']], 0, ['option_order']);
+        /*dump($allOrderDB); die;*/
+        $allOrder = [];
         // on va en faire un tableau avec uniquement les ordres
-        foreach ($allOrdreDB as $ordreDB) {
-            $allOrdre[$ordreDB['opt_ordre']] = $ordreDB['opt_ordre'];
+        foreach ($allOrderDB as $orderDB) {
+            $allOrder[$orderDB['option_order']] = $orderDB['option_order'];
         }
 
         // tant que notre ordre cible est déjà utilisé en base
-        while (in_array($ordreCible, $allOrdre, true)) {
+        while (in_array($orderCible, $allOrder, true)) {
             // on va chercher le suivant
-            ++$ordreCible;
+            ++$orderCible;
         }
 
         // on renvoi notre ordre
-        return $ordreCible;
+        return $orderCible;
     }
 
     /**
@@ -89,7 +94,7 @@ class TOptionService
         }
 
         // on récupére l'option value correspondante
-        $option = $this->OptionRepository->find($optionProvider->getTOption()->getId());
+        $option = $this->optionRepository->find($optionProvider->getTOption()->getId());
 
         // si elle n'a pas était récupéré (localisation manquante)
         if (!isset($option)) {
@@ -104,7 +109,7 @@ class TOptionService
      * créé un option et le optionfournisseur associé si il n'existe pas.
      * @return TOption
      */
-    public function createIfNotExist(string $idOptionSource, int $idProvider, string $nameOption, int $order = 100, $idProduct = 0, int $typeOption = TOption::TYPE_OPTION_SELECT, $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
+    public function createIfNotExist(string $idOptionSource, int $idProvider, string $nameOption, int $order = 100, $idProduct = 0, int $typeOption = TOption::TYPE_OPTION_SELECT,  $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
     {
         // on fait un trim sur l'id option value source pour éviter des bugs avec des espaces qui pourrait être ajouter
         $idOptionSourceTrim = trim($idOptionSource);
@@ -129,20 +134,25 @@ class TOptionService
         // si l'option n'existe pas encore
         else {
             // on récupére l'ordre qu'on va assigné à l'option
-            $newOrdre = $this->ordreForNewOption($order);
+            $newOrder = $this->orderForNewOption($order);
 
             // création de l'option
-            $option = new TOption();
-            $option->setLabel($nameOption)
-                ->setOptionOrder($newOrdre)
-                ->setTypeOption($typeOption)
-                ->setSpecialOption($optSpecialOption);
-            $this->OptionRepository->save($option);
+            $tOption = new TOption();
+            $tOption ->setLabel($nameOption)
+                     ->setOptionOrder($newOrder)
+                     ->setTypeOption($typeOption)
+                     ->setSpecialOption(SpecialOptionEnum::SPECIAL_OPTION_STANDARD);
 
-            $provider = $this->entityManager->getRepository(Provider::class)->find($idProvider);
+            $this->entityManager->persist($tOption);
+            $this->entityManager->flush();
+
+            return $tOption;
+
+//            $provider = $this->entityManager->getRepository(Provider::class)->find($idProvider);
 
             // création de l'objet option fournisseur
-            $this->optionProviderService->createNew($provider, $option, $idOptionSourceTrim, '', $idProduct);
+            $tproduct= $this->productRepository->find($idProduct);
+            $this->optionProviderService->createNew($provider, $option, $idOptionSourceTrim, '', $tproduct);
         }
 
         // on renvoi l'optionValue
@@ -209,4 +219,18 @@ class TOptionService
         // on renvoi l'id de l'option value
         return $aOptionValueNoKey[0]->getIdOptionValue();
     }
+
+//    public function createTOption(string $nameOption, int $order, int $typeOption)
+//    {
+//        $option = new TOption();
+//        $option->setLabel($nameOption)
+//               ->setOptionOrder($order)
+//               ->setTypeOption($typeOption)
+//               ->setSpecialOption(SpecialOptionEnum::SPECIAL_OPTION_STANDARD);
+//
+//        $this->entityManager->persist($option);
+//        $this->entityManager->flush();
+//
+//        return $option;
+//    }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\RealisaPrint\SpecialOptionEnum;
 use App\Repository\TOptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -117,9 +118,9 @@ class TOption extends BaseEntity
     private ?int $typeOption = null;
     // private $optTypeOption = TOption::TYPE_OPTION_SELECT;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer', enumType: SpecialOptionEnum::class)]
     // indique si il s'agit d'une option spécial (quantité, délai, pays de livraison, ...)
-    private ?int $specialOption = null;
+    private SpecialOptionEnum |null $specialOption = null;
 
     #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TAOptionValueProvider::class)]
     private Collection $taOptionValueProviders;
@@ -152,9 +153,9 @@ class TOption extends BaseEntity
         return $this->label;
     }
 
-    public function setLabel(string $libelle): static
+    public function setLabel(string $label): static
     {
-        $this->label = $libelle;
+        $this->label = $label;
 
         return $this;
     }
@@ -195,16 +196,15 @@ class TOption extends BaseEntity
         return $this;
     }
 
-    public function getSpecialOption(): ?int
+    public function getSpecialOption(): ?SpecialOptionEnum
     {
         return $this->specialOption;
     }
 
-    public function setSpecialOption(int $specialOption): static
+    // Setter pour specialOption
+    public function setSpecialOption(?SpecialOptionEnum $specialOption): void
     {
         $this->specialOption = $specialOption;
-
-        return $this;
     }
 
     // TODO Repository

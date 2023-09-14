@@ -63,9 +63,9 @@ class Hosts
     #[ORM\Column]
     private ?int $idHostType = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'string')]
     // old: $masterHost
-    private ?int $master = null;
+    private ?string $master = null;
 
     #[ORM\Column]
     // old: $tva
@@ -87,21 +87,31 @@ class Hosts
     #[ORM\Column]
     private ?int $localCurrenciesId = null;
 
-    #[ORM\Column]
-    private ?int $googleAnalyticsId = null;
+    #[ORM\Column(length: 255)]
+    private ?string $googleAnalyticsId = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $googleAdWordsId = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     // old: $hosGoogleIdConversion
     private ?string $googleIdConversion = null;
 
-    #[ORM\Column(length: 255)]
+    public function getGoogleIdConversion(): ?string
+    {
+        return $this->googleIdConversion;
+    }
+
+    public function setGoogleIdConversion(?string $googleIdConversion): void
+    {
+        $this->googleIdConversion = $googleIdConversion;
+    }
+
+    #[ORM\Column(length: 255, nullable: true)]
      // old: $hosGoogleAdWordsRemarketingId
     private ?string $googleAdWordsRemarketingId = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     // old: $hosBingAdsId
     private ?int $bingAdsId = null;
 
@@ -109,7 +119,7 @@ class Hosts
     // old: $codeLangue
     private ?string $languageCode = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     // old: $actif
     private ?bool $active = null;
 
@@ -125,19 +135,19 @@ class Hosts
     // old: $hostProduct
     private ?string $productHost = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     // old: $hosFacebookUrl
     private ?string $facebookUrl = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 255, nullable: true)]
     // old: $hosFacebookAppId
-    private ?int $facebookAppId = null;
+    private ?string $facebookAppId = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     // old: $hosCreditName
     private ?string $creditName = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     // old: $hosHrefLang
     private ?string $referenceLanguage = null;
 
@@ -149,12 +159,12 @@ class Hosts
     // old: $hosSiteAvisNbr
     private ?int $opinionNumber = 0;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 255, nullable: true)]
     // old: $hosSiteSecretKey
-    private ?int $secretkey = null;
+    private ?string $secretkey = null;
 
-    #[ORM\Column]
-    private ?int $hosSiteId = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $hosSiteId = null;
 
     #[ORM\Column]
     // old: $hosAmountPremium
@@ -381,12 +391,12 @@ class Hosts
         return $this;
     }
 
-    public function getMaster(): ?int
+    public function getMaster(): ?string
     {
         return $this->master;
     }
 
-    public function setMaster(int $master): static
+    public function setMaster(string $master): static
     {
         $this->master = $master;
 
@@ -470,57 +480,9 @@ class Hosts
         return $this->googleAnalyticsId;
     }
 
-    public function setGoogleAnalyticsId(int $googleAnalyticsId): static
+    public function setGoogleAnalyticsId(string $googleAnalyticsId): static
     {
         $this->googleAnalyticsId = $googleAnalyticsId;
-
-        return $this;
-    }
-
-    public function getGoogleAdWordsId(): ?int
-    {
-        return $this->googleAdWordsId;
-    }
-
-    public function setGoogleAdWordsId(int $googleAdWordsId): static
-    {
-        $this->googleAdWordsId = $googleAdWordsId;
-
-        return $this;
-    }
-
-    public function getGoogleIdConversion(): ?string
-    {
-        return $this->googleIdConversion;
-    }
-
-    public function setGoogleIdConversion(string $googleIdConversion): static
-    {
-        $this->googleIdConversion = $googleIdConversion;
-
-        return $this;
-    }
-
-    public function getGoogleAdWordsRemarketingId(): ?string
-    {
-        return $this->googleAdWordsRemarketingId;
-    }
-
-    public function setGoogleAdWordsRemarketingId(string $googleAdWordsRemarketingId): static
-    {
-        $this->googleAdWordsRemarketingId = $googleAdWordsRemarketingId;
-
-        return $this;
-    }
-
-    public function getBingAdsId(): ?int
-    {
-        return $this->bingAdsId;
-    }
-
-    public function setBingAdsId(int $bingAdsId): static
-    {
-        $this->bingAdsId = $bingAdsId;
 
         return $this;
     }
@@ -585,30 +547,6 @@ class Hosts
         return $this;
     }
 
-    public function getFacebookUrl(): ?string
-    {
-        return $this->facebookUrl;
-    }
-
-    public function setFacebookUrl(string $facebookUrl): static
-    {
-        $this->facebookUrl = $facebookUrl;
-
-        return $this;
-    }
-
-    public function getFacebookAppId(): ?int
-    {
-        return $this->facebookAppId;
-    }
-
-    public function setFacebookAppId(int $facebookAppId): static
-    {
-        $this->facebookAppId = $facebookAppId;
-
-        return $this;
-    }
-
     public function getCreditName(): ?string
     {
         return $this->creditName;
@@ -653,30 +591,6 @@ class Hosts
     public function setOpinionNumber(int $opinionNumber): static
     {
         $this->opinionNumber = $opinionNumber;
-
-        return $this;
-    }
-
-    public function getSecretkey(): ?int
-    {
-        return $this->secretkey;
-    }
-
-    public function setSecretkey(int $secretkey): static
-    {
-        $this->secretkey = $secretkey;
-
-        return $this;
-    }
-
-    public function getHosSiteId(): ?int
-    {
-        return $this->hosSiteId;
-    }
-
-    public function setHosSiteId(int $hosSiteId): static
-    {
-        $this->hosSiteId = $hosSiteId;
 
         return $this;
     }
@@ -1059,6 +973,79 @@ class Hosts
         }
 
         return $this;
+    }
+
+    public function getGoogleAdWordsId(): ?int
+    {
+        return $this->googleAdWordsId;
+    }
+
+    public function setGoogleAdWordsId(?int $googleAdWordsId): void
+    {
+        $this->googleAdWordsId = $googleAdWordsId;
+    }
+
+    public function getGoogleAdWordsRemarketingId(): ?string
+    {
+        return $this->googleAdWordsRemarketingId;
+    }
+
+    public function setGoogleAdWordsRemarketingId(?string $googleAdWordsRemarketingId): void
+    {
+        $this->googleAdWordsRemarketingId = $googleAdWordsRemarketingId;
+    }
+
+
+    public function getFacebookUrl(): ?string
+    {
+        return $this->facebookUrl;
+    }
+
+    public function setFacebookUrl(?string $facebookUrl): void
+    {
+        $this->facebookUrl = $facebookUrl;
+    }
+
+    public function getFacebookAppId(): ?string
+    {
+        return $this->facebookAppId;
+    }
+
+    public function setFacebookAppId(?string $facebookAppId): void
+    {
+        $this->facebookAppId = $facebookAppId;
+    }
+
+
+
+    public function getHosSiteId(): ?string
+    {
+        return $this->hosSiteId;
+    }
+
+    public function setHosSiteId(?string $hosSiteId): void
+    {
+        $this->hosSiteId = $hosSiteId;
+    }
+
+    public function getSecretkey(): ?string
+    {
+        return $this->secretkey;
+    }
+
+    public function setSecretkey(?string $secretkey): void
+    {
+        $this->secretkey = $secretkey;
+    }
+
+    public function getBingAdsId(): ?int
+    {
+        return $this->bingAdsId;
+    }
+
+    public function setBingAdsId(?int $bingAdsId): void
+    {
+        $this->bingAdsId = $bingAdsId;
     }
 
     /**

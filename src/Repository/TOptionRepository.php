@@ -1,5 +1,5 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\TOption;
@@ -47,6 +47,14 @@ class TOptionRepository extends \App\Repository\BaseRepository
             ->setParameter('id', $idOption)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function prepareSelectAndExecuteAndFetchAll2(
+        array $fields,
+        string $orderBy
+    ): array
+    {
+        return [];
     }
 
     /**

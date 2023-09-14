@@ -61,19 +61,20 @@ class TAProductOption extends BaseEntity
     #[ORM\Column]
     private ?\DateTimeImmutable $dateHourLastSeen = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TProduct $product = null;
+    #[ORM\ManyToOne(targetEntity: TProduct::class ,inversedBy: 'tAProductOptions')]
+    #[ORM\JoinColumn(name: 'product', nullable: false)]
+    private ?TProduct $product;
+
+    #[ORM\ManyToOne(targetEntity: TOption::class ,inversedBy: 'tAProductOptions')]
+    #[ORM\JoinColumn(name: 'product', nullable: false)]
+    private ?TOption $tOption = null;
 
     #[ORM\OneToMany(mappedBy: 'tAProductOption', targetEntity: TAProductOptionValue::class)]
     private Collection $tAProductOptionValues;
 
-    #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
-    private ?TOption $TOption = null;
-
-    #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
+    #[ORM\ManyToOne(targetEntity: Hosts::class  ,inversedBy: 'tAProductOptions')]
     // old: $idHost
-    private ?Hosts $host = null;
+    private Hosts $host;
 
     public function __construct()
     {
@@ -85,27 +86,14 @@ class TAProductOption extends BaseEntity
         return $this->id;
     }
 
-    public function getProduct(): ?TProduct
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?TProduct $product): static
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-
     public function getLabel(): ?string
     {
         return $this->label;
     }
 
-    public function setLabel(string $libelle): static
+    public function setLabel(string $label): static
     {
-        $this->label = $libelle;
+        $this->label = $label;
 
         return $this;
     }
@@ -170,16 +158,16 @@ class TAProductOption extends BaseEntity
         return $this;
     }
 
-    public function getHost(): ?hosts
+
+
+    public function getProduct(): ?TProduct
     {
-        return $this->host;
+        return $this->product;
     }
 
-    public function setHost(?hosts $host): static
+    public function setProduct(?TProduct $product): void
     {
-        $this->host = $host;
-
-        return $this;
+        $this->product = $product;
     }
 
     /*
@@ -649,15 +637,24 @@ class TAProductOption extends BaseEntity
         return $this;
     }
 
+    public function getHost(): Hosts
+    {
+        return $this->host;
+    }
+
+    public function setHost(Hosts $host): void
+    {
+        $this->host = $host;
+    }
+
     public function getTOption(): ?TOption
     {
-        return $this->TOption;
+        return $this->tOption;
     }
 
-    public function setTOption(?TOption $TOption): static
+    public function setTOption(?TOption $tOption): void
     {
-        $this->TOption = $TOption;
-
-        return $this;
+        $this->tOption = $tOption;
     }
+
 }

@@ -7,12 +7,10 @@ use App\Entity\TAOptionProvider;
 use App\Entity\TOption;
 use App\Entity\TProduct;
 use App\Repository\TAOptionProviderRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
 class TAOptionProviderService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private TAOptionProviderRepository $optionProviderRepository
     ) {
     }
@@ -41,10 +39,10 @@ class TAOptionProviderService
     {
         $optionProvider = new TAOptionProvider();
         $optionProvider->setProvider($provider)
-                ->setTOption($option)
-                ->setOptIdSource($idSource)
-                ->setDescriptionSource($descriptionSource)
-                ->setTProduct($product);
+                        ->setTOption($option)
+                        ->setOptIdSource($idSource)
+                        ->setDescriptionSource($descriptionSource)
+                        ->setTProduct($product);
 
         $this->optionProviderRepository->save($optionProvider);
 

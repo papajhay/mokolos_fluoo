@@ -156,7 +156,7 @@ class Provider
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $accessLogin = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $comment = null;
 
     #[ORM\Column]
@@ -615,12 +615,12 @@ class Provider
 
     public function getWebSiteAddress(): ?string
     {
-        return $this->webSiteAdress;
+        return $this->webSiteAddress;
     }
 
-    public function setWebSiteAdress(string $webSiteAdress): static
+    public function setWebSiteAddress(string $webSiteAddress): static
     {
-        $this->webSiteAdress = $webSiteAdress;
+        $this->webSiteAddress = $webSiteAddress;
 
         return $this;
     }

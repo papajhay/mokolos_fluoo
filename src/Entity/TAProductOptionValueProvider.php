@@ -34,8 +34,8 @@ class TAProductOptionValueProvider
      * id de l'option value chez le fournisseur
      * @var varchar(250)
      */
-    #[ORM\Column(length: 255)]
-    private ?string $idSource = null;
+    #[ORM\Column(type: "integer")]
+    private ?int $idSource = null;
 
     public function getId(): ?int
     {
@@ -77,16 +77,14 @@ class TAProductOptionValueProvider
         return $this;
     }
 
-    public function getIdSource(): ?string
+    public function getIdSource(): ?int
     {
         return $this->idSource;
     }
 
-    public function setIdSource(string $idSource): static
+    public function setIdSource(?int $idSource): void
     {
         $this->idSource = $idSource;
-
-        return $this;
     }
 
     /**
