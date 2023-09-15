@@ -92,51 +92,11 @@ class ExctractPrice extends BaseRealisaPrint
 
         // pour chaque option du produit
         foreach ($jsonConfiguration['variables'] as $idOptionSource => $optionData) {
-            // si on a un champ en lecture seul
-            if (true === $optionData['readonly']) {
-                // option de type select
-                $typeOption = TOption::TYPE_OPTION_READONLY;
-                $defaultValue = null;
-            }
-            // si on a une checkbox
-            elseif ('checkbox' === $optionData['type']) {
-                // option de type select
-                $typeOption = TOption::TYPE_OPTION_CHECKBOX;
-                $defaultValue = null;
-            }
-            // si on a un menu déroulant
-            elseif ('select' === $optionData['type']) {
-                // option de type select
-                $typeOption = TOption::TYPE_OPTION_SELECT;
-                $defaultValue = null;
-            } else {
-                // option de type texte
-                $typeOption = TOption::TYPE_OPTION_TEXT;
-                $defaultValue = $optionData['default'];
-            }
-
-            // si nous sommes sur les quantité
-            if (true === $optionData['quantity']) {
-                // on va indiqué que nous sommes sur les quantités
-                $optSpecialOption = TOption::SPECIAL_OPTION_QUANTITY;
-                $ordre = 300;
-            }
-            // si nous sommes sur les délai
-            elseif (true === $optionData['production_time']) {
-                // on va indiqué que nous sommes sur les délai
-                $optSpecialOption = TOption::SPECIAL_OPTION_DELAY;
-                $ordre = 250;
-            }
-            // autre option
-            else {
-                // on va indiqué que nous sommes sur une option standard
-                $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD;
-                $ordre = 100;
-            }
+            $detailData = $this->getOptionDetail($optionData);
 
             // on créé l'option et le produit option si elles n'existe pas
-            $option = $this->optionService->createIfNotExist($idOptionSource, $provider->getId(), $optionData['name'], $ordre, 0, $typeOption, $optSpecialOption);
-            $this->productOptionService->createIfNotExist($productHost->getTProduct()->getId(), $option, $idHost, $defaultValue,TAProductOption::STATUS_ACTIF, '', '');
+            $option = $this->optionService->createIfNotExist($idOptionSource, $provider->getId(), $optionData['name'], $detailData['order'], 0,  $detailData['typeOption'],  $detailData['optSpecialOption']);
+            $this->productOptionService->createIfNotExist($productHost->getTProduct()->getId(), $option, $idHost, $detailData['defaultValue'],TAProductOption::STATUS_ACTIF, '', '');
 
             // on ajoute à notre tableau de traduction des id option source en id option
             Dependency::addIdOptionByIdOptionSource($option->getId(), $idOptionSource);
@@ -146,7 +106,7 @@ class ExctractPrice extends BaseRealisaPrint
             $return[$option->getId()]['optionIdSource'] = $idOptionSource;
 
             // En cas de changement de type d'option
-            if (!$this->productHostService->isVariant($productHost) && $option->getTypeOption() !== $typeOption) {
+            if (!$this->productHostService->isVariant($productHost) && $option->getTypeOption() !== $detailData['typeOption']) {
                 // on envoi un message d'erreur
                 //                $this->getLog()->Erreur('Le type d\'une option à changer');
                 //                $this->getLog()->addLogContent('Option  : '.var_export($option, true));
@@ -154,7 +114,7 @@ class ExctractPrice extends BaseRealisaPrint
                 //                $this->getLog()->addLogContent('nouveau type : '.$typeOption);
 
                 // on change le type d'option
-                $option->setTypeOption($typeOption);
+                $option->setTypeOption($detailData['typeOption']);
                 $this->entityManager->persist($option);
                 $this->entityManager->flush();
             }

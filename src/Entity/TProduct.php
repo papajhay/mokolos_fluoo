@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\TProduct\SpecialQuantityEnum;
 use App\Repository\TProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,15 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TProductRepository::class)]
 class TProduct
 {
+//    Les constants sont deplacés vers SpecialQuantityEnum
     /**
      * id pour les quantité personnalisé quand on a que les quantité standard.
      */
-     const ID_SPECIAL_QUANTITY_ONLY_STANDARD = 0;
+//     const ID_SPECIAL_QUANTITY_ONLY_STANDARD = 0;
 
     /**
      * id pour les quantité personnalisé quand la quantité est géré en tant qu'option standard.
      */
-    const ID_SPECIAL_QUANTITY_IN_OPTION = 3;
+//    const ID_SPECIAL_QUANTITY_IN_OPTION = 3;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -32,23 +34,20 @@ class TProduct
     #[ORM\Column(length: 255)]
     private ?string $libelle = null;
 
-    /* Id du produit auquel ce produit est rattaché */
-    #[ORM\Column]
-    private ?int $rattachement = null;
-
     /* indique si le produit autorise les format personnalisé. (utilisé par l'API p24) */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $specialFormat = null;
 
     /* indique si le produit autorise les quantité personnalisé. (utilisé par l'API smartlabel) */
-    #[ORM\Column]
-    private ?int $specialQuantity = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: TAProductOption::class)]
-    private Collection $tAProductOptions;
+    #[ORM\Column(type:"integer")]
+    private $specialQuantity = SpecialQuantityEnum::ID_SPECIAL_QUANTITY_IN_OPTION;
 
     #[ORM\OneToMany(mappedBy: 'tProduct', targetEntity: TAOptionProvider::class)]
     private Collection $tAOptionProviders;
+
+    #[ORM\ManyToMany(targetEntity: TAProductOption::class, mappedBy: 'tProduct')]
+    private Collection $tAProductOptions;
 
     #[ORM\OneToMany(mappedBy: 'tProduct', targetEntity: TAProductOptionValueProvider::class, orphanRemoval: true)]
     private Collection $tAProductOptionValueProviders;
@@ -62,6 +61,16 @@ class TProduct
     #[ORM\ManyToMany(targetEntity: TAProductProvider::class, mappedBy: 'tProduct')]
     private Collection $tAProductProviders;
 
+
+    /* Id du produit auquel ce produit est rattaché */
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'tProducts')]
+    #[ORM\Column(type: "integer", nullable: true)]
+//    old-name : $rattachement
+    private ?self $attachement = null;
+
+    #[ORM\OneToMany(mappedBy: 'attachement', targetEntity: self::class)]
+    private Collection $tProducts;
+
     public function __construct()
     {
         $this->tAProductOptions = new ArrayCollection();
@@ -69,6 +78,7 @@ class TProduct
         $this->tAProductOptionValueProviders = new ArrayCollection();
         $this->tCombinaisons = new ArrayCollection();
         $this->tAProductProviders = new ArrayCollection();
+        $this->tProducts = new ArrayCollection();
     }
 
 
@@ -89,7 +99,7 @@ class TProduct
         return $this;
     }
 
-    public function getSpecialQuantity(): ?int
+    public function getSpecialQuantity(): SpecialQuantityEnum
     {
         return $this->specialQuantity;
     }
@@ -1238,16 +1248,6 @@ class TProduct
         return $this->tAProductProviders;
     }
 
-    public function getRattachement(): ?int
-    {
-        return $this->rattachement;
-    }
-
-    public function setRattachement(?int $rattachement): void
-    {
-        $this->rattachement = $rattachement;
-    }
-
     public function getSpecialFormat(): ?int
     {
         return $this->specialFormat;
@@ -1256,6 +1256,58 @@ class TProduct
     public function setSpecialFormat(?int $specialFormat): void
     {
         $this->specialFormat = $specialFormat;
+    }
+
+    public function getAttachement(): ?self
+    {
+        return $this->attachement;
+    }
+
+    public function setAttachement(?self $attachement): static
+    {
+        $this->attachement = $attachement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getTProducts(): Collection
+    {
+        return $this->tProducts;
+    }
+
+    public function addTProduct(self $tProduct): static
+    {
+        if (!$this->tProducts->contains($tProduct)) {
+            $this->tProducts->add($tProduct);
+            $tProduct->setAttachement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTProduct(self $tProduct): static
+    {
+        if ($this->tProducts->removeElement($tProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($tProduct->getAttachement() === $this) {
+                $tProduct->setAttachement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTAOptionProviders(): Collection
+    {
+        return $this->tAOptionProviders;
+    }
+
+    public function setTAOptionProviders(Collection $tAOptionProviders): void
+    {
+        $this->tAOptionProviders = $tAOptionProviders;
     }
 
 }
