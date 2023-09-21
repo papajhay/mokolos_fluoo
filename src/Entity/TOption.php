@@ -105,7 +105,7 @@ class TOption extends BaseEntity
     // libéllé de l'option
     private ?string $label = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     // commentaire de l'option
     private ?string $comments = null;
 
@@ -125,21 +125,21 @@ class TOption extends BaseEntity
     #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TAOptionValueProvider::class)]
     private Collection $taOptionValueProviders;
 
-    #[ORM\OneToMany(mappedBy: 'TOption', targetEntity: TOptionValue::class, orphanRemoval: true)]
-    private Collection $tOptionValues;
-
     #[ORM\OneToMany(mappedBy: 'TOption', targetEntity: TAProductOption::class)]
     private Collection $tAProductOptions;
 
     #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TAOptionProvider::class)]
     private Collection $tAOptionProviders;
 
+    #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TOptionValue::class)]
+    private Collection $tOptionValue;
+
     public function __construct()
     {
         $this->taOptionValueProviders = new ArrayCollection();
-        $this->tOptionValues = new ArrayCollection();
         $this->tAProductOptions = new ArrayCollection();
         $this->tAOptionProviders = new ArrayCollection();
+        $this->tOptionValue = new ArrayCollection();
     }
     // private $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD;
 
@@ -549,36 +549,6 @@ class TOption extends BaseEntity
     }
 
     /**
-     * @return Collection<int, TOptionValue>
-     */
-    public function getTOptionValues(): Collection
-    {
-        return $this->tOptionValues;
-    }
-
-    public function addTOptionValue(TOptionValue $tOptionValue): static
-    {
-        if (!$this->tOptionValues->contains($tOptionValue)) {
-            $this->tOptionValues->add($tOptionValue);
-            $tOptionValue->setTOption($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTOptionValue(TOptionValue $tOptionValue): static
-    {
-        if ($this->tOptionValues->removeElement($tOptionValue)) {
-            // set the owning side to null (unless already changed)
-            if ($tOptionValue->getTOption() === $this) {
-                $tOptionValue->setTOption(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, TAProductOption>
      */
     public function getTAProductOptions(): Collection
@@ -632,6 +602,36 @@ class TOption extends BaseEntity
             // set the owning side to null (unless already changed)
             if ($tAOptionProvider->getTOption() === $this) {
                 $tAOptionProvider->setTOption(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TOptionValue>
+     */
+    public function getTOptionValue(): Collection
+    {
+        return $this->tOptionValue;
+    }
+
+    public function addTOptionValue(TOptionValue $tOptionValue): static
+    {
+        if (!$this->tOptionValue->contains($tOptionValue)) {
+            $this->tOptionValue->add($tOptionValue);
+            $tOptionValue->setTOption($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTOptionValue(TOptionValue $tOptionValue): static
+    {
+        if ($this->tOptionValue->removeElement($tOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tOptionValue->getTOption() === $this) {
+                $tOptionValue->setTOption(null);
             }
         }
 

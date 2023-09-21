@@ -19,8 +19,8 @@ class TAOptionValueProvider
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idSource = null;
+    #[ORM\Column(length: 255)]
+    private ?string $sourceKey = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
@@ -46,24 +46,12 @@ class TAOptionValueProvider
      * @var TOptionValue|null
      */
     // private $_optionValue = null;
-    #[ORM\ManyToOne(inversedBy: 'tAOptionValueProviders')]
+    #[ORM\ManyToOne(targetEntity: TOptionValue::class, inversedBy: 'tAOptionValueProviders')]
     private ?TOptionValue $tOptionValue = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdSource(): ?int
-    {
-        return $this->idSource;
-    }
-
-    public function setIdSource(int $idSource): static
-    {
-        $this->idSource = $idSource;
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -137,8 +125,18 @@ class TAOptionValueProvider
 
         return $this;
     }
+    public function getSourceKey(): ?string
+    {
+        return $this->sourceKey;
+    }
 
-    // TODO Getter Option Value
+    public function setSourceKey(?string $sourceKey): self
+    {
+        $this->sourceKey = $sourceKey;
+
+        return $this;
+    }
+
     /**
      * Retourne OptionValue Correspondante.
      * @return TOptionValue

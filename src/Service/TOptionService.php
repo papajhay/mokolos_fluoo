@@ -137,6 +137,7 @@ class TOptionService
             $newOrder = $this->orderForNewOption($order);
 
             // création de l'option
+
             $tOption = new TOption();
             $tOption ->setLabel($nameOption)
                      ->setOptionOrder($newOrder)
@@ -219,18 +220,4 @@ class TOptionService
         // on renvoi l'id de l'option value
         return $aOptionValueNoKey[0]->getIdOptionValue();
     }
-
-//    public function createTOption(string $nameOption, int $order, int $typeOption)
-//    {
-//        $option = new TOption();
-//        $option->setLabel($nameOption)
-//               ->setOptionOrder($order)
-//               ->setTypeOption($typeOption)
-//               ->setSpecialOption(SpecialOptionEnum::SPECIAL_OPTION_STANDARD);
-//
-//        $this->entityManager->persist($option);
-//        $this->entityManager->flush();
-//
-//        return $option;
-//    }
 }

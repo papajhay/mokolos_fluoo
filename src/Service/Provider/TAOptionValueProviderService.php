@@ -7,6 +7,7 @@ use App\Entity\TAOptionValueProvider;
 use App\Entity\TOption;
 use App\Entity\TOptionValue;
 use App\Repository\TAOptionValueProviderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TAOptionValueProviderService
 {
@@ -42,16 +43,18 @@ class TAOptionValueProviderService
      */
     public function createNew(TOptionValue $optionValue, Provider $provider, string $idOptionValueSource, string $nameOptionValue, TOption $option, string $productAlias = '', string $elementId = ''): TAOptionValueProvider
     {
-        $newTAOptionValueProvider = new TAOptionValueProvider();
-        $newTAOptionValueProvider->setOptionValue($optionValue)
-            ->setProvider($provider)
-            ->setIdSource($idOptionValueSource)
-            ->setDescription($nameOptionValue)
-            ->setOption($option)
-            ->setProductAlias($productAlias)
-            ->setElementId($elementId)
-            ->save();
+        $TAOptionValueProvider = new TAOptionValueProvider();
+        $TAOptionValueProvider->setTOptionValue($optionValue)
+                              ->setProvider($provider)
+                              ->setSourceKey($idOptionValueSource)
+                              ->setDescription($nameOptionValue)
+                              ->setTOption($option)
+                              ->setProductAlias($productAlias)
+                              ->setElementId($elementId);
 
-        return $newTAOptionValueProvider;
+        $this->entityManager->persist($TAOptionValueProvider);
+        $this->entityManager->flush();
+
+        return $TAOptionValueProvider;
     }
 }
