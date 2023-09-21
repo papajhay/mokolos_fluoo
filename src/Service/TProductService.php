@@ -24,16 +24,27 @@ class TProductService
         return $product->getTAProductProvider()->getIdSource();
     }
 
-    public function createProduct( TAProductProvider $TAProductProvider, int $SpecialQuantity): TProduct
+    public function createOrGetTProduct(TAProductProvider $tAProductProvider, int $SpecialQuantity): TProduct
     {
-        $product = new TProduct();
-        $product->setLibelle($TAProductProvider->getLabelSource())
-                ->setSpecialQuantity($SpecialQuantity);
+        // Vérifier si le produit existe déjà
+        $existingTProduct = $this->em->getRepository(TProduct::class)->findOneBy([
+            'libelle' => $tAProductProvider->getLabelSource(),
+            'specialQuantity' => $SpecialQuantity,
+        ]);
 
-        $this->em->persist($product);
+        if ($existingTProduct) {
+            // Le produit existe déjà, retournez-le
+            return $existingTProduct;
+        }
+
+        // Le produit n'existe pas encore, créez-le
+        $tProduct = new TProduct();
+        $tProduct->setLibelle($tAProductProvider->getLabelSource())
+                 ->setSpecialQuantity($SpecialQuantity);
+
+        $this->em->persist($tProduct);
         $this->em->flush();
 
-        return $product;
+        return $tProduct;
     }
-
 }

@@ -26,32 +26,26 @@ class TAProductOptionService
      * @param string      $minValue      [=''] Valeur minimum pour les options de type texte si applicable
      * @param string      $maxValue      [=''] Valeur maximum pour les options de type texte si applicable
      */
-    public function createIfNotExist(TProduct $product, TOption $option, string | Hosts $host, string $defaultValue = null, int $proOptIsActif = TAProductOption::STATUS_ACTIF, string $minValue = '', string $maxValue = ''): void
+    public function createIfNotExist(TProduct $tProduct, TOption $option, string | Hosts $host, string $defaultValue = null, int $proOptIsActif = TAProductOption::STATUS_ACTIF, string $minValue = '', string $maxValue = ''): void
     {
         $today = new \DateTimeImmutable();
         // on recherche notre TAProduitOption;
-        $taProductOption = $this->productOptionRepository->findOneBy(['product'=>$product, 'tOption' => $option,'host' => $host]);
-//        $option = $this->tOptionService->createTOption();
-
+        $taProductOption = $this->productOptionRepository->findOneBy(['tProduct'=>$tProduct, 'tOption' => $option,'host' => $host]);
         // si notre produit option n'existe pas encore
         if (null === $taProductOption) {
-//            $host = $this->entityManager->getRepository(Hosts::class)->find($host);
-            $fullHost = $this->entityManager->getRepository(Hosts::class)->findOneBy(['name'=>$host]);
-//            $product = $this->entityManager->getRepository(TProduct::class)->find($product);
+            $hostName = $this->entityManager->getRepository(Hosts::class)->findOneBy(['name'=>$host]);
 
             // on va donc créé ce produit option
             $taProductOption = new TAProductOption();
-            $taProductOption ->setProduct($product)
+            $taProductOption ->setTProduct($tProduct)
                              ->setTOption($option)
-                             ->setHost($fullHost)
+                             ->setHost($hostName)
                              ->setLabel($option->getLabel())
-                             ->setDefaultValue($defaultValue)
                              ->setOptionMinValue($minValue)
                              ->setOptionMaxValue($maxValue)
                              ->setIsActif($proOptIsActif)
                              ->setDateHourLastSeen($today);
 
-            dd($taProductOption);
                 // on le créé
                 $this->entityManager->persist($taProductOption);
                 $this->entityManager->flush();

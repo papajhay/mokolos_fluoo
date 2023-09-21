@@ -49,25 +49,23 @@ class TAProductOption extends BaseEntity
     #[ORM\Column]
     private ?int $isActif = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $defaultValue = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $optionMinValue = '';
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $optionMaxValue = '';
 
     #[ORM\Column]
     private ?\DateTimeImmutable $dateHourLastSeen = null;
 
     #[ORM\ManyToOne(targetEntity: TProduct::class ,inversedBy: 'tAProductOptions')]
-    #[ORM\JoinColumn(name: 'product', nullable: false)]
-    private ?TProduct $product;
+    private ?TProduct $tProduct;
 
     #[ORM\ManyToOne(targetEntity: TOption::class ,inversedBy: 'tAProductOptions')]
-    #[ORM\JoinColumn(name: 'product', nullable: false)]
-    private ?TOption $tOption = null;
+    private ?TOption $tOption;
 
     #[ORM\OneToMany(mappedBy: 'tAProductOption', targetEntity: TAProductOptionValue::class)]
     private Collection $tAProductOptionValues;
@@ -156,18 +154,6 @@ class TAProductOption extends BaseEntity
         $this->dateHourLastSeen = $dateHourLastSeen;
 
         return $this;
-    }
-
-
-
-    public function getProduct(): ?TProduct
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?TProduct $product): void
-    {
-        $this->product = $product;
     }
 
     /*
@@ -637,14 +623,16 @@ class TAProductOption extends BaseEntity
         return $this;
     }
 
-    public function getHost(): Hosts
+    public function getHost(): ?Hosts
     {
         return $this->host;
     }
 
-    public function setHost(Hosts $host): void
+    public function setHost(Hosts $host): self
     {
         $this->host = $host;
+
+        return $this;
     }
 
     public function getTOption(): ?TOption
@@ -652,9 +640,23 @@ class TAProductOption extends BaseEntity
         return $this->tOption;
     }
 
-    public function setTOption(?TOption $tOption): void
+    public function setTOption(?TOption $tOption): self
     {
         $this->tOption = $tOption;
+
+        return $this;
+    }
+
+    public function getTProduct(): ?TProduct
+    {
+        return $this->tProduct;
+    }
+
+    public function setTProduct(?TProduct $tProduct): self
+    {
+        $this->tProduct = $tProduct;
+
+        return $this;
     }
 
 }

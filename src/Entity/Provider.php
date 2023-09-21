@@ -287,6 +287,9 @@ class Provider
     #[ORM\OneToMany(mappedBy: 'provider', targetEntity: TCombinaisonPrice::class, orphanRemoval: true)]
     private Collection $tCombinaisonPrice;
 
+    #[ORM\OneToMany(mappedBy: 'provider', targetEntity: TProduct::class)]
+    private Collection $tproduct;
+
     public function __construct()
     {
         $this->taOptionValueProviders = new ArrayCollection();
@@ -294,6 +297,7 @@ class Provider
         $this->tAProductProviders = new ArrayCollection();
         $this->tSupplierOrders = new ArrayCollection();
         $this->tCombinaisonPrice = new ArrayCollection();
+        $this->tproduct = new ArrayCollection();
     }
 
     /**
@@ -2214,6 +2218,36 @@ public function removeTCombinaisonPrice(TCombinaisonPrice $tCombinaisonPrice): s
         // set the owning side to null (unless already changed)
         if ($tCombinaisonPrice->getProvider() === $this) {
             $tCombinaisonPrice->setProvider(null);
+        }
+    }
+
+    return $this;
+}
+
+/**
+ * @return Collection<int, TProduct>
+ */
+public function getTproduct(): Collection
+{
+    return $this->tproduct;
+}
+
+public function addTproduct(TProduct $tproduct): static
+{
+    if (!$this->tproduct->contains($tproduct)) {
+        $this->tproduct->add($tproduct);
+        $tproduct->setProvider($this);
+    }
+
+    return $this;
+}
+
+public function removeTproduct(TProduct $tproduct): static
+{
+    if ($this->tproduct->removeElement($tproduct)) {
+        // set the owning side to null (unless already changed)
+        if ($tproduct->getProvider() === $this) {
+            $tproduct->setProvider(null);
         }
     }
 

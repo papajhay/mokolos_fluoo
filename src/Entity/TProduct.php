@@ -71,6 +71,9 @@ class TProduct
     #[ORM\OneToMany(mappedBy: 'attachement', targetEntity: self::class)]
     private Collection $tProducts;
 
+    #[ORM\ManyToOne(targetEntity: Provider::class, inversedBy: 'tProduct')]
+    private ?Provider $provider = null;
+
     public function __construct()
     {
         $this->tAProductOptions = new ArrayCollection();
@@ -80,7 +83,6 @@ class TProduct
         $this->tAProductProviders = new ArrayCollection();
         $this->tProducts = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -123,7 +125,7 @@ class TProduct
     {
         if (!$this->tAProductOptions->contains($tAProductOption)) {
             $this->tAProductOptions->add($tAProductOption);
-            $tAProductOption->setProduct($this);
+            $tAProductOption->setTProduct($this);
         }
 
         return $this;
@@ -133,8 +135,8 @@ class TProduct
     {
         if ($this->tAProductOptions->removeElement($tAProductOption)) {
             // set the owning side to null (unless already changed)
-            if ($tAProductOption->getProduct() === $this) {
-                $tAProductOption->setProduct(null);
+            if ($tAProductOption->getTProduct() === $this) {
+                $tAProductOption->setTProduct(null);
             }
         }
 
@@ -1216,38 +1218,6 @@ class TProduct
         return $this;
     }
 
-    /**
-     * @return Collection<int, TAProductProvider>
-     */
-    public function getTAProductProvider(): Collection
-    {
-        return $this->tAProductProvider;
-    }
-
-    public function addTAProductProvider(TAProductProvider $tAProductProvider): static
-    {
-        if (!$this->tAProductProvider->contains($tAProductProvider)) {
-            $this->tAProductProvider->add($tAProductProvider);
-        }
-
-        return $this;
-    }
-
-    public function removeTAProductProvider(TAProductProvider $tAProductProvider): static
-    {
-        $this->tAProductProvider->removeElement($tAProductProvider);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, TAProductProvider>
-     */
-    public function getTAProductProviders(): Collection
-    {
-        return $this->tAProductProviders;
-    }
-
     public function getSpecialFormat(): ?int
     {
         return $this->specialFormat;
@@ -1308,6 +1278,28 @@ class TProduct
     public function setTAOptionProviders(Collection $tAOptionProviders): void
     {
         $this->tAOptionProviders = $tAOptionProviders;
+    }
+
+    public function getProvider(): ?Provider
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(?Provider $provider): static
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getTAProductProviders(): Collection
+    {
+        return $this->tAProductProviders;
+    }
+
+    public function setTAProductProviders(Collection $tAProductProviders): void
+    {
+        $this->tAProductProviders = $tAProductProviders;
     }
 
 }
