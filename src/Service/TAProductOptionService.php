@@ -6,6 +6,7 @@ use App\Entity\Hosts;
 use App\Entity\TAProductOption;
 use App\Entity\TOption;
 use App\Entity\TProduct;
+use App\Enum\StatusEnum;
 use App\Repository\TAProductOptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -13,8 +14,7 @@ class TAProductOptionService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private TAProductOptionRepository $productOptionRepository,
-        private TOptionService $tOptionService
+        private TAProductOptionRepository $productOptionRepository
     ) {
     }
 
@@ -22,11 +22,11 @@ class TAProductOptionService
      * @param TOption     $option        option
      * @param string|Hosts      $host        id du site
      * @param string|null $defaultValue  [=NULL] valeur par défaut utilisé dans les option de type text
-     * @param int         $proOptIsActif [=TAProduitOption::STATUS_ACTIF] indique si cette option est active ou non
+     * @param StatusEnum $isActive [=TAProduitOption::STATUS_ACTIF] indique si cette option est active ou non
      * @param string      $minValue      [=''] Valeur minimum pour les options de type texte si applicable
      * @param string      $maxValue      [=''] Valeur maximum pour les options de type texte si applicable
      */
-    public function createIfNotExist(TProduct $tProduct, TOption $option, string | Hosts $host, string $defaultValue = null, int $proOptIsActif = TAProductOption::STATUS_ACTIF, string $minValue = '', string $maxValue = ''): void
+    public function createIfNotExist(TProduct $tProduct, TOption $option, string | Hosts $host, string $defaultValue = null, StatusEnum $isActive = StatusEnum::STATUS_ACTIVE, string $minValue = '', string $maxValue = ''): void
     {
         $today = new \DateTimeImmutable();
         // on recherche notre TAProduitOption;
@@ -43,7 +43,7 @@ class TAProductOptionService
                              ->setLabel($option->getLabel())
                              ->setOptionMinValue($minValue)
                              ->setOptionMaxValue($maxValue)
-                             ->setIsActif($proOptIsActif)
+                             ->setStatus($isActive)
                              ->setDateHourLastSeen($today);
 
                 // on le créé

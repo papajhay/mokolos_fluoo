@@ -7,10 +7,8 @@ use App\Entity\TAOptionProvider;
 use App\Entity\TOption;
 use App\Entity\TProduct;
 use App\Enum\RealisaPrint\SpecialOptionEnum;
-use App\Repository\BaseRepository;
 use App\Repository\TAProductOptionRepository;
 use App\Repository\TOptionRepository;
-use App\Repository\TProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Provider\TAOptionProviderService;
 
@@ -20,17 +18,16 @@ class TOptionService
         private EntityManagerInterface $entityManager,
         private TOptionRepository $optionRepository,
         private TAProductOptionRepository $productOptionRepository,
-        private TAOptionProviderService $optionProviderService,
-        private TProductRepository $productRepository
+        private TAOptionProviderService $optionProviderService
     ) {
     }
 
     /**
      * Retourne un boolean qui indique si cette option existe en fonction de l'id du fournissseur et de l'id de l'option chez le fournisseur. Certains paramétres supplémentaires existent pour certains fournisseurs.
      */
-    public function existByIdOptionSrc(string $idOptionProviderSrc, int $idProvider, $idProduct = 0): bool
+    public function existByIdOptionSrc(string $idOptionProviderSrc, Provider $provider, TProduct $tProduct = null): bool
     {
-        return $this->optionProviderService->existByIdOptionSrc($idOptionProviderSrc, $idProvider, $idProduct);
+        return $this->optionProviderService->existByIdOptionSrc($idOptionProviderSrc, $provider, $tProduct);
     }
 
     /**
@@ -81,11 +78,11 @@ class TOptionService
     /**
      * Retourne un objet TOption via l'id src et le fournisseur retourne l'id de l'option value si elle n'a pas était trouvé ou NULL si on a pas de source.
      */
-    public function findByIdOptionSrc(string $idOptionProviderSrc, int $idProvider, int $idProduct = null): TOption|int|null
+    public function findByIdOptionSrc(string $idOptionProviderSrc, Provider $provider, TProduct $tProduct = null): TOption|int|null
     {
         // on récupére l'option fournisseur
         /** @var TAOptionProvider $optionProvider */
-        $optionProvider = $this->entityManager->getRepository(TAOptionProvider::class)->findByIdOptionSrc($idOptionProviderSrc, $idProvider, $idProduct);
+        $optionProvider = $this->entityManager->getRepository(TAOptionProvider::class)->findByIdOptionSrc($idOptionProviderSrc, $provider, $tProduct);
 
         // si on n'a pas trouvé d'option fournisseur
         if (!isset($optionProvider)) {
@@ -109,34 +106,20 @@ class TOptionService
      * créé un option et le optionfournisseur associé si il n'existe pas.
      * @return TOption
      */
-    public function createIfNotExist(string $idOptionSource, int $idProvider, string $nameOption, int $order = 100, $idProduct = 0, int $typeOption = TOption::TYPE_OPTION_SELECT,  $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
+    public function createIfNotExist(string $idOptionSource, Provider $provider, string $nameOption, $order = 100 , TProduct $tProduct, int $typeOption = TOption::TYPE_OPTION_SELECT,  $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
     {
         // on fait un trim sur l'id option value source pour éviter des bugs avec des espaces qui pourrait être ajouter
         $idOptionSourceTrim = trim($idOptionSource);
 
         // on va chercher si cette option existe dans la base par rapport au fournisseur
-        if ($this->existByIdOptionSrc($idOptionSource, $idProvider, $idProduct)) {
-            // récupération de l'option value
-            $o = $this->findByIdOptionSrc($idOptionSourceTrim, $idProvider, $idProduct);
-
-            // si on a pas de localisation
-            if (is_numeric($o)) {
-                // on sauvegarde la localisation
-                $option = new TOption();
-                $option->setLabel($nameOption)
-                    ->setTypeOption($typeOption);
-
-                $this->entityManager->persist($option);
-                $this->entityManager->flush();
-
-            }
+        if (null !== $tOption = $this->findByIdOptionSrc($idOptionSourceTrim, $provider, $tProduct)) {
+            // stocké si localisation
+            return $tOption;
         }
         // si l'option n'existe pas encore
         else {
             // on récupére l'ordre qu'on va assigné à l'option
             $newOrder = $this->orderForNewOption($order);
-
-            // création de l'option
 
             $tOption = new TOption();
             $tOption ->setLabel($nameOption)
@@ -147,17 +130,10 @@ class TOptionService
             $this->entityManager->persist($tOption);
             $this->entityManager->flush();
 
+            $this->optionProviderService->createNewTAOptionProvider($provider, $tOption, $idOptionSourceTrim, $tProduct);
+
             return $tOption;
-
-//            $provider = $this->entityManager->getRepository(Provider::class)->find($idProvider);
-
-            // création de l'objet option fournisseur
-            $tproduct= $this->productRepository->find($idProduct);
-            $this->optionProviderService->createNew($provider, $option, $idOptionSourceTrim, '', $tproduct);
         }
-
-        // on renvoi l'optionValue
-        return $option;
     }
 
     /**

@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use App\Enum\TOptionValue\StatusEnum;
-use App\Enum\TProduct\SpecialQuantityEnum;
+use App\Enum\StatusEnum;
 use App\Repository\TOptionValueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\BaseEntity;
 
 #[ORM\Entity(repositoryClass: TOptionValueRepository::class)]
 class TOptionValue extends BaseEntity

@@ -7,23 +7,25 @@ use App\Entity\TAOptionProvider;
 use App\Entity\TOption;
 use App\Entity\TProduct;
 use App\Repository\TAOptionProviderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TAOptionProviderService
 {
     public function __construct(
-        private TAOptionProviderRepository $optionProviderRepository
+        private TAOptionProviderRepository $optionProviderRepository,
+        private EntityManagerInterface $entityManager
     ) {
     }
 
     /** Retourne TRUE si ce TAOptionFournisseur existe. Certains paramétres supplémentaires existent pour certains fournisseurs.
-     * @param int $idOptionFourSrc id de l'option chez le fournisseur
-     * @param int $idProvider id du fournisseur
-     * @param int|null $idProduct [=null] id du porduit
+     * @param string $idOptionFourSrc id de l'option chez le fournisseur
+     * @param Provider $provider id du fournisseur
+     * @param TProduct|null $tProduct [=null] id du porduit
      * @return bool
      */
-    public function existByIdOptionSrc(string $idOptionFourSrc, int $idProvider, ?int $idProduct = 0): bool
+    public function existByIdOptionSrc(string $idOptionFourSrc, Provider $provider, ?TProduct $tProduct = null): bool
     {
-        return $this->optionProviderRepository->existsBy($idOptionFourSrc,$idProvider, $idProduct);
+        return $this->optionProviderRepository->existsBy($idOptionFourSrc, $provider, $tProduct);
     }
 
 
@@ -31,21 +33,20 @@ class TAOptionProviderService
      * @param Provider $provider le fournisseur
      * @param TOption $option unsigned $idOption id de l'option
      * @param string $idSource
-     * @param string $descriptionSource
-     * @param TProduct|null $product
+     * @param TProduct $tProduct
      * @return TAOptionProvider Nouvel Objet inseré en base
      */
-    public function createNew(Provider $provider, TOption $option, string $idSource, string $descriptionSource, TProduct $product = null): TAOptionProvider
+    public function createNewTAOptionProvider(Provider $provider, TOption $option, string $idSource, TProduct $tProduct): TAOptionProvider
     {
-        $optionProvider = new TAOptionProvider();
-        $optionProvider->setProvider($provider)
+        $tAOptionProvider = new TAOptionProvider();
+        $tAOptionProvider->setProvider($provider)
                         ->setTOption($option)
-                        ->setOptIdSource($idSource)
-                        ->setDescriptionSource($descriptionSource)
-                        ->setTProduct($product);
+                        ->setSourceKey($idSource)
+                        ->setTProduct($tProduct);
 
-        $this->optionProviderRepository->save($optionProvider);
+        $this->entityManager->persist($tAOptionProvider);
+        $this->entityManager->flush();
 
-        return $optionProvider;
+        return $tAOptionProvider;
     }
 }

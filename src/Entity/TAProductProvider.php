@@ -16,7 +16,7 @@ class TAProductProvider extends BaseEntity
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'tAProductProviders')]
-    private ?Provider $provider = null;
+    private ?Provider $provider;
 
     #[ORM\Column(type:"integer",nullable:true)]
     private ?int $idSource = null;
