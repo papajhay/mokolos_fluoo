@@ -29,9 +29,9 @@ class TAOptionValueProvider
     // product_alias pour les sous produit de p24
     private ?string $productAlias = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'integer')]
     // element_id pour les sous produit de p24
-    private ?string $elementId = null;
+    private ?int $elementId = null;
 
     #[ORM\ManyToOne(inversedBy: 'taOptionValueProviders')]
     #[ORM\JoinColumn(nullable: false)]
@@ -78,12 +78,12 @@ class TAOptionValueProvider
         return $this;
     }
 
-    public function getElementId(): ?string
+    public function getElementId(): ?int
     {
         return $this->elementId;
     }
 
-    public function setElementId(string $elementId): static
+    public function setElementId(int $elementId): self
     {
         $this->elementId = $elementId;
 
@@ -136,20 +136,6 @@ class TAOptionValueProvider
 
         return $this;
     }
-
-    /**
-     * Retourne OptionValue Correspondante.
-     * @return TOptionValue
-     */
-    //    public function getOptionValue()
-    //    {
-    //        if($this->_optionValue == null)
-    //        {
-    //            $this->_optionValue = TOptionValue::findById($this->getIdOptionValue());
-    //        }
-    //
-    //        return $this->_optionValue;
-    //    }
 
     // TODO Repository
 

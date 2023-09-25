@@ -38,10 +38,10 @@ class TAOptionValueProviderService
      * @param string $nameOptionValue nom de l'optionValue chez le fournisseur
      * @param TOption $option
      * @param string $productAlias product alias de l'optionvalue pour le fournisseur si applicable
-     * @param string $elementId elementId de l'optionvalue pour le fournisseur si applicable
+     * @param int $elementId elementId de l'optionvalue pour le fournisseur si applicable
      * @return TAOptionValueProvider nouvel objet
      */
-    public function createNew(TOptionValue $optionValue, Provider $provider, string $idOptionValueSource, string $nameOptionValue, TOption $option, string $productAlias = '', string $elementId = ''): TAOptionValueProvider
+    public function createNewTAOptionValueProvider(TOptionValue $optionValue, Provider $provider, string $idOptionValueSource, string $nameOptionValue, TOption $option, string $productAlias , int $elementId): TAOptionValueProvider
     {
         $TAOptionValueProvider = new TAOptionValueProvider();
         $TAOptionValueProvider->setTOptionValue($optionValue)

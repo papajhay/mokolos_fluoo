@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\StatusEnum;
 use App\Repository\TAProductOptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +16,7 @@ class TAProductOption extends BaseEntity
     * CONSTANT
     * **************************************************************************
     */
-
+    // Deplacés vers StatusEnum
     /**
      * Statut de cette valeur d'option : inactif.
      */
@@ -24,7 +25,7 @@ class TAProductOption extends BaseEntity
     /**
      * Statut de cette valeur d'option : actif.
      */
-     const STATUS_ACTIF = 1;
+    // const STATUS_ACTIF = 1;
 
     /**
      * nom du ou des clés primaires OBLIGATOIREMENT un Array.
@@ -46,8 +47,8 @@ class TAProductOption extends BaseEntity
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
-    #[ORM\Column]
-    private ?int $isActif = null;
+    #[ORM\Column(type: "integer", enumType: StatusEnum::class)]
+    private StatusEnum $status = StatusEnum::STATUS_ACTIVE;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $defaultValue = null;
@@ -92,18 +93,6 @@ class TAProductOption extends BaseEntity
     public function setLabel(string $label): static
     {
         $this->label = $label;
-
-        return $this;
-    }
-
-    public function getIsActif(): ?int
-    {
-        return $this->isActif;
-    }
-
-    public function setIsActif(int $isActif): static
-    {
-        $this->isActif = $isActif;
 
         return $this;
     }
@@ -655,6 +644,18 @@ class TAProductOption extends BaseEntity
     public function setTProduct(?TProduct $tProduct): self
     {
         $this->tProduct = $tProduct;
+
+        return $this;
+    }
+
+    public function getStatus(): StatusEnum
+    {
+        return $this->status;
+    }
+
+    public function setStatus(StatusEnum $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
