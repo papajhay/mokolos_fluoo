@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Provider;
 use App\Entity\TAProductProvider;
 use App\Entity\TProduct;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,7 +25,7 @@ class TProductService
         return $product->getTAProductProvider()->getIdSource();
     }
 
-    public function createOrGetTProduct(TAProductProvider $tAProductProvider, int $SpecialQuantity): TProduct
+    public function createOrGetTProduct(TAProductProvider $tAProductProvider, int $SpecialQuantity, Provider $provider): TProduct
     {
         // Vérifier si le produit existe déjà
         $existingTProduct = $this->em->getRepository(TProduct::class)->findOneBy([
@@ -40,7 +41,8 @@ class TProductService
         // Le produit n'existe pas encore, créez-le
         $tProduct = new TProduct();
         $tProduct->setLibelle($tAProductProvider->getLabelSource())
-                 ->setSpecialQuantity($SpecialQuantity);
+                 ->setSpecialQuantity($SpecialQuantity)
+                 ->setProvider($provider);
 
         $this->em->persist($tProduct);
         $this->em->flush();
