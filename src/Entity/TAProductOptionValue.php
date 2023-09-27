@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\StatusEnum;
 use App\Repository\TAProductOptionValueRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,33 +10,29 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TAProductOptionValueRepository::class)]
 class TAProductOptionValue
 {
+//    Deplacés vers StatusEnum
     /**
      * Statut de cette valeur d'option : inactif.
      */
-    public const STATUS_INACTIF = 0;
+//    public const STATUS_INACTIF = 0;
 
     /**
      * Statut de cette valeur d'option : actif.
      */
-    public const STATUS_ACTIF = 1;
+//    public const STATUS_ACTIF = 1;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idProduct = null;
-
-
-
-    #[ORM\Column]
-    private ?int $isActif = null;
+    #[ORM\Column(type: "integer", enumType: StatusEnum::class)]
+    private StatusEnum $status = StatusEnum::STATUS_ACTIVE;
 
     #[ORM\Column(length: 255)]
     private ?string $libelle = null;
 
     #[ORM\Column]
-    private ?int $productOptionValueOrder = null;
+    private ?int $order = null;
 
     #[ORM\Column]
     // date de la derniére fois ou l'on a vu ce produit option. NULL pour une date inconnu
@@ -51,41 +48,20 @@ class TAProductOptionValue
     #[ORM\ManyToOne(inversedBy: 'tAProductOptionValues')]
     private ?TOptionValue $tOptionValue = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tAProductOptionValues')]
+    ///??????
+    #[ORM\ManyToOne(targetEntity: TAProductOption::class, inversedBy: 'tAProductOptionValues')]
     private ?TAProductOption $tAProductOption = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tAProductOptionValues')]
+    #[ORM\ManyToOne(targetEntity: Hosts::class, inversedBy: 'tAProductOptionValues')]
     // old: $idHost
     private ?Hosts $host = null;
+
+    #[ORM\ManyToOne(targetEntity: TProduct::class, inversedBy: 'tAProductOptionValues')]
+    private ?TProduct $tProduct = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdProduct(): ?int
-    {
-        return $this->idProduct;
-    }
-
-    public function setIdProduct(int $idProduct): static
-    {
-        $this->idProduct = $idProduct;
-
-        return $this;
-    }
-
-
-    public function getIsActif(): ?int
-    {
-        return $this->isActif;
-    }
-
-    public function setIsActif(int $isActif): static
-    {
-        $this->isActif = $isActif;
-
-        return $this;
     }
 
     public function getLibelle(): ?string
@@ -96,18 +72,6 @@ class TAProductOptionValue
     public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    public function getProductOptionValueOrder(): ?int
-    {
-        return $this->productOptionValueOrder;
-    }
-
-    public function setProductOptionValueOrder(int $productOptionValueOrder): static
-    {
-        $this->productOptionValueOrder = $productOptionValueOrder;
 
         return $this;
     }
@@ -177,9 +141,45 @@ class TAProductOptionValue
         return $this->host;
     }
 
-    public function setHost(?hosts $host): static
+    public function setHost(?hosts $host): self
     {
         $this->host = $host;
+
+        return $this;
+    }
+
+    public function getStatus(): StatusEnum
+    {
+        return $this->status;
+    }
+
+    public function setStatus(StatusEnum $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getOrder(): ?int
+    {
+        return $this->order;
+    }
+
+    public function setOrder(?int $order): self
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    public function getTProduct(): ?TProduct
+    {
+        return $this->tProduct;
+    }
+
+    public function setTProduct(?TProduct $tProduct): self
+    {
+        $this->tProduct = $tProduct;
 
         return $this;
     }

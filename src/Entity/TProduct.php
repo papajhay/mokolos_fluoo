@@ -72,7 +72,10 @@ class TProduct
     private Collection $tProducts;
 
     #[ORM\ManyToOne(targetEntity: Provider::class, inversedBy: 'tProduct')]
-    private ?Provider $provider = null;
+    private ?Provider $provider;
+
+    #[ORM\OneToMany(mappedBy: 'tProduct', targetEntity: TAProductOptionValue::class)]
+    private Collection $tAProductOptionValues;
 
     public function __construct()
     {
@@ -82,6 +85,7 @@ class TProduct
         $this->tCombinaisons = new ArrayCollection();
         $this->tAProductProviders = new ArrayCollection();
         $this->tProducts = new ArrayCollection();
+        $this->tAProductOptionValues = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1285,7 +1289,7 @@ class TProduct
         return $this->provider;
     }
 
-    public function setProvider(?Provider $provider): static
+    public function setProvider(?Provider $provider): self
     {
         $this->provider = $provider;
 
@@ -1300,6 +1304,36 @@ class TProduct
     public function setTAProductProviders(Collection $tAProductProviders): void
     {
         $this->tAProductProviders = $tAProductProviders;
+    }
+
+    /**
+     * @return Collection<int, TAProductOptionValue>
+     */
+    public function getTAProductOptionValues(): Collection
+    {
+        return $this->tAProductOptionValues;
+    }
+
+    public function addTAProductOptionValue(TAProductOptionValue $tAProductOptionValue): static
+    {
+        if (!$this->tAProductOptionValues->contains($tAProductOptionValue)) {
+            $this->tAProductOptionValues->add($tAProductOptionValue);
+            $tAProductOptionValue->setTProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTAProductOptionValue(TAProductOptionValue $tAProductOptionValue): static
+    {
+        if ($this->tAProductOptionValues->removeElement($tAProductOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tAProductOptionValue->getTProduct() === $this) {
+                $tAProductOptionValue->setTProduct(null);
+            }
+        }
+
+        return $this;
     }
 
 }

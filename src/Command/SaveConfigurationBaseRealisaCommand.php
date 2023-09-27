@@ -2,20 +2,19 @@
 
 namespace App\Command;
 
-use App\Entity\Hosts;
 use App\Entity\Provider;
 use App\Entity\TOption;
-use App\Entity\TProduct;
 use App\Enum\StatusEnum;
 use App\Repository\HostsRepository;
+use App\Repository\ProviderRepository;
 use App\Repository\TAProductProviderRepository;
 use App\Service\Provider\RealisaPrint\BaseRealisaPrint;
-use App\Service\Provider\TAOptionProviderService;
 use App\Service\Provider\TAOptionValueProviderService;
 use App\Service\TAProductOptionService;
 use App\Service\TOptionService;
 use App\Service\TOptionValueService;
 use App\Service\TProductService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,8 +37,8 @@ class SaveConfigurationBaseRealisaCommand extends Command
         private HostsRepository $hostsRepository,
         private TOptionValueService $optionValueService,
         private TAOptionValueProviderService $optionValueProviderService,
-        private TAOptionProviderService $tAOptionProviderService,
-        private TAProductOptionService $tAProductOptionService
+        private TAProductOptionService $tAProductOptionService,
+        private EntityManagerInterface $entityManager
     ){
         parent::__construct();
     }
@@ -64,7 +63,8 @@ class SaveConfigurationBaseRealisaCommand extends Command
         foreach ($productProviders as $productProvider) {
             $idSource =  $productProvider->getIdSource();
             $configs = $this->baseRealisaPrint->_apiConfigurations($idSource);
-            $tProduct = $this->tProductService->createOrGetTProduct($productProvider, 3);
+            $provider = $this->entityManager->getRepository(Provider::class)->findOneBy(["id" => $productProvider->getProvider()->getId()]);
+            $tProduct = $this->tProductService->createOrGetTProduct($productProvider, 3, $provider);
 
             foreach($configs['variables'] as $key=>$optionData){
              
