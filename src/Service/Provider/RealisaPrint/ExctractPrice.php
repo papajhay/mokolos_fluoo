@@ -32,7 +32,7 @@ class ExctractPrice extends BaseRealisaPrint
         private TOptionValueService $optionValueService,
         private TAProductOptionValueService $productOptionValueService,
         private TProductHostService $productHostService,
-        private TProductService $productService
+        private readonly TProductService $productService
     ) {
     }
 

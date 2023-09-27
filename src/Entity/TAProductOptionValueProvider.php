@@ -46,7 +46,7 @@ class TAProductOptionValueProvider
         return $this->provider;
     }
 
-    public function setProvider(?Provider $provider): static
+    public function setProvider(?Provider $provider): self
     {
         $this->provider = $provider;
 
@@ -58,7 +58,7 @@ class TAProductOptionValueProvider
         return $this->tOptionValue;
     }
 
-    public function setTOptionValue(?TOptionValue $tOptionValue): static
+    public function setTOptionValue(?TOptionValue $tOptionValue): self
     {
         $this->tOptionValue = $tOptionValue;
 
@@ -70,7 +70,7 @@ class TAProductOptionValueProvider
         return $this->tProduct;
     }
 
-    public function setTProduct(?TProduct $tProduct): static
+    public function setTProduct(?TProduct $tProduct): self
     {
         $this->tProduct = $tProduct;
 
