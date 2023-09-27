@@ -24,10 +24,10 @@ class TOptionValueService
      * @param string  $idOptionValueSource id de l'optionValue chez le fournisseur
      * @param TOption $tOption              tOption
      * @param string  $nameOptionValue      libelle de l'option
-     * @param string  $productAlias        product alias de l'optionvalue pour le fournisseur si applicable
-     * @param string  $elementId           elementId de l'optionvalue pour le fournisseur si applicable
+     * @param string $productAlias        product alias de l'optionvalue pour le fournisseur si applicable
+     * @param int  $elementId           elementId de l'optionvalue pour le fournisseur si applicable
      */
-    public function createIfNotExist(string $idOptionValueSource, int $idProvider, TOption $tOption, string $nameOptionValue, string $productAlias = '', string $elementId = ''): TOptionValue
+    public function createIfNotExist(string $idOptionValueSource, int $idProvider, TOption $tOption, string $nameOptionValue, int $elementId, string $productAlias = ''): TOptionValue
     {
         // on fait un trim sur l'id option value source pour éviter des bugs avec des espaces qui pourrait être ajouter
         $idOptionValueSourceTrim = trim($idOptionValueSource);
@@ -57,7 +57,7 @@ class TOptionValueService
             }
 
             // si on a un product alias ou un elementid et qu'il ont changé
-            if ('' !== $productAlias && '' !== $elementId & ($optionValueProvider->getProductAlias() !== $productAlias || $optionValueProvider->getElementId() !== $elementId)) {
+            if ('' !== $productAlias & ($optionValueProvider->getProductAlias() !== $productAlias || $optionValueProvider->getElementId() !== $elementId)) {
                 // on met à jour l element id et le product alias
                 $optionValueProvider->setProductAlias($productAlias)
                                     ->setElementId($elementId);
@@ -74,7 +74,7 @@ class TOptionValueService
             $this->optionValueRepository->save($optionValue);
 
             // création de la liaison entre le fournisseur et l'option value
-            $this->optionValueProviderService->createNew( $optionValue, $this->providerRepository->find($idProvider), $idOptionValueSourceTrim, $nameOptionValue, $tOption, $productAlias, $elementId);
+            $this->optionValueProviderService->createNewTAOptionValueProvider( $optionValue, $this->providerRepository->find($idProvider), $idOptionValueSourceTrim, $nameOptionValue, $tOption, $productAlias, $elementId);
         }
 
         // on renvoi l'optionValue

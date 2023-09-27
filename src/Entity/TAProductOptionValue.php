@@ -38,7 +38,7 @@ class TAProductOptionValue
     // date de la derniére fois ou l'on a vu ce produit option. NULL pour une date inconnu
     private ?\DateTime $dateLastSeen = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $localised = [];
 
     #[ORM\Column]
@@ -48,7 +48,6 @@ class TAProductOptionValue
     #[ORM\ManyToOne(inversedBy: 'tAProductOptionValues')]
     private ?TOptionValue $tOptionValue = null;
 
-    ///??????
     #[ORM\ManyToOne(targetEntity: TAProductOption::class, inversedBy: 'tAProductOptionValues')]
     private ?TAProductOption $tAProductOption = null;
 

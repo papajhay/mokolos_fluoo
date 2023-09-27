@@ -2,33 +2,41 @@
 
 namespace App\Service;
 
-use App\Repository\TAProductOptionValueProvider;
+use App\Entity\Provider;
+use App\Entity\TAProductOptionValueProvider;
+use App\Entity\TOptionValue;
+use App\Entity\TProduct;
+use App\Repository\TAProductOptionValueProviderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TAProductOptionValueProviderService
 {
     public function __construct(
-        private TAProductOptionValueProviderRepository $productOptionValueProviderRepository
+        private TAProductOptionValueProviderRepository $productOptionValueProviderRepository,
+        private EntityManagerInterface $entityManager
     ) {
     }
 
     /**
      * Cré un nouvel objet "TAProductOptionValueFournisseur" et le retourne
-     * @param int $idProvider id du fournisseur
-     * @param int $idOptionValue id de l'option value
-     * @param int $idProduct id du produit
+     * @param Provider $provider id du fournisseur
+     * @param TOptionValue $optionValue id de l'option value
+     * @param TProduct $tProduct id du produit
      * @param string $idSource id de l'option value chez le fournisseur
      * @return TAProductOptionValueProvider Nouvel Objet inseré en base
      */
-    public function createNew(int $idProvider, int $idOptionValue, int $idProduct, string $idSource): TAProductOptionValueProvider
+    public function createNewTAProductOptionValueProvider(Provider $provider, TOptionValue $optionValue, TProduct $tProduct, string $idSource): TAProductOptionValueProvider
     {
-        $productOptionValueProvider = new TAProductOptionValueProvider();
+        $tAProductOptionValueProvider = new TAProductOptionValueProvider();
 
-        $productOptionValueProvider->setIdProvider($idProvider)
-                                    ->setIdOptionValue($idOptionValue)
-                                    ->setIdProduct($idProduct)
+        $tAProductOptionValueProvider->setProvider($provider)
+                                    ->setTOptionValue($optionValue)
+                                    ->setTProduct($tProduct)
                                     ->setIdSource($idSource);
-        $this->productOptionValueProviderRepository->save($productOptionValueProvider);
 
-        return $productOptionValueProvider;
+        $this->entityManager->persist($tAProductOptionValueProvider);
+        $this->entityManager->flush();
+
+        return $tAProductOptionValueProvider;
     }
 }
