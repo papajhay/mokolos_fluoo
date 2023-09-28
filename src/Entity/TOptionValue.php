@@ -30,7 +30,7 @@ class TOptionValue extends BaseEntity
     #[ORM\Column(length: 255)]
     private string $libelle;
 
-    #[ORM\Column(type: "integer", enumType: StatusEnum::class)]
+    #[ORM\Column(type: 'integer', enumType: StatusEnum::class)]
     private StatusEnum $status = StatusEnum::STATUS_ACTIVE;
 
     #[ORM\OneToMany(mappedBy: 'TOptionValue', targetEntity: TAProductOptionValue::class)]

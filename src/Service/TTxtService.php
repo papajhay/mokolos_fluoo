@@ -3,24 +3,23 @@
 namespace App\Service;
 
 use App\Entity\TTxt;
-
 use App\Repository\TTxtRepository;
+
 class TTxtService
 {
     public function __construct(
         private TTxtRepository $ttxtRepository
-    )
-    {}
+    ) {
+    }
+
     /**
-     * Crée un nouvel objet "TTxt" et le retourne
+     * Crée un nouvel objet "TTxt" et le retourne.
      *
-     * @param text $txtValue
      * @param int(11) $idHost
-     * @param int(11) $idProduitHost
      *
      * @return TTxt Nouvel Objet inserer un base
      */
-    public  function createNew($value, $idHost, $idProductHost)
+    public function createNew($value, $idHost, $idProductHost)
     {
         $tTxt = new TTxt();
 

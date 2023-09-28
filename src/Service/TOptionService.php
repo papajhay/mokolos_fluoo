@@ -56,9 +56,9 @@ class TOptionService
         $orderCible = $order * 100;
 
         // on récupére en base tous les ordres utilisé
-        //TODO create function prepareSelectAndExecuteAndFetchAll
+        // TODO create function prepareSelectAndExecuteAndFetchAll
         $allOrderDB = $this->optionRepository->prepareSelectAndExecuteAndFetchAll(TOption::class, ['option_order'], [['option_order', 2, 'OR', '='], ['option_order', 1, 'OR', '>']], 0, ['option_order']);
-        /*dump($allOrderDB); die;*/
+        /* dump($allOrderDB); die; */
         $allOrder = [];
         // on va en faire un tableau avec uniquement les ordres
         foreach ($allOrderDB as $orderDB) {
@@ -106,7 +106,7 @@ class TOptionService
      * créé un option et le optionfournisseur associé si il n'existe pas.
      * @return TOption
      */
-    public function createIfNotExist(string $idOptionSource, Provider $provider, string $nameOption, $order = 100 , TProduct $tProduct, int $typeOption = TOption::TYPE_OPTION_SELECT,  $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
+    public function createIfNotExist(string $idOptionSource, Provider $provider, string $nameOption, $order = 100, TProduct $tProduct, int $typeOption = TOption::TYPE_OPTION_SELECT, $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
     {
         // on fait un trim sur l'id option value source pour éviter des bugs avec des espaces qui pourrait être ajouter
         $idOptionSourceTrim = trim($idOptionSource);
@@ -122,7 +122,7 @@ class TOptionService
             $newOrder = $this->orderForNewOption($order);
 
             $tOption = new TOption();
-            $tOption ->setLabel($nameOption)
+            $tOption->setLabel($nameOption)
                      ->setOptionOrder($newOrder)
                      ->setTypeOption($typeOption)
                      ->setSpecialOption(SpecialOptionEnum::SPECIAL_OPTION_STANDARD);

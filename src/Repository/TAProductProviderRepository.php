@@ -29,5 +29,4 @@ class TAProductProviderRepository extends BaseRepository
             $this->getEntityManager()->flush();
         }
     }
-
 }

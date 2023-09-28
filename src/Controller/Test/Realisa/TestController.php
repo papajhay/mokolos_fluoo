@@ -12,12 +12,9 @@ use App\Repository\TOptionValueRepository;
 use App\Service\Provider\RealisaPrint\BaseRealisaPrint;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Mapping\MappingException;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-
 
 class TestController extends AbstractController
 {
@@ -29,10 +26,6 @@ class TestController extends AbstractController
     }
 
     /**
-     * @param TOptionRepository $optionRepository
-     * @param TOptionValueRepository $optionValueRepository
-     * @param PersistenceManagerRegistry $doctrine
-     * @return Response
      * @throws Exception
      * @throws MappingException
      */
@@ -49,23 +42,24 @@ class TestController extends AbstractController
 
         $arrayData = $optionValue->toArray($doctrine);
         $optionValueRepository->insert($arrayData);
-        //dump($entity);
+
+        // dump($entity);
         return new Response();
     }
 
     #[Route('/option', name: 'app_testOption')]
     public function getOption(BaseRealisaPrint $baseRealisaPrint): Response
     {
-        $optionData=[
+        $optionData = [
             'name' =>  'Hauteur (cm)',
             'type' =>  'float',
             'default' =>  false,
             'values' => false,
-            'readonly'=> false,
-            'quantity'=> false,
-            'production_time'=> false,
-            'area'=> 1,
-            'position'=> 111
+            'readonly' => false,
+            'quantity' => false,
+            'production_time' => false,
+            'area' => 1,
+            'position' => 111,
         ];
 
         $result = $baseRealisaPrint->getOptionDetail($optionData);
@@ -74,81 +68,82 @@ class TestController extends AbstractController
     }
 
     #[Route('/apiShowVariable', name: 'app_testShowVariable')]
-    public function apiShowVariable(BaseRealisaPrint $baseRealisaPrint,TAProductProviderRepository $productProviderRepository): Response
+    public function apiShowVariable(BaseRealisaPrint $baseRealisaPrint, TAProductProviderRepository $productProviderRepository): Response
     {
-        //$parametre = $baseRealisaPrint->_parametersForApi();
+        // $parametre = $baseRealisaPrint->_parametersForApi();
         $parametre = [
-            'country'=>'FR',
+            'country' => 'FR',
             'VARTICLE_16818_' => [
                 'name' =>  'Hauteur (cm)',
                 'type' =>  'float',
                 'default' =>  false,
                 'values' => false,
-                'readonly'=> false,
-                'quantity'=> false,
-                'production_time'=> false,
-                'area'=> 1,
-                'position'=> 111
-            ]
+                'readonly' => false,
+                'quantity' => false,
+                'production_time' => false,
+                'area' => 1,
+                'position' => 111,
+            ],
         ];
 
-        $productprovider = $productProviderRepository->findOneBy(['labelSource'=>'Affiche','idSource'=>231,'idGroup'=>838]);
+        $productprovider = $productProviderRepository->findOneBy(['labelSource' => 'Affiche', 'idSource' => 231, 'idGroup' => 838]);
 
-        $data=$baseRealisaPrint->_apiShowVariables($productprovider,$parametre);
+        $data = $baseRealisaPrint->_apiShowVariables($productprovider, $parametre);
+
         return $this->json($data);
     }
 
     #[Route('/apiSaveConfiguration', name: 'app_testSaveConfiguration')]
-    public function apiSaveConfiguration(BaseRealisaPrint $baseRealisaPrint,TAProductProviderRepository $productProviderRepository): Response
+    public function apiSaveConfiguration(BaseRealisaPrint $baseRealisaPrint, TAProductProviderRepository $productProviderRepository): Response
     {
         $parametre = [
-            'country'=>'FR',
+            'country' => 'FR',
             'VARTICLE_16818_' => [
                 'name' =>  'Hauteur (cm)',
                 'type' =>  'float',
                 'default' =>  false,
                 'values' => false,
-                'readonly'=> false,
-                'quantity'=> false,
-                'production_time'=> false,
-                'area'=> 1,
-                'position'=> 111
-            ]
+                'readonly' => false,
+                'quantity' => false,
+                'production_time' => false,
+                'area' => 1,
+                'position' => 111,
+            ],
         ];
 
-        $productprovider = $productProviderRepository->findOneBy(['labelSource'=>'Affiche','idSource'=>231,'idGroup'=>838]);
+        $productprovider = $productProviderRepository->findOneBy(['labelSource' => 'Affiche', 'idSource' => 231, 'idGroup' => 838]);
 
-        $data=$baseRealisaPrint->_apiSaveConfiguration($productprovider,$parametre);
+        $data = $baseRealisaPrint->_apiSaveConfiguration($productprovider, $parametre);
 
         return $this->json($data);
     }
 
-    #[Route('/product', name: 'api_test', methods:['get'])]
+    #[Route('/product', name: 'api_test', methods: ['get'])]
     public function getProduct(BaseRealisaPrint $baseRealisaPrint): Response
     {
-        $data=$baseRealisaPrint->_apiProduct();
+        $data = $baseRealisaPrint->_apiProduct();
+
         return $this->json($data);
     }
 
-    #[Route('/price', name: 'get_price', methods:['get'])]
+    #[Route('/price', name: 'get_price', methods: ['get'])]
     public function getPrice(BaseRealisaPrint $baseRealisaPrint): Response
     {
-       $price = $baseRealisaPrint->_apiGetPrice(11667, 2 );
+        $price = $baseRealisaPrint->_apiGetPrice(11667, 2);
+
         return $this->json($price);
     }
 
-
-    #[Route('/configurations', name: 'api_configurations', methods:['get'])]
+    #[Route('/configurations', name: 'api_configurations', methods: ['get'])]
     public function getConfigurations(BaseRealisaPrint $baseRealisaPrint): Response
     {
-        $product= new TProduct();
-        $productProvider= new TAProductProvider();
+        $product = new TProduct();
+        $productProvider = new TAProductProvider();
         $productProvider->setIdSource(231);
         $product->setTAProductProvider($productProvider);
 
-        $data=$baseRealisaPrint->_apiConfigurations($product);
+        $data = $baseRealisaPrint->_apiConfigurations($product);
+
         return $this->json($data);
     }
-
-
 }

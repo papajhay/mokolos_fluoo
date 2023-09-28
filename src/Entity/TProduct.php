@@ -13,16 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TProductRepository::class)]
 class TProduct
 {
-//    Les constants sont deplacés vers SpecialQuantityEnum
+    //    Les constants sont deplacés vers SpecialQuantityEnum
     /**
      * id pour les quantité personnalisé quand on a que les quantité standard.
      */
-//     const ID_SPECIAL_QUANTITY_ONLY_STANDARD = 0;
+    //     const ID_SPECIAL_QUANTITY_ONLY_STANDARD = 0;
 
     /**
      * id pour les quantité personnalisé quand la quantité est géré en tant qu'option standard.
      */
-//    const ID_SPECIAL_QUANTITY_IN_OPTION = 3;
+    //    const ID_SPECIAL_QUANTITY_IN_OPTION = 3;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -40,7 +40,7 @@ class TProduct
 
     /* indique si le produit autorise les quantité personnalisé. (utilisé par l'API smartlabel) */
 
-    #[ORM\Column(type:"integer")]
+    #[ORM\Column(type: 'integer')]
     private $specialQuantity = SpecialQuantityEnum::ID_SPECIAL_QUANTITY_IN_OPTION;
 
     #[ORM\OneToMany(mappedBy: 'tProduct', targetEntity: TAOptionProvider::class)]
@@ -61,11 +61,10 @@ class TProduct
     #[ORM\ManyToMany(targetEntity: TAProductProvider::class, mappedBy: 'tProduct')]
     private Collection $tAProductProviders;
 
-
     /* Id du produit auquel ce produit est rattaché */
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'tProducts')]
-    #[ORM\Column(type: "integer", nullable: true)]
-//    old-name : $rattachement
+    #[ORM\Column(type: 'integer', nullable: true)]
+    //    old-name : $rattachement
     private ?self $attachement = null;
 
     #[ORM\OneToMany(mappedBy: 'attachement', targetEntity: self::class)]
@@ -1335,5 +1334,4 @@ class TProduct
 
         return $this;
     }
-
 }

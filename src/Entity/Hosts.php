@@ -25,7 +25,7 @@ class Hosts
     private ?string $telStd = null;
 
     #[ORM\Column(length: 255)]
-     // old: $hostNom
+    // old: $hostNom
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -41,7 +41,7 @@ class Hosts
     private ?string $billingAddress2 = null;
 
     #[ORM\Column(length: 255)]
-     // old: $facturationCp
+    // old: $facturationCp
     private ?string $cpBilling = null;
 
     #[ORM\Column(length: 255)]
@@ -108,7 +108,7 @@ class Hosts
     }
 
     #[ORM\Column(length: 255, nullable: true)]
-     // old: $hosGoogleAdWordsRemarketingId
+    // old: $hosGoogleAdWordsRemarketingId
     private ?string $googleAdWordsRemarketingId = null;
 
     #[ORM\Column(nullable: true)]
@@ -180,8 +180,8 @@ class Hosts
     #[ORM\Column]
     // old: $hosPriceDecimal
     private ?float $priceDecimal = 0;
-  
-  #[ORM\OneToMany(mappedBy: 'host', targetEntity: TTxt::class)]
+
+    #[ORM\OneToMany(mappedBy: 'host', targetEntity: TTxt::class)]
     private Collection $tTxts;
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TCmsPage::class)]
@@ -195,7 +195,6 @@ class Hosts
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TProductHostMoreViewed::class)]
     private Collection $tProductHostMoreVieweds;
-
 
     #[ORM\OneToMany(mappedBy: 'host', targetEntity: TAHostCmsBloc::class)]
     private Collection $tAHostCmsBlocs;
@@ -229,7 +228,7 @@ class Hosts
         $this->tCategories = new ArrayCollection();
         $this->tProductHostAcls = new ArrayCollection();
     }
-  
+
     public function getId(): ?int
     {
         return $this->id;
@@ -643,7 +642,6 @@ class Hosts
         return $this;
     }
 
-
     /**
      * @return Collection<int, TAProductMeta>
      */
@@ -763,7 +761,6 @@ class Hosts
 
         return $this;
     }
-
 
     /**
      * @return Collection<int, TTxt>
@@ -995,7 +992,6 @@ class Hosts
         $this->googleAdWordsRemarketingId = $googleAdWordsRemarketingId;
     }
 
-
     public function getFacebookUrl(): ?string
     {
         return $this->facebookUrl;
@@ -1015,8 +1011,6 @@ class Hosts
     {
         $this->facebookAppId = $facebookAppId;
     }
-
-
 
     public function getHosSiteId(): ?string
     {
@@ -1048,110 +1042,104 @@ class Hosts
         $this->bingAdsId = $bingAdsId;
     }
 
-    /**
+    /*
      * renvoi l'objet du pays
      * @return Countries
      */
-//    public function getCountries()
-//    {
-//        if($this->_countries === NULL)
-//        {
-//            $this->_countries = Countries::findByCode($this->getPaysCode());
-//        }
-//
-//        return $this->_countries;
-//    }
+    //    public function getCountries()
+    //    {
+    //        if($this->_countries === NULL)
+    //        {
+    //            $this->_countries = Countries::findByCode($this->getPaysCode());
+    //        }
+    //
+    //        return $this->_countries;
+    //    }
 
-
-    /**
+    /*
      * renvoi l'objet siteHost du site maitre
      * @return siteHost
      */
-//    public function getMasterSiteHost()
-//    {
-        // si on a pas encore chercher le site host
-//        if($this->_masterSiteHost === NULL)
-//        {
-            // si on a un site maitre
-//            if($this->isMaster())
-//            {
-                // on prend notre objet
-//                $this->_masterSiteHost = $this;
-//            }
-            // site enfant
-//            else
-//            {
-                // on prend l'enfant
-//                $this->_masterSiteHost = siteHost::findById(array($this->getMasterHost()));
-//            }
-//        }
+    //    public function getMasterSiteHost()
+    //    {
+    // si on a pas encore chercher le site host
+    //        if($this->_masterSiteHost === NULL)
+    //        {
+    // si on a un site maitre
+    //            if($this->isMaster())
+    //            {
+    // on prend notre objet
+    //                $this->_masterSiteHost = $this;
+    //            }
+    // site enfant
+    //            else
+    //            {
+    // on prend l'enfant
+    //                $this->_masterSiteHost = siteHost::findById(array($this->getMasterHost()));
+    //            }
+    //        }
 
-//        return $this->_masterSiteHost;
-//    }
+    //        return $this->_masterSiteHost;
+    //    }
 
-
-    /**
+    /*
      * renvoi le nom du site pour l'admin
      * @return string
      */
-//    public function getNomAdmin()
-//    {
-//        $suffixe = array();
-//
-//        if($this->getPays() <> 'France')
-//        {
-//            $suffixe[] = $this->getPays();
-//        }
-//
-//        return $this->getHostNom() . ((count($suffixe) > 0) ? (' (' . implode(', ', $suffixe) . ')') : (''));
-//    }
+    //    public function getNomAdmin()
+    //    {
+    //        $suffixe = array();
+    //
+    //        if($this->getPays() <> 'France')
+    //        {
+    //            $suffixe[] = $this->getPays();
+    //        }
+    //
+    //        return $this->getHostNom() . ((count($suffixe) > 0) ? (' (' . implode(', ', $suffixe) . ')') : (''));
+    //    }
 
-
-    /**
+    /*
      * méthode magique
      * renvoi le nom admin du site si on essaye de faire un écho de notre objet
      * @return string
      */
-//    public function __toString()
-//    {
-//        return $this->getNomAdmin();
-//    }
+    //    public function __toString()
+    //    {
+    //        return $this->getNomAdmin();
+    //    }
 
-
-    /**
+    /*
      * renvoi le masque PCRE pour trouver si on a une url accueil incorrect type http://dev.limprimeriegenerale.be/belgique/
      * @return type
      */
-//    public function masqueAccueil()
-//    {
-//        return '#^((?:http://)?)([a-z0-9]+)' . preg_quote(str_replace(array('www', 'dev', 'dev2'), array(''), $this->getAdresseWww())) . '(/?)$#';
-//    }
+    //    public function masqueAccueil()
+    //    {
+    //        return '#^((?:http://)?)([a-z0-9]+)' . preg_quote(str_replace(array('www', 'dev', 'dev2'), array(''), $this->getAdresseWww())) . '(/?)$#';
+    //    }
 
-
-    /**
+    /*
      * Est ce que le site fait parti de fusion y compris fusion mb et mini fusion mb
      * @return boolean
      */
-//    public function isInFusion()
-//    {
-//        return ($this->getIdHostType() >= 1);
-//    }
+    //    public function isInFusion()
+    //    {
+    //        return ($this->getIdHostType() >= 1);
+    //    }
 
-
-    /**
+    /*
      * Indique le site en cour est un site dit master,
      * c'est a dire qu'il a une version be, lu, ch...
      * donc par exemple, cela peut etre lig, if, et pas ligbe, ifch....
      *
      * @return boolean
      */
-//    public function isMaster()
-//    {
-//        return ($this->getHostId() == $this->getMasterHost());
-//    }
+    //    public function isMaster()
+    //    {
+    //        return ($this->getHostId() == $this->getMasterHost());
+    //    }
 
-//    Todo: repository
-    /**
+    //    Todo: repository
+    /*
      * Retourne tout les sites freres du site courrant
      *
      * @param bool $withOutMe Est ce que l'on prend ou pas le site courrant
@@ -1159,366 +1147,350 @@ class Hosts
      *
      * @return siteHost
      */
-//    public function findInternationnal($withOutMe = FALSE, $withInactiv = FALSE)
-//    {
-        // on prend tous les sites qui ont le même master host à l'exclusion des sites qui n'utilise pas leur propre donnée
-//        $sql = 'SELECT *
-//			FROM ' . self::$_SQL_TABLE_NAME . '
-//			WHERE master_host = "' . $this->getMasterHost() . '"
-//			AND host_data = host_id';
+    //    public function findInternationnal($withOutMe = FALSE, $withInactiv = FALSE)
+    //    {
+    // on prend tous les sites qui ont le même master host à l'exclusion des sites qui n'utilise pas leur propre donnée
+    //        $sql = 'SELECT *
+    //			FROM ' . self::$_SQL_TABLE_NAME . '
+    //			WHERE master_host = "' . $this->getMasterHost() . '"
+    //			AND host_data = host_id';
 
-        // si on veux exclure le site lui même
-//        if($withOutMe)
-//        {
-//            $sql .= ' AND host_id != "' . $this->getHostId() . '"';
-//        }
+    // si on veux exclure le site lui même
+    //        if($withOutMe)
+    //        {
+    //            $sql .= ' AND host_id != "' . $this->getHostId() . '"';
+    //        }
 
-        // si on ne veux que les sites actif
-//        if(!$withInactiv)
-//        {
-//            $sql .= ' AND actif = 1';
-//        }
-//
-//        return self::findAllSql($sql);
-//    }
+    // si on ne veux que les sites actif
+    //        if(!$withInactiv)
+    //        {
+    //            $sql .= ' AND actif = 1';
+    //        }
+    //
+    //        return self::findAllSql($sql);
+    //    }
 
-
-    /**
+    /*
      * renvoi l'id du site (unqieuement ceux utilisant leur propre donnée) dont le domaine est compris dans la chaine $string insensible à la case
      * @param string $string la chaine ou l'on cherche
      * @return string l'id du site ou une chaine vide si rien ne correspond
      */
-//    public static function idHostByPregMatchDomain($string)
-//    {
-        // pour chaque site qui utilise ses propres données
-//        foreach(self::findAllMastersData(TRUE) AS $host)
-//        {
-            // si on a trouvé le bon domaine
-//            if(preg_match('#' . $host->getDomaine() . '#i', $string))
-//            {
-                // on renvoi l'id
-//                return $host->getHostId();
-//            }
-//        }
+    //    public static function idHostByPregMatchDomain($string)
+    //    {
+    // pour chaque site qui utilise ses propres données
+    //        foreach(self::findAllMastersData(TRUE) AS $host)
+    //        {
+    // si on a trouvé le bon domaine
+    //            if(preg_match('#' . $host->getDomaine() . '#i', $string))
+    //            {
+    // on renvoi l'id
+    //                return $host->getHostId();
+    //            }
+    //        }
 
-        // aucun host ne correspond
-//        return '';
-//    }
+    // aucun host ne correspond
+    //        return '';
+    //    }
 
-
-    /**
+    /*
      * renvoi un tableau de siteHost actif sans le site fluoo
      * @return siteHost
      */
-//    public static function findAllActive()
-//    {
-//        return self::findAllBy(array('actif'), array(siteHost::HOST_ACTIVE), array('hos_ordre'));
-//    }
+    //    public static function findAllActive()
+    //    {
+    //        return self::findAllBy(array('actif'), array(siteHost::HOST_ACTIVE), array('hos_ordre'));
+    //    }
 
-
-    /**
+    /*
      * renvoi tous les siteHost de fusion
      * @return \siteHost
      */
-//    public static function findAllFusion()
-//    {
-//        return self::findAllBy(array('id_host_type'), array(array(1, '>=')), 'hos_ordre');
-//    }
+    //    public static function findAllFusion()
+    //    {
+    //        return self::findAllBy(array('id_host_type'), array(array(1, '>=')), 'hos_ordre');
+    //    }
 
-
-    /**
+    /*
      * Retourne tout les "sous sites" d'un site, genre, ligbe, liglu, ligch
      * @param string $idHost l'id du site maitre
      * @param string $whitoutMe doit-on exclure le site en lui même
      * @return \siteHost
      */
-//    public static function findAllSlaves($idHost, $whitoutMe = true)
-//    {
-        // paramétre de la requête
-//        $aChamp	 = array('master_host');
-//        $aValue	 = array($idHost);
+    //    public static function findAllSlaves($idHost, $whitoutMe = true)
+    //    {
+    // paramétre de la requête
+    //        $aChamp	 = array('master_host');
+    //        $aValue	 = array($idHost);
 
-        // si on doit s'exclure soit-même
-//        if($whitoutMe)
-//        {
-            // on rajoute les paramétres
-//            $aChamp[]	 = 'host_id';
-//            $aValue[]	 = array($idHost, '<>');
-//        }
+    // si on doit s'exclure soit-même
+    //        if($whitoutMe)
+    //        {
+    // on rajoute les paramétres
+    //            $aChamp[]	 = 'host_id';
+    //            $aValue[]	 = array($idHost, '<>');
+    //        }
 
-        // on execute la requête
-//        return self::findAllBy($aChamp, $aValue, array('hos_ordre'));
-//    }
+    // on execute la requête
+    //        return self::findAllBy($aChamp, $aValue, array('hos_ordre'));
+    //    }
 
-
-    /**
+    /*
      * Retourne tout les sites maitres, c'est a dire ayant des versions internationnal
      * @return \siteHost
      */
-//    public static function findAllMasters()
-//    {
-//        return self::findAllSql('SELECT *
-//			FROM ' . self::$_SQL_TABLE_NAME . '
-//			WHERE master_host = host_id
-//			ORDER BY hos_ordre');
-//    }
+    //    public static function findAllMasters()
+    //    {
+    //        return self::findAllSql('SELECT *
+    //			FROM ' . self::$_SQL_TABLE_NAME . '
+    //			WHERE master_host = host_id
+    //			ORDER BY hos_ordre');
+    //    }
 
-
-    /**
+    /*
      * Retourne tout les sites maitres, c'est a dire ayant des versions internationnal
      * @return \siteHost
      */
-//    public static function findAllMastersFusion()
-//    {
-//        return self::findAllSql('SELECT *
-//			FROM ' . self::$_SQL_TABLE_NAME . '
-//			WHERE master_host = host_id
-//			AND id_host_type >= 1
-//			ORDER BY hos_ordre');
-//    }
+    //    public static function findAllMastersFusion()
+    //    {
+    //        return self::findAllSql('SELECT *
+    //			FROM ' . self::$_SQL_TABLE_NAME . '
+    //			WHERE master_host = host_id
+    //			AND id_host_type >= 1
+    //			ORDER BY hos_ordre');
+    //    }
 
-
-    /**
+    /*
      * Retourne tout les sites qui utilise leur propre donnée. ex : lgi mais pas lgim
      * @param boolean $useCache Doit-on utiliser la version en cache
      * @return \siteHost
      */
-//    public static function findAllMastersData($useCache = FALSE)
-//    {
-        // si on utilise pas la version en cache ou si on a pas encore exécuter la requête
-//        if($useCache || self::$_allHostsMastersData == NULL)
-//        {
-            // récupération des objets hosts
-//            $hosts = self::findAllSql('SELECT *
-//				FROM ' . self::$_SQL_TABLE_NAME . '
-//				WHERE host_data = host_id
-//				ORDER BY hos_ordre');
-//        }
-//
-//        return $hosts;
-//    }
+    //    public static function findAllMastersData($useCache = FALSE)
+    //    {
+    // si on utilise pas la version en cache ou si on a pas encore exécuter la requête
+    //        if($useCache || self::$_allHostsMastersData == NULL)
+    //        {
+    // récupération des objets hosts
+    //            $hosts = self::findAllSql('SELECT *
+    //				FROM ' . self::$_SQL_TABLE_NAME . '
+    //				WHERE host_data = host_id
+    //				ORDER BY hos_ordre');
+    //        }
+    //
+    //        return $hosts;
+    //    }
 
-
-    /**
+    /*
      * Renvoi tout les sites qui posséde un catalogue
      * @return \siteHost[}
      */
-//    public static function findAllWithCatalog()
-//    {
-//        $return = array();
+    //    public static function findAllWithCatalog()
+    //    {
+    //        $return = array();
 
-        // pour chaque host qui a ses propre donné
-//        foreach(siteHost::findAllMasters() as $host)
-//        {
-            // si ce site n'est pas sur fusion
-//            if(!$host->isInFusion())
-//            {
-                // on l'ajoute à notre tableau de retour
-//                $return[] = $host;
-//            }
-//        }
-//
-//        return $return;
-//    }
+    // pour chaque host qui a ses propre donné
+    //        foreach(siteHost::findAllMasters() as $host)
+    //        {
+    // si ce site n'est pas sur fusion
+    //            if(!$host->isInFusion())
+    //            {
+    // on l'ajoute à notre tableau de retour
+    //                $return[] = $host;
+    //            }
+    //        }
+    //
+    //        return $return;
+    //    }
 
-
-    /**
+    /*
      * renvoi un siteHost à partir d'un id crypté par ToolsSecure ou FALSE si l'id n'est pas valide
      * @param string $cryptedId l'id crypté
      * @return siteHost|FALSE le siteHost ou FALSE si l'id ne correspond à rien
      */
-//    public static function findByCryptId($cryptedId)
-//    {
-//        $host = siteHost::findById(ToolsSecure::decryptInput($cryptedId));
+    //    public static function findByCryptId($cryptedId)
+    //    {
+    //        $host = siteHost::findById(ToolsSecure::decryptInput($cryptedId));
 
-//        if($host->getHostId() == NULL)
-//        {
-//            return FALSE;
-//        }
-//        else
-//        {
-//            return $host;
-//        }
-//    }
+    //        if($host->getHostId() == NULL)
+    //        {
+    //            return FALSE;
+    //        }
+    //        else
+    //        {
+    //            return $host;
+    //        }
+    //    }
 
-
-    /**
+    /*
      * Construit le nom du serveur pour la Prod et la Dev
      * @param string $constanteSubDomain le string d'une constante de sous domaine ou NULL si on veux par défaut
      * @return string Le nom du serveur
      */
-//    public function constructAdresseWeb()
-//    {
-        // sous domaine par défaut
-//        $adresseWeb = 'www';
+    //    public function constructAdresseWeb()
+    //    {
+    // sous domaine par défaut
+    //        $adresseWeb = 'www';
 
-        // on récupére le sous domaine par défaut
-//        if(defined('SUB_DOMAIN'))
-//        {
-//            $adresseWeb = SUB_DOMAIN;
-//        }
+    // on récupére le sous domaine par défaut
+    //        if(defined('SUB_DOMAIN'))
+    //        {
+    //            $adresseWeb = SUB_DOMAIN;
+    //        }
 
-        // ajout du domaine
-//        $adresseWeb .= '.' . $this->getDomaine();
+    // ajout du domaine
+    //        $adresseWeb .= '.' . $this->getDomaine();
 
-        // ajout du pays si pas un site FR
-//        $pays = $this->getPays();
-//        if($this->getPaysCode() != 'fr' && strlen($pays) > 0)
-//        {
-//            $adresseWeb .= '/' . strtolower(ToolsHTML::traductionMotClefToUrl($this->getPays()));
-//        }
-//
-//        return $adresseWeb;
-//    }
+    // ajout du pays si pas un site FR
+    //        $pays = $this->getPays();
+    //        if($this->getPaysCode() != 'fr' && strlen($pays) > 0)
+    //        {
+    //            $adresseWeb .= '/' . strtolower(ToolsHTML::traductionMotClefToUrl($this->getPays()));
+    //        }
+    //
+    //        return $adresseWeb;
+    //    }
 
-
-    /**
+    /*
      * Retourne le fichier logo du site
      * @return String
      */
-//    public function getPathForLogo()
-//    {
-//
-//        return (isset(self::$_PATH_LOGO[$this->getHostId()]) && file_exists(self::$_PATH_LOGO[$this->getHostId()])) ? self::$_PATH_LOGO[$this->getHostId()] : '';
-//    }
+    //    public function getPathForLogo()
+    //    {
+    //
+    //        return (isset(self::$_PATH_LOGO[$this->getHostId()]) && file_exists(self::$_PATH_LOGO[$this->getHostId()])) ? self::$_PATH_LOGO[$this->getHostId()] : '';
+    //    }
 
+    //    public function javascriptMailInfoEndode()
+    //    {
+    //        $javascriptMailInfoEndode	 = '';
+    //        $javascriptMailInfoEndode	 .= "//<![CDATA[" . "\n";
+    //        $javascriptMailInfoEndode	 .= 'var hostMailInfoEndode="";';
 
-//    public function javascriptMailInfoEndode()
-//    {
-//        $javascriptMailInfoEndode	 = '';
-//        $javascriptMailInfoEndode	 .= "//<![CDATA[" . "\n";
-//        $javascriptMailInfoEndode	 .= 'var hostMailInfoEndode="";';
+    //        switch($this->getHostId())
+    //        {
+    //            case 'lgi' :
+    //                $javascriptMailInfoEndode	 .= 'for(var cptEncode=0;cptEncode<434;cptEncode++)';
+    //                $javascriptMailInfoEndode	 .= '{';
+    //                $javascriptMailInfoEndode	 .= 'hostMailInfoEndode+=String.fromCharCode((":%6C*0`E`893)793123C E E`*)6x,Cx%_JQ Ee EO+RxRK)\'%04)6QJ7-x,8 E%,f136*Q+2-68vNLLTK687&97C E^J  TJ  `*T)6,JNLYWK)(3f6\'%04)6QJ7-,8 E`6):3)793123%1J  `*)6,JN EQ ENL E EO+RTRK))(2%6+7)0SWSS9  3*[2-]380-a E^J  13\')U<  7)-6)1-641[-7641-7)(2%6+7)0SWSS9  3*[2- E~O+R[RK)\'%04)6QJ7)-6)[1-R,,_1,3\'JN!S~! EQ E~NL!S~! ES~! E E~O+R,RK)\'%04)6QJ,a,%L!E^2X`EE^*36K:%6C-V`S^-V_*0Q0)2+8,^-VN`UXL2XN`*0Q79&786K-VOUXLQ740-8KEELQ6):)67)KLQ.3-2KEEL^):%0K2XL".charCodeAt(cptEncode)-(-29+64)+0x3f)%(9*9+14)+100-68);';
+    //                $javascriptMailInfoEndode	 .= '}';
+    //                break;
 
-//        switch($this->getHostId())
-//        {
-//            case 'lgi' :
-//                $javascriptMailInfoEndode	 .= 'for(var cptEncode=0;cptEncode<434;cptEncode++)';
-//                $javascriptMailInfoEndode	 .= '{';
-//                $javascriptMailInfoEndode	 .= 'hostMailInfoEndode+=String.fromCharCode((":%6C*0`E`893)793123C E E`*)6x,Cx%_JQ Ee EO+RxRK)\'%04)6QJ7-x,8 E%,f136*Q+2-68vNLLTK687&97C E^J  TJ  `*T)6,JNLYWK)(3f6\'%04)6QJ7-,8 E`6):3)793123%1J  `*)6,JN EQ ENL E EO+RTRK))(2%6+7)0SWSS9  3*[2-]380-a E^J  13\')U<  7)-6)1-641[-7641-7)(2%6+7)0SWSS9  3*[2- E~O+R[RK)\'%04)6QJ7)-6)[1-R,,_1,3\'JN!S~! EQ E~NL!S~! ES~! E E~O+R,RK)\'%04)6QJ,a,%L!E^2X`EE^*36K:%6C-V`S^-V_*0Q0)2+8,^-VN`UXL2XN`*0Q79&786K-VOUXLQ740-8KEELQ6):)67)KLQ.3-2KEEL^):%0K2XL".charCodeAt(cptEncode)-(-29+64)+0x3f)%(9*9+14)+100-68);';
-//                $javascriptMailInfoEndode	 .= '}';
-//                break;
+    //            case 'lip' :
+    //                $javascriptMailInfoEndode	 .= 'for(var cptEncode=0;cptEncode<302;cptEncode++)';
+    //                $javascriptMailInfoEndode	 .= '{';
+    //                $javascriptMailInfoEndode	 .= 'hostMailInfoEndode+=String.fromCharCode(("!2|(CBwBKK;W|!$.=\"X+=;+*)!1/!+2=.X%0$I/:!$.ww\"X|wB)(:%U0+.wBI(!,!|~:CJGJ#D==CFC*wB%ww\"+K1K`OK)(%%,.!)`.1``,|!,%~.ZwB+)!I.|,(C~!JJ`=#GD=D!I.|,(C~!ZJwwGJ#==IFDDwBwBww+=;+*)!1/1S+=0X%0$$/IS.!ww\"XwBwBww%=Y+*\"4A>KSKOKK(KV,%)).%.!1,,|.%!OA>VQS)~+|WJIYwB,.!~(|J!C#SJ=G=DBI.!,(|~!CJCIDCIIDJ#G=?M?L=DI/1}/0.CMDD".charCodeAt(cptEncode)-(0x1b)+86-23)%(22+73)+0x20);';
+    //                $javascriptMailInfoEndode	 .= '}';
+    //                break;
+    //
+    //            default : break;
+    //        }
+    //        $javascriptMailInfoEndode	 .= "\n";
+    //        $javascriptMailInfoEndode	 .= "//]]>" . "\n";
+    //        $javascriptMailInfoEndode	 .= 'jQuery(\'#contact-add\').html(\'- Email : \' + (eval(hostMailInfoEndode)));';
+    //
+    //        return $javascriptMailInfoEndode;
+    //    }
 
-//            case 'lip' :
-//                $javascriptMailInfoEndode	 .= 'for(var cptEncode=0;cptEncode<302;cptEncode++)';
-//                $javascriptMailInfoEndode	 .= '{';
-//                $javascriptMailInfoEndode	 .= 'hostMailInfoEndode+=String.fromCharCode(("!2|(CBwBKK;W|!$.=\"X+=;+*)!1/!+2=.X%0$I/:!$.ww\"X|wB)(:%U0+.wBI(!,!|~:CJGJ#D==CFC*wB%ww\"+K1K`OK)(%%,.!)`.1``,|!,%~.ZwB+)!I.|,(C~!JJ`=#GD=D!I.|,(C~!ZJwwGJ#==IFDDwBwBww+=;+*)!1/1S+=0X%0$$/IS.!ww\"XwBwBww%=Y+*\"4A>KSKOKK(KV,%)).%.!1,,|.%!OA>VQS)~+|WJIYwB,.!~(|J!C#SJ=G=DBI.!,(|~!CJCIDCIIDJ#G=?M?L=DI/1}/0.CMDD".charCodeAt(cptEncode)-(0x1b)+86-23)%(22+73)+0x20);';
-//                $javascriptMailInfoEndode	 .= '}';
-//                break;
-//
-//            default : break;
-//        }
-//        $javascriptMailInfoEndode	 .= "\n";
-//        $javascriptMailInfoEndode	 .= "//]]>" . "\n";
-//        $javascriptMailInfoEndode	 .= 'jQuery(\'#contact-add\').html(\'- Email : \' + (eval(hostMailInfoEndode)));';
-//
-//        return $javascriptMailInfoEndode;
-//    }
-
-
-    /**
+    /*
      * renvoi un host par rapport a une url ou NULL si aucun ne correspond
      * @param string $url
      * @return siteHost|NULL
      */
-//    public static function findByUrl($url)
-//    {
-        // on récupére tous les site
-//        $allSite = self::findAll();
+    //    public static function findByUrl($url)
+    //    {
+    // on récupére tous les site
+    //        $allSite = self::findAll();
 
-        // pour chaque site
-//        foreach($allSite AS $site)
-//        {
-            // si ce site correspond
-//            if(preg_match('#' . preg_quote($site->getDomaine()) . '#', $url))
-//            {
-                // on le renvoi
-//                return $site;
-//            }
-//        }
+    // pour chaque site
+    //        foreach($allSite AS $site)
+    //        {
+    // si ce site correspond
+    //            if(preg_match('#' . preg_quote($site->getDomaine()) . '#', $url))
+    //            {
+    // on le renvoi
+    //                return $site;
+    //            }
+    //        }
 
-        // aucun site ne corespond
-//        return NULL;
-//    }
+    // aucun site ne corespond
+    //        return NULL;
+    //    }
 
-//    Todo: service
-    /**
+    //    Todo: service
+    /*
      * corrige eventuellement les url de type http://www.limprimeriegenerale.be/belgique/ en http://www.limprimeriegenerale.be
      * @param string $url l'url à vérifié
      * @param siteHost $host le site
      * @return string l'url corrigé si besoin ou l'url à vérifié si il n'y a pas de changement à faire
      */
-//    public static function correctUrlAccueil($url, siteHost $host)
-//    {
-//        $resultat = array();
+    //    public static function correctUrlAccueil($url, siteHost $host)
+    //    {
+    //        $resultat = array();
 
-        // si notre url ne correspond pas à une url de page d'acceuil avec le nom du pays
-//        if(!preg_match($host->masqueAccueil(), $url, $resultat))
-//        {
-            // on renvoi l'url
-//            return $url;
-//        }
+    // si notre url ne correspond pas à une url de page d'acceuil avec le nom du pays
+    //        if(!preg_match($host->masqueAccueil(), $url, $resultat))
+    //        {
+    // on renvoi l'url
+    //            return $url;
+    //        }
 
-        // on renvoi l'url de la page d'acceuil
-//        return $resultat[1] . $resultat[2] . '.' . $host->getDomaine();
-//    }
+    // on renvoi l'url de la page d'acceuil
+    //        return $resultat[1] . $resultat[2] . '.' . $host->getDomaine();
+    //    }
 
-
-    /**
+    /*
      * indique si ce site à une reduction de marge de nouveau client
      * @return boolean TRUE si on a une remise nouveau client
      */
-//    public function haveRemiseReductionMargeNewCustomer()
-//    {
-        // on recherche le coefficient de reduction de nouveau client du site
-//        $margeCoefficient = TMargeCoefficient::findByIdHostAndTypeAndDate($this->getHostId(), FALSE, TMargeCoefficient::MARGE_COEFFICIENT_TYPE_NOUVEAUX_CLIENTS);
+    //    public function haveRemiseReductionMargeNewCustomer()
+    //    {
+    // on recherche le coefficient de reduction de nouveau client du site
+    //        $margeCoefficient = TMargeCoefficient::findByIdHostAndTypeAndDate($this->getHostId(), FALSE, TMargeCoefficient::MARGE_COEFFICIENT_TYPE_NOUVEAUX_CLIENTS);
 
-        // si on a pas trouvé de coefficient de marge
-//        if($margeCoefficient == NULL)
-//        {
-//            return FALSE;
-//        }
-//
-//        return TRUE;
-//    }
+    // si on a pas trouvé de coefficient de marge
+    //        if($margeCoefficient == NULL)
+    //        {
+    //            return FALSE;
+    //        }
+    //
+    //        return TRUE;
+    //    }
 
-
-    /**
+    /*
      * renvoi la note du site sur 5
      * @return float
      */
-//    public function siteAvisNote5()
-//    {
-        // on divise la note qui est sur 10 par 2 pour obtenir une note sur 5
-//        return $this->getHosSiteAvisNote() / 2;
-//    }
+    //    public function siteAvisNote5()
+    //    {
+    // on divise la note qui est sur 10 par 2 pour obtenir une note sur 5
+    //        return $this->getHosSiteAvisNote() / 2;
+    //    }
 
-
-    /**
+    /*
      * met à jour le nombre de produit dont dispose ce site
      */
-//    public static function autoUpdateProductsNumber()
-//    {
-        // paramétre de la requéte
-//        $fileds	 = array('COUNT(*) AS count', 'id_host');
-//        $where	 = array(array('active', 1, 'd'));
-//        $groupBy = array('id_host');
+    //    public static function autoUpdateProductsNumber()
+    //    {
+    // paramétre de la requéte
+    //        $fileds	 = array('COUNT(*) AS count', 'id_host');
+    //        $where	 = array(array('active', 1, 'd'));
+    //        $groupBy = array('id_host');
 
-        // requête recherchant tous les produits
-//        $allCcount = DB::prepareSelectAndExecuteAndFetchAll(Products::$_SQL_TABLE_NAME, $fileds, $where, 0, array(), array(), $groupBy);
+    // requête recherchant tous les produits
+    //        $allCcount = DB::prepareSelectAndExecuteAndFetchAll(Products::$_SQL_TABLE_NAME, $fileds, $where, 0, array(), array(), $groupBy);
 
-        // pour chaque site trouvé
-//        foreach($allCcount as $count)
-//        {
-            // on recherche les sites qui utilise ces produits
-//            $allHost = siteHost::findAllBy(array('host_product'), array($count['id_host']));
+    // pour chaque site trouvé
+    //        foreach($allCcount as $count)
+    //        {
+    // on recherche les sites qui utilise ces produits
+    //            $allHost = siteHost::findAllBy(array('host_product'), array($count['id_host']));
 
-            // pour chaque site
-//            foreach($allHost as $host)
-//            {
-                // on met à jour le nombre de produit
-//                $host->setHosProductsNumber($count['count'])
-//                    ->save();
-//            }
-//        }
-   // }
+    // pour chaque site
+    //            foreach($allHost as $host)
+    //            {
+    // on met à jour le nombre de produit
+    //                $host->setHosProductsNumber($count['count'])
+    //                    ->save();
+    //            }
+    //        }
+    // }
 }

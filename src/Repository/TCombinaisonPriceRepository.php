@@ -20,5 +20,4 @@ class TCombinaisonPriceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TCombinaisonPrice::class);
     }
-
 }

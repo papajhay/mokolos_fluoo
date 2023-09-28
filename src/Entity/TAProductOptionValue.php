@@ -10,22 +10,22 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TAProductOptionValueRepository::class)]
 class TAProductOptionValue
 {
-//    Deplacés vers StatusEnum
+    //    Deplacés vers StatusEnum
     /**
      * Statut de cette valeur d'option : inactif.
      */
-//    public const STATUS_INACTIF = 0;
+    //    public const STATUS_INACTIF = 0;
 
     /**
      * Statut de cette valeur d'option : actif.
      */
-//    public const STATUS_ACTIF = 1;
+    //    public const STATUS_ACTIF = 1;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: "integer", enumType: StatusEnum::class)]
+    #[ORM\Column(type: 'integer', enumType: StatusEnum::class)]
     private StatusEnum $status = StatusEnum::STATUS_ACTIVE;
 
     #[ORM\Column(length: 255)]

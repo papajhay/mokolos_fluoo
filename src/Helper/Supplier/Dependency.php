@@ -104,8 +104,6 @@ class Dependency
 
     /**
      * Ajoute une dépendance par rapport à un id option source et un id option value source.
-     * @param int $idOptionSource
-     * @param int $idOptionValueSource
      */
     public function addDependencyByIdSources(int $idOptionSource, int $idOptionValueSource): void
     {
@@ -115,7 +113,6 @@ class Dependency
 
     /**
      * Renvoi les dépendance sous forme de chaine. les id option value sépré par des -.
-     * @return string
      */
     public function dependencyString(): string
     {

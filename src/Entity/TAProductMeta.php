@@ -20,7 +20,7 @@ class TAProductMeta
     private ?int $idChild = null;
 
     /**
-     * Identifiant du site
+     * Identifiant du site.
      * @var string
      */
     #[ORM\ManyToOne(inversedBy: 'tAProductMetas')]
@@ -55,7 +55,6 @@ class TAProductMeta
         return $this;
     }
 
-
     public function getHost(): ?hosts
     {
         return $this->host;
@@ -74,43 +73,41 @@ class TAProductMeta
      * @param string $idHost id du site
      * @return bool
      */
-//    static public function isMeta($idProduitHost, $idHost)
-//    {
-//        return self::existBy(array('pro_meta_id_parent', 'id_host'), array($idProduitHost, $idHost));
-//    }
+    //    static public function isMeta($idProduitHost, $idHost)
+    //    {
+    //        return self::existBy(array('pro_meta_id_parent', 'id_host'), array($idProduitHost, $idHost));
+    //    }
 
-
-    /**
+    /*
      * renvoi si un produit est un meta child à partir de son id produit host
      * @param int $idProduitHost
      * @param string $idHost id du site
      * @return bool
      */
-//    static public function isMetaChild($idProduitHost, $idHost)
-//    {
-//        return self::existBy(array('pro_meta_id_child', 'id_host'), array($idProduitHost, $idHost));
-//    }
+    //    static public function isMetaChild($idProduitHost, $idHost)
+    //    {
+    //        return self::existBy(array('pro_meta_id_child', 'id_host'), array($idProduitHost, $idHost));
+    //    }
 
-
-    /**
+    /*
      * renvoi un seul numéro de meta parent id par rapport à un id produit host child
      * @param int $idProduitHostChild id du meta enfant
      * @param string $idHost id du site
      * @return int|NULL l'id ou NULL si ce produit n'a aucun parent
      */
-//    static public function metaParentIdByChildId($idProduitHostChild, $idHost)
-//    {
-//        $produitMeta = self::findBy(array('pro_meta_id_child', 'id_host'), array($idProduitHostChild, $idHost));
-//
-//        // si on a pas trouvé
-//        if($produitMeta == NULL)
-//        {
-//            return NULL;
-//        }
-//        // on a trouvé
-//        else
-//        {
-//            return $produitMeta->getProMetaIdParent();
-//        }
-//    }
+    //    static public function metaParentIdByChildId($idProduitHostChild, $idHost)
+    //    {
+    //        $produitMeta = self::findBy(array('pro_meta_id_child', 'id_host'), array($idProduitHostChild, $idHost));
+    //
+    //        // si on a pas trouvé
+    //        if($produitMeta == NULL)
+    //        {
+    //            return NULL;
+    //        }
+    //        // on a trouvé
+    //        else
+    //        {
+    //            return $produitMeta->getProMetaIdParent();
+    //        }
+    //    }
 }

@@ -47,7 +47,7 @@ class TAProductOption extends BaseEntity
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
-    #[ORM\Column(type: "integer", enumType: StatusEnum::class)]
+    #[ORM\Column(type: 'integer', enumType: StatusEnum::class)]
     private StatusEnum $status = StatusEnum::STATUS_ACTIVE;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -62,16 +62,16 @@ class TAProductOption extends BaseEntity
     #[ORM\Column]
     private ?\DateTimeImmutable $dateHourLastSeen = null;
 
-    #[ORM\ManyToOne(targetEntity: TProduct::class ,inversedBy: 'tAProductOptions')]
+    #[ORM\ManyToOne(targetEntity: TProduct::class, inversedBy: 'tAProductOptions')]
     private ?TProduct $tProduct;
 
-    #[ORM\ManyToOne(targetEntity: TOption::class ,inversedBy: 'tAProductOptions')]
+    #[ORM\ManyToOne(targetEntity: TOption::class, inversedBy: 'tAProductOptions')]
     private ?TOption $tOption;
 
     #[ORM\OneToMany(mappedBy: 'tAProductOption', targetEntity: TAProductOptionValue::class)]
     private Collection $tAProductOptionValues;
 
-    #[ORM\ManyToOne(targetEntity: Hosts::class  ,inversedBy: 'tAProductOptions')]
+    #[ORM\ManyToOne(targetEntity: Hosts::class, inversedBy: 'tAProductOptions')]
     // old: $idHost
     private Hosts $host;
 
@@ -659,5 +659,4 @@ class TAProductOption extends BaseEntity
 
         return $this;
     }
-
 }

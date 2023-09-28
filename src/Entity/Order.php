@@ -167,7 +167,7 @@ class Order
     private ?int $idProductLgi = null;
 
     // id de lu produit host fusion si disponible ou null sinon
-    //private ?int $idProductHost = null
+    // private ?int $idProductHost = null
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?TProductHost $productHost = null;
 
@@ -225,10 +225,10 @@ class Order
 
     // TODO create entity and Relation
     /**
-     * objet customer à mettre en private
+     * objet customer à mettre en private.
      * @var customer
      */
-    //private $client = null;
+    // private $client = null;
 
     /**
      * objet selectionFournisseur lié à cette commande.

@@ -63,6 +63,7 @@ class TCategory
 
         return $this;
     }
+
     public function getHost(): ?Hosts
     {
         return $this->host;
@@ -74,7 +75,6 @@ class TCategory
 
         return $this;
     }
-
 
     /**
      * @return Collection<int, TAProductHostCategory>
@@ -106,14 +106,14 @@ class TCategory
         return $this;
     }
 
-//    Todo: repository
-    /**
+    //    Todo: repository
+    /*
      * Retourne l'ensemble des categories d'un site
      * @param string $idHost	Identifiant du site
      * @return TCategorie[] Liste des categories du site
      */
-//    public static function findAllByIdHost($idHost)
-//    {
-//        return self::findAllBy(array('id_host'), array($idHost), array('ordre'));
-//    }
+    //    public static function findAllByIdHost($idHost)
+    //    {
+    //        return self::findAllBy(array('id_host'), array($idHost), array('ordre'));
+    //    }
 }

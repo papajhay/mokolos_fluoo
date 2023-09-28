@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service;
 
@@ -7,24 +7,21 @@ use App\Entity\Ttransporter;
 class TtransporterService
 {
     /**
-     * fait un findById mais renvoi l'objet spécifique du transporteur comme transporteurDPD pour DPD ou renvoi un objet TTransporteur par défaut
-     * @param int $idTransporteur id du transporteur
+     * fait un findById mais renvoi l'objet spécifique du transporteur comme transporteurDPD pour DPD ou renvoi un objet TTransporteur par défaut.
+     * @param  int                           $idTransporteur id du transporteur
      * @return TTransporteur|transporteurDPD
      */
-    public function findByIdWithChildObject(Ttransporter $ttransporter,int $idTransporteur)
+    public function findByIdWithChildObject(Ttransporter $ttransporter, int $idTransporteur)
     {
         // si on a déjà chercher ce transporteur
-        if(!isset($ttransporter::$_cacheFindAllWithChild[$idTransporteur]))
-        {
+        if (!isset($ttransporter::$_cacheFindAllWithChild[$idTransporteur])) {
             // si ce transporteur à sa propre classe
-            if(isset($ttransporter::$_classeDeTransporteur[$idTransporteur]))
-            {
+            if (isset($ttransporter::$_classeDeTransporteur[$idTransporteur])) {
                 // on renverra un objet de cette classe
                 $rawClasseName = $ttransporter::$_classeDeTransporteur[$idTransporteur];
             }
             // pas de classe spécifique
-            else
-            {
+            else {
                 // on renvoi un objet TTransporteur
                 $rawClasseName = __CLASS__;
             }
@@ -35,7 +32,6 @@ class TtransporterService
             // on met en cache notre objet
             $ttransporter->_cacheFindAllWithChild[$idTransporteur] = $classeName::findById($idTransporteur);
         }
-
 
         return $ttransporter->_cacheFindAllWithChild[$idTransporteur];
     }

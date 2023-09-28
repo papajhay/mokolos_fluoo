@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\TCategory;
-
 use App\Repository\TCategoryRepository;
 
 class TCategoryService
@@ -14,9 +13,9 @@ class TCategoryService
     }
 
     /**
-     * Cre un nouvel objet "TCategorie" et le retourne
-     * @param string $idHost		Identifiant du site
-     * @param int $order			[=0] Order
+     * Cre un nouvel objet "TCategorie" et le retourne.
+     * @param  string    $idHost Identifiant du site
+     * @param  int       $order  [=0] Order
      * @return TCategory Nouvel Objet insere en base
      */
     public function createNew($idHost, $order = 0)

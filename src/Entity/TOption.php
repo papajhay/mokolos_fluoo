@@ -8,13 +8,9 @@ use App\Repository\TOptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\MappingException;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use Doctrine\Common\Util\ClassUtils;
 
 #[ORM\Entity(repositoryClass: TOptionRepository::class)]
-#[ORM\Table(name: "toption")]
+#[ORM\Table(name: 'toption')]
 class TOption extends BaseEntity
 {
     /**
@@ -26,7 +22,7 @@ class TOption extends BaseEntity
     /**
      * type d'option : case à cocher.
      */
-     const TYPE_OPTION_CHECKBOX = 3;
+    public const TYPE_OPTION_CHECKBOX = 3;
 
     /**
      * type d'option : menu déroulant.
@@ -41,14 +37,12 @@ class TOption extends BaseEntity
     /**
      * type d'option : text en lecture seul.
      */
-     const TYPE_OPTION_READONLY = 2;
+    public const TYPE_OPTION_READONLY = 2;
 
     /**
      * option spécial : option standard.
      */
-
     public const SPECIAL_OPTION_STANDARD = 0;
-
 
     /**
      * option spécial : option des quantité.
@@ -63,7 +57,7 @@ class TOption extends BaseEntity
     /**
      * option spécial : option des pays de livraison.
      */
-     const SPECIAL_OPTION_DELIVERY_COUNTRY = 3;
+    public const SPECIAL_OPTION_DELIVERY_COUNTRY = 3;
 
     /**
      * option spécial : option des pays de livraison.
@@ -120,7 +114,7 @@ class TOption extends BaseEntity
 
     #[ORM\Column(type: 'integer', enumType: SpecialOptionEnum::class)]
     // indique si il s'agit d'une option spécial (quantité, délai, pays de livraison, ...)
-    private SpecialOptionEnum |null $specialOption = null;
+    private SpecialOptionEnum|null $specialOption = null;
 
     #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TAOptionValueProvider::class)]
     private Collection $taOptionValueProviders;
@@ -637,5 +631,4 @@ class TOption extends BaseEntity
 
         return $this;
     }
-
 }

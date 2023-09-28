@@ -104,7 +104,7 @@ class TProductHost
 
     #[ORM\ManyToOne(inversedBy: 'tProductHosts')]
     // private $_host		 = null;
-    //private ?int $idHost = null;
+    // private ?int $idHost = null;
     private ?Hosts $host = null;
 
     #[ORM\Column(length: 255)]
@@ -168,7 +168,7 @@ class TProductHost
     private ?TAProductProvider $tAProductProvider = null;
 
     /**
-     * liste des acl lié à ce produit (on récupére les acl du produit parent dans le cas d'un satellite
+     * liste des acl lié à ce produit (on récupére les acl du produit parent dans le cas d'un satellite.
      * @var TProduitHostAcl
      */
     // private $_aProduitHostAcl = null;
@@ -176,17 +176,17 @@ class TProductHost
     private Collection $tProductHostAcl;
 
     /**
-     * Renvoi le diaporama des images de pub du produit
+     * Renvoi le diaporama des images de pub du produit.
      * @var TCmsDiapo
      */
-    #[ORM\OneToMany(targetEntity: TCmsDiapo::class, mappedBy: "sliderProductAdsHost")]
+    #[ORM\OneToMany(targetEntity: TCmsDiapo::class, mappedBy: 'sliderProductAdsHost')]
     private Collection $sliderProductAds;
 
     /**
-     * Renvoi le diaporama des images de détails du produit
+     * Renvoi le diaporama des images de détails du produit.
      * @var TCmsDiapo
      */
-    #[ORM\OneToMany(targetEntity: TCmsDiapo::class, mappedBy: "sliderProductDetailHost")]
+    #[ORM\OneToMany(targetEntity: TCmsDiapo::class, mappedBy: 'sliderProductDetailHost')]
     private Collection $sliderProductDetail;
 
     /**
@@ -219,7 +219,6 @@ class TProductHost
     }
 
     public function getId(): ?int
-
     {
         return $this->id;
     }
@@ -700,21 +699,25 @@ class TProductHost
         return $this->sliderProductAds;
     }
 
-    public function addSliderProductAds(TCmsDiapo $diapo): self {
+    public function addSliderProductAds(TCmsDiapo $diapo): self
+    {
         if (!$this->sliderProductAds->contains($diapo)) {
             $this->sliderProductAds[] = $diapo;
             $diapo->setSliderProductAdsHost($this);
         }
+
         return $this;
     }
 
-    public function removeSliderProductAds(TCmsDiapo $diapo): self {
+    public function removeSliderProductAds(TCmsDiapo $diapo): self
+    {
         if ($this->sliderProductAds->contains($diapo)) {
             $this->sliderProductAds->removeElement($diapo);
             if ($diapo->getSliderProductAdsHost() === $this) {
                 $diapo->setSliderProductAdsHost(null);
             }
         }
+
         return $this;
     }
     /*public function removeSliderProductAds(TCmsDiapo $diapo): self {
@@ -751,21 +754,25 @@ class TProductHost
         return $this->sliderProductDetail;
     }
 
-    public function addSliderProductDetail(TCmsDiapo $diapo): self {
+    public function addSliderProductDetail(TCmsDiapo $diapo): self
+    {
         if (!$this->sliderProductDetail->contains($diapo)) {
             $this->sliderProductDetail[] = $diapo;
             $diapo->setSliderProductDetailHost($this);
         }
+
         return $this;
     }
 
-    public function removeSliderProductDetail(TCmsDiapo $diapo): self {
+    public function removeSliderProductDetail(TCmsDiapo $diapo): self
+    {
         if ($this->sliderProductDetail->contains($diapo)) {
             $this->sliderProductDetail->removeElement($diapo);
             if ($diapo->getSliderProductDetailHost() === $this) {
                 $diapo->setSliderProductDetailHost(null);
             }
         }
+
         return $this;
     }
 
@@ -773,7 +780,6 @@ class TProductHost
     {
         $this->sliderProductDetail = $sliderProductDetail;
     }*/
-
 
     /*public function addSliderProductDetail(TCmsDiapo $sliderProductDetail): static
     {
@@ -784,12 +790,12 @@ class TProductHost
         return $this;
     }*/
 
-   /* public function removeSliderProductDetail(TCmsDiapo $sliderProductDetail): static
-    {
-        $this->sliderProductDetail->removeElement($sliderProductDetail);
+    /* public function removeSliderProductDetail(TCmsDiapo $sliderProductDetail): static
+     {
+         $this->sliderProductDetail->removeElement($sliderProductDetail);
 
-        return $this;
-    }*/
+         return $this;
+     }*/
 
     public function getProduitMetaParent(): ?self
     {
@@ -900,34 +906,34 @@ class TProductHost
     //                $valeurs[]	 = null;
     //                break;
     //
-                // on veux uniquement les meta produits
+    // on veux uniquement les meta produits
     //            case DbTable::UNIQUEMENT:
     //                $joinList[] = array('join' => 'JOIN', 'table' => TAProduitMeta::$_SQL_TABLE_NAME, 'alias' => 'pm', 'joinCondition' => 't.id_produit_host = pm.pro_meta_id_parent AND pm.id_host = t.id_host');
     //                break;
     //        }
     //
-            // si on a veux limitter à un certain site
+    // si on a veux limitter à un certain site
     //        if($idHost !== null)
     //        {
     //            $champs[]	 = 'id_host';
     //            $valeurs[]	 = $idHost;
     //        }
     //
-            // si on veux uniquement les produit satellite lié à un certain produit
+    // si on veux uniquement les produit satellite lié à un certain produit
     //        if($idProduit !== null)
     //        {
     //            $champs[]	 = 'pro_hos_satellite_id_parent';
     //            $valeurs[]	 = $idProduit;
     //        }
     //
-            // filtre poour les produits qui sont [=1] ou ne sont pas [=0] en haut de la page d'accueil
+    // filtre poour les produits qui sont [=1] ou ne sont pas [=0] en haut de la page d'accueil
     //        if($showOnHomeTop !== null)
     //        {
     //            $champs[]	 = 'pro_hos_show_on_home_top';
     //            $valeurs[]	 = $showOnHomeTop;
     //        }
     //
-            // si on a un ordre de tri par categorie
+    // si on a un ordre de tri par categorie
     //        if($idCategorie > 1)
     //        {
     //            $champs[]	 = 'phc.id_categorie';
@@ -949,21 +955,21 @@ class TProductHost
     //            // pour chaque produit
     //            foreach($aTProduitHost as $idProduitHost => $tProduitHost)
     //            {
-                    // pour chaque ACL de produit
+    // pour chaque ACL de produit
     //                foreach($aTProduitHostAcl as $tProduitHostAcl)
     //                {
-                        // des qu'on trouve une ACL pour le produit ou pour le produit parent dans le cas des produits satellites
+    // des qu'on trouve une ACL pour le produit ou pour le produit parent dans le cas des produits satellites
     //                    if($tProduitHostAcl->getIdProduitHost() === $tProduitHost->getIdProduitHost() || $tProduitHostAcl->getIdProduitHost() === $tProduitHost->getProHosSatelliteIdParent())
     //                    {
-                            // on ne veut que les produits actifs et que ce produit est désactivé
+    // on ne veut que les produits actifs et que ce produit est désactivé
     //                        if($actifOnly && $tProduitHostAcl->getProHosAclActif() == 0)
     //                        {
-                                // on le supprime de notre tableau
+    // on le supprime de notre tableau
     //                            unset($aTProduitHost[$idProduitHost]);
     //                        }
     //                        else
     //                        {
-                                // on met à jour le statut actif
+    // on met à jour le statut actif
     //                            $tProduitHost->setProHosIsActif($tProduitHostAcl->getProHosAclActif());
     //                        }
     //
@@ -973,13 +979,13 @@ class TProductHost
     //            }
     //        }
     //
-            // si on doit placer les meta produit a la fin
+    // si on doit placer les meta produit a la fin
     //        if($metaEnding)
     //        {
-                // on calcul l'id qu'on va donner à notre meta produit
+    // on calcul l'id qu'on va donner à notre meta produit
     //            $idMeta = count($aTProduitHost) + 1;
     //
-                // on parcour le tableau
+    // on parcour le tableau
     //            foreach($aTProduitHost as $key => $tProduitHost)
     //            {
     //                // si nous avons un produit meta
@@ -1019,37 +1025,37 @@ class TProductHost
     //        $fields	 = array('pm.pro_meta_id_parent', 't.id_host');
     //        $values	 = array($this->getIdProduitHost(), $this->getIdHost());
     //
-            // si on ne veux que les produits actifs
+    // si on ne veux que les produits actifs
     //        if($actifOnly)
     //        {
     //            $fields[]	 = 'pro_hos_is_actif';
     //            $values[]	 = 1;
     //        }
     //
-            // on recupere tous les produits meta enfant actif
+    // on recupere tous les produits meta enfant actif
     //        $allProduit = self::findAllBy($fields, $values, array('pro_hos_ordre', 'pro_hos_libelle'), 0, array(array('table' => TAProduitMeta::$_SQL_TABLE_NAME, 'alias' => 'pm', 'joinCondition' => 'pm.pro_meta_id_child = t.id_produit_host')));
     //
-            // si on doit vérifier les acl
+    // si on doit vérifier les acl
     //        if($checkAcl)
     //        {
-                // pour chaque produit
+    // pour chaque produit
     //            foreach($allProduit AS $key => $produit)
     //            {
-                    // on recupere les acl pour la desactivation des produits sur les site type ligbe
+    // on recupere les acl pour la desactivation des produits sur les site type ligbe
     //                $produitHostAcl = TProduitHostAcl::findById(array(
     //                    $produit->getIdProduitHost(),
     //                    System::getCurrentHost()->getHostId()));
     //
-                    // produit acl inactif
+    // produit acl inactif
     //                if($produitHostAcl->getIdProduitHost() && !($produitHostAcl->getProHosAclActif()))
     //                {
-                        // on le supprime du tableau
+    // on le supprime du tableau
     //                    unset($allProduit[$key]);
     //                }
     //            }
     //        }
     //
-            // si on doit placer un produit en premiere place
+    // si on doit placer un produit en premiere place
     //        if($idProductInFirstPlace)
     //        {
     //            // pour chaque produit
@@ -1082,25 +1088,25 @@ class TProductHost
      */
     //    public function findAllMetaDisponible()
     //    {
-            // si notre produit est un meta produit
+    // si notre produit est un meta produit
     //        if($this->isMeta())
     //        {
     //            $tabIdHost = array();
     //
-                // on récupére tous les prduit host enfant
+    // on récupére tous les prduit host enfant
     //            $allChild = $this->findAllMetaChild(false, false);
     //
-                // pour chaque produit enfant
+    // pour chaque produit enfant
     //            foreach($allChild AS $child)
     //            {
-                    // on ajoute le produit host dans la table
+    // on ajoute le produit host dans la table
     //                $tabIdHost[$child->getIdProduitHost()] = $child->getIdProduitHost();
     //            }
     //
-                // création des paramétres pour le findAll
+    // création des paramétres pour le findAll
     //            $aParam = DbTable::makeFieldAndValueArrayForFindAll('id_produit_host', $tabIdHost, 'NOT IN');
     //
-                // ajout des autres paramétres
+    // ajout des autres paramétres
     //            $aParam['aChamp'][]	 = 'pro_hos_satellite_id_parent';
     //            $aParam['aChamp'][]	 = 'id_host';
     //            $aParam['aValue'][]	 = 0;

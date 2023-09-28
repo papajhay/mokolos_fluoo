@@ -18,11 +18,11 @@ class TAProductOptionValueProviderService
     }
 
     /**
-     * Cré un nouvel objet "TAProductOptionValueFournisseur" et le retourne
-     * @param Provider $provider id du fournisseur
-     * @param TOptionValue $optionValue id de l'option value
-     * @param TProduct $tProduct id du produit
-     * @param string $idSource id de l'option value chez le fournisseur
+     * Cré un nouvel objet "TAProductOptionValueFournisseur" et le retourne.
+     * @param  Provider                     $provider    id du fournisseur
+     * @param  TOptionValue                 $optionValue id de l'option value
+     * @param  TProduct                     $tProduct    id du produit
+     * @param  string                       $idSource    id de l'option value chez le fournisseur
      * @return TAProductOptionValueProvider Nouvel Objet inseré en base
      */
     public function createNewTAProductOptionValueProvider(Provider $provider, TOptionValue $optionValue, TProduct $tProduct, string $idSource): TAProductOptionValueProvider

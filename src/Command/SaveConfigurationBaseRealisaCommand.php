@@ -6,7 +6,6 @@ use App\Entity\Provider;
 use App\Entity\TOption;
 use App\Enum\StatusEnum;
 use App\Repository\HostsRepository;
-use App\Repository\ProviderRepository;
 use App\Repository\TAProductProviderRepository;
 use App\Service\Provider\RealisaPrint\BaseRealisaPrint;
 use App\Service\Provider\TAOptionValueProviderService;
@@ -39,7 +38,7 @@ class SaveConfigurationBaseRealisaCommand extends Command
         private TAOptionValueProviderService $optionValueProviderService,
         private TAProductOptionService $tAProductOptionService,
         private EntityManagerInterface $entityManager
-    ){
+    ) {
         parent::__construct();
     }
 
@@ -57,47 +56,37 @@ class SaveConfigurationBaseRealisaCommand extends Command
 
         $productProviders = $this->tAProviderRepository->findAll();
         $hostName = $input->getArgument('host');
-        $hostFull = $this->hostsRepository->findOneBy(['name'=>$hostName]);
+        $hostFull = $this->hostsRepository->findOneBy(['name' => $hostName]);
         $host = $hostFull->getName();
 
         foreach ($productProviders as $productProvider) {
             $idSource =  $productProvider->getIdSource();
             $configs = $this->baseRealisaPrint->_apiConfigurations($idSource);
-            $provider = $this->entityManager->getRepository(Provider::class)->findOneBy(["id" => $productProvider->getProvider()->getId()]);
+            $provider = $this->entityManager->getRepository(Provider::class)->findOneBy(['id' => $productProvider->getProvider()->getId()]);
             $tProduct = $this->tProductService->createOrGetTProduct($productProvider, 3, $provider);
 
-            foreach($configs['variables'] as $key=>$optionData){
-             
+            foreach ($configs['variables'] as $key => $optionData) {
                 $detailData = $this->baseRealisaPrint->getOptionDetail($optionData);
-                $option = $this->tOptionService->createIfNotExist($key, $productProvider->getProvider(), $optionData['name'], $detailData['order'], $tProduct,  $detailData['typeOption']->value,  $detailData['optSpecialOption']);
+                $option = $this->tOptionService->createIfNotExist($key, $productProvider->getProvider(), $optionData['name'], $detailData['order'], $tProduct, $detailData['typeOption']->value, $detailData['optSpecialOption']);
                 $this->storeTOptionValuesAndTOptionValueProvider($option, $optionData['values'], $productProvider->getProvider(), $key);
 
-                $this->tAProductOptionService->createIfNotExist($tProduct, $option, $host, $detailData['defaultValue'],  StatusEnum::STATUS_ACTIVE, '', '');
+                $this->tAProductOptionService->createIfNotExist($tProduct, $option, $host, $detailData['defaultValue'], StatusEnum::STATUS_ACTIVE, '', '');
             }
-     }
+        }
 
-      $io->success('Configuration save very well!');
+        $io->success('Configuration save very well!');
 
         return Command::SUCCESS;
     }
 
-    private function storeTOptionValuesAndTOptionValueProvider( TOption $tOption, mixed $values, Provider $provider, string $key): void
+    private function storeTOptionValuesAndTOptionValueProvider(TOption $tOption, mixed $values, Provider $provider, string $key): void
     {
         if (is_array($values)) {
             foreach ($values as $elementId => $nameOptionValue) {
-                 $tOptionValue = $this->optionValueService->createTOptionValue($nameOptionValue, $tOption);
+                $tOptionValue = $this->optionValueService->createTOptionValue($nameOptionValue, $tOption);
 
-                 $this->optionValueProviderService->createNewTAOptionValueProvider($tOptionValue, $provider, trim($key), $nameOptionValue, $tOption, '', $elementId);
+                $this->optionValueProviderService->createNewTAOptionValueProvider($tOptionValue, $provider, trim($key), $nameOptionValue, $tOption, '', $elementId);
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-

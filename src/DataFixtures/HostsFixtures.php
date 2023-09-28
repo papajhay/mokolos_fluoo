@@ -9,9 +9,10 @@ use JetBrains\PhpStorm\NoReturn;
 
 class HostsFixtures extends Fixture
 {
-    #[NoReturn] public function load(ObjectManager $manager): void
+    #[NoReturn]
+    public function load(ObjectManager $manager): void
     {
-        $jsonData = file_get_contents('migrations' . DIRECTORY_SEPARATOR . 'hosts.json');
+        $jsonData = file_get_contents('migrations'.DIRECTORY_SEPARATOR.'hosts.json');
 
         $hosts = json_decode($jsonData, true);
 

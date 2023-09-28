@@ -30,18 +30,17 @@ class TAOptionProvider
     private ?string $descriptionSource = null;
 
     /**
-     * id du fournisseur
+     * id du fournisseur.
      * @var Provider|null
      */
     #[ORM\ManyToOne(targetEntity: Provider::class, inversedBy: 'tAOptionProviders')]
     #[ORM\JoinColumn(name: 'provider_id', referencedColumnName: 'id', nullable: false)]
-    private  Provider $provider;
+    private Provider $provider;
 
     /**
-     * opion à laquelle est lié notre option fournisseur
-     * @var TOption|null
+     * opion à laquelle est lié notre option fournisseur.
      */
-    //private $_option = null;
+    // private $_option = null;
     #[ORM\ManyToOne(inversedBy: 'tAOptionProviders')]
     private ?TOption $tOption = null;
 

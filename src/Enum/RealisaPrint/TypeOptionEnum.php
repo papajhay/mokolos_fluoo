@@ -1,7 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace App\Enum\RealisaPrint;
+
 enum TypeOptionEnum: int
 {
     case TYPE_OPTION_READONLY = 2;
