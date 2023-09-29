@@ -24,7 +24,7 @@ class TAProductOptionValueRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return TAProductOption Returns an array of TAProductOption objects
+     * @return TAProductOption          Returns an array of TAProductOption objects
      * @throws NonUniqueResultException
      */
     public function findByProductOptionValueHost($tProduct, $tOptionValue, $host): ?TAProductOption

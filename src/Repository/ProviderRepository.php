@@ -50,6 +50,4 @@ class ProviderRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-
 }

@@ -19,7 +19,7 @@ class TOnlineProductRule
 
     #[ORM\Column(length: 255)]
     // old: $onlProRulHideRow
-    private ?string $hideRow ='[]';
+    private ?string $hideRow = '[]';
 
     #[ORM\Column(length: 255)]
     // old: $onlProRulIfEveryIsSelected

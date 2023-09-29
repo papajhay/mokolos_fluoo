@@ -194,8 +194,6 @@ class TLockProcess
 
     /**
      * Cré un nouvel objet "TLockProcess" et le retourne.
-     * @param varchar(250) $locProName nom du process
-     * @param varchar(500) $locProStage Etape du process (facultatif)
      * @return TLockProcess Nouvel Objet inseré en base
      */
     //    public static function createNewOrDie($maxExecutionTime, $name)

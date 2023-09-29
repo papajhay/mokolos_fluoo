@@ -10,18 +10,18 @@ use Doctrine\ORM\Mapping as ORM;
 class TCmsPage
 {
     // =================== Constantes ===================
-//    const STATUT_INACTIF	 = 0;
-//    const STATUT_ACTIF	 = 1;
+    //    const STATUT_INACTIF	 = 0;
+    //    const STATUT_ACTIF	 = 1;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     /**
-     * Identifiant du site
+     * Identifiant du site.
      * @var string
      */
-    //private $idHost;
+    // private $idHost;
     #[ORM\ManyToOne(inversedBy: 'tCmsPages')]
     private ?Hosts $host = null;
 
@@ -48,8 +48,6 @@ class TCmsPage
 
     #[ORM\Column]
     private ?\DateTimeImmutable $dateTimeLastUpdate = null;
-
-
 
     public function getId(): ?int
     {
@@ -166,82 +164,80 @@ class TCmsPage
 
     // =================== Methodes de recherche (find) ===================
 
-//    Todo : repository
-    /**
+    //    Todo : repository
+    /*
      * Recupere une page CMS pour un site et une url donnee (actives et inactives)
      * @param string $idHost		Identifiant du site
      * @param string $cmsPagUrl		Url de la page du CMS
      * @param NULL|int $cmsPagStatut		[=NULL] Toutes, 1 pour Actif et 0 pour Inactif
      * @return TCmsPage
      */
-//    public static function findByIdHostAndCmsPagUrl($idHost, $cmsPagUrl, $cmsPagStatut = NULL)
-//    {
-//        $aChamp	 = array('id_host', 'cms_pag_url');
-//        $aValue	 = array($idHost, $cmsPagUrl);
-//
-//        if($cmsPagStatut !== NULL)
-//        {
-//            $aChamp[]	 = 'cms_pag_statut';
-//            $aValue[]	 = $cmsPagStatut;
-//        }
-//
-//        return self::findBy($aChamp, $aValue);
-//    }
+    //    public static function findByIdHostAndCmsPagUrl($idHost, $cmsPagUrl, $cmsPagStatut = NULL)
+    //    {
+    //        $aChamp	 = array('id_host', 'cms_pag_url');
+    //        $aValue	 = array($idHost, $cmsPagUrl);
+    //
+    //        if($cmsPagStatut !== NULL)
+    //        {
+    //            $aChamp[]	 = 'cms_pag_statut';
+    //            $aValue[]	 = $cmsPagStatut;
+    //        }
+    //
+    //        return self::findBy($aChamp, $aValue);
+    //    }
 
-    /**
+    /*
      * renvoi tous les page cms active d'un site
      * @param string $idHost id du site
      * @return TCmsPage[]
      */
 
-//    public static function findAllActifByIdHost($idHost)
-//    {
-//        return self::findAllBy(array('cms_pag_statut', 'id_host'), array(1, $idHost));
-//    }
+    //    public static function findAllActifByIdHost($idHost)
+    //    {
+    //        return self::findAllBy(array('cms_pag_statut', 'id_host'), array(1, $idHost));
+    //    }
 
-    //Todo Service
-    /**
+    // Todo Service
+    /*
      * avant de sauvegarder on met à jour la date de derniére modification
      */
-//   protected function _preSave()
-//   {
-//        parent::_preSave();
-//
-//    // création d'un nouvel objet date
-//       $date = new DateHeure();
-//
-//    // on met à jour la date de derniére modification
-//       $this->setCmsPagLastUpdate($date->format(DateHeure::DATETIMEMYSQL));
-//   }
+    //   protected function _preSave()
+    //   {
+    //        parent::_preSave();
+    //
+    //    // création d'un nouvel objet date
+    //       $date = new DateHeure();
+    //
+    //    // on met à jour la date de derniére modification
+    //       $this->setCmsPagLastUpdate($date->format(DateHeure::DATETIMEMYSQL));
+    //   }
 
-    /**
+    /*
      * Retourne le lien absolu de la page CMS pour la visualisation
      * @return string
      */
-//    public function cmsPagHrefApercu()
-//    {
-//        return System::constructHttpServerFromHost($this->getIdHost()) . 'impression/cms/page/cms_pag_url=' . $this->getCmsPagUrl() . '&amp;apercu=1';
-//    }
+    //    public function cmsPagHrefApercu()
+    //    {
+    //        return System::constructHttpServerFromHost($this->getIdHost()) . 'impression/cms/page/cms_pag_url=' . $this->getCmsPagUrl() . '&amp;apercu=1';
+    //    }
 
-    /**
+    /*
      * renvoi le content aprés remplacement des variables
      * @return text
      */
-//    public function getContentReplacedVariable()
-//    {
-//        $template = new Template();
-//
-//        return $template->replaceVariable($this->getCmsPagContent());
-//    }
+    //    public function getContentReplacedVariable()
+    //    {
+    //        $template = new Template();
+    //
+    //        return $template->replaceVariable($this->getCmsPagContent());
+    //    }
 
-    /**
+    /*
      * Retourne le lien absolu de la page CMS du site (avec reecriture d'Url)
      * @return string
      */
-//    public function cmsPagHref()
-//    {
-//        return System::constructHttpServerFromHost($this->getIdHost()) . $this->getCmsPagUrl();
-//    }
-
-
+    //    public function cmsPagHref()
+    //    {
+    //        return System::constructHttpServerFromHost($this->getIdHost()) . $this->getCmsPagUrl();
+    //    }
 }

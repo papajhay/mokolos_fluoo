@@ -55,7 +55,7 @@ class TAOptionProviderRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function existsBy(string $sourceKey, Provider $provider, ?TProduct $tProduct = null): bool
+    public function existsBy(string $sourceKey, Provider $provider, TProduct $tProduct = null): bool
     {
         $queryBuilder = $this->createQueryBuilder('t')
             ->where('t.provider = :provider')
@@ -77,9 +77,7 @@ class TAOptionProviderRepository extends ServiceEntityRepository
     }
 
     /** Retourne un TAOptionFournisseur en fonction de l'id du fournissseur et de l'id de l'option chez le fournisseur ou null si rien n'a était trouvé. Certains paramétres supplémentaires existent pour certains fournisseurs.
-     * @param string   $idOptionProviderSrc id de l'option chez le fournisseur
-     * @param int|null $idProduct           [=null] id du porduit ou null si non applicable
-     * @param bool     $likeSearch          [=false] mettre TRUE si on veux chercher le opt_fou_id_source avec un like
+     * @param bool $likeSearch [=false] mettre TRUE si on veux chercher le opt_fou_id_source avec un like
      */
     public function findByIdOptionSrc(string $sourceKey, Provider $provider, TProduct $tProduct = null, bool $likeSearch = false): ?TAOptionProvider
     {

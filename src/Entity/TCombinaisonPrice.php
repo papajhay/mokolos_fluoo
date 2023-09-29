@@ -14,7 +14,7 @@ class TCombinaisonPrice
     private ?int $id = null;
 
     #[ORM\Column]
-    //old $date_maj
+    // old $date_maj
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column]
@@ -55,6 +55,7 @@ class TCombinaisonPrice
 
         return $this;
     }
+
     public function getProvider(): ?Provider
     {
         return $this->provider;
@@ -79,105 +80,103 @@ class TCombinaisonPrice
         return $this;
     }
 
-    //Todo : relation
-    /**
+    // Todo : relation
+    /*
      * Retourne la combinaison correspondante
      * @return TCombinaison
      */
-//    public function getCombinaison()
-//    {
-//
-//        if($this->_combinaison == null)
-//        {
-//            $this->_combinaison = TCombinaison::findById($this->idCombinaison);
-//        }
-//
-//        return $this->_combinaison;
-//    }
+    //    public function getCombinaison()
+    //    {
+    //
+    //        if($this->_combinaison == null)
+    //        {
+    //            $this->_combinaison = TCombinaison::findById($this->idCombinaison);
+    //        }
+    //
+    //        return $this->_combinaison;
+    //    }
 
-    //Todo : repository
-    /**
+    // Todo : repository
+    /*
      * renvoi l'objet combinaison prix à partir de l'id de combinaison et de l'id du fournisseur
      * @param int $idCombinaison id de la combinaison
      * @param type $idFournisseur id du fournisseur
      * @return TCombinaisonPrix
      */
-//    public static function findByParam($idCombinaison, $idFournisseur)
-//    {
+    //    public static function findByParam($idCombinaison, $idFournisseur)
+    //    {
     // on recheche la combinaisonPrix
-//        $combinaisonPrix = self::findBy(array('id_combinaison', 'id_fournisseur'), array($idCombinaison, $idFournisseur));
+    //        $combinaisonPrix = self::findBy(array('id_combinaison', 'id_fournisseur'), array($idCombinaison, $idFournisseur));
 
     // si on a pas de prix
-//        if($combinaisonPrix == NULL)
-//        {
-//            return new TCombinaisonPrix();
-//        }
-//        else
-//        {
-//            return $combinaisonPrix;
-//        }
-//    }
+    //        if($combinaisonPrix == NULL)
+    //        {
+    //            return new TCombinaisonPrix();
+    //        }
+    //        else
+    //        {
+    //            return $combinaisonPrix;
+    //        }
+    //    }
 
-    //Todo : service
-    /**
+    // Todo : service
+    /*
      * renvoi l'objet combinaison prix à partir de l'id de combinaison et de l'id du fournisseur
      * @param int $idCombinaison id de la combinaison
      * @param fournisseur $fournisseur le fournisseur
      * @param float $prix prix du fournisseur HT en euro
      * @return TCombinaisonPrix
      */
-//    public static function sauvegardeCombinaisonPrix($idCombinaison, $fournisseur, $prix)
-//    {
+    //    public static function sauvegardeCombinaisonPrix($idCombinaison, $fournisseur, $prix)
+    //    {
     // si on est dans l'admin
-//        if(System::isAdminContext())
-//        {
+    //        if(System::isAdminContext())
+    //        {
     // on renvoi une combinaison vide car on ne veux pas sauvegarder
-//            return new TCombinaisonPrix();
-//        }
+    //            return new TCombinaisonPrix();
+    //        }
 
     // on récupére notre objet combinaison Prix si il existe
-//        $combinaisonPrix = self::findByParam($idCombinaison, $fournisseur->getIdFour());
+    //        $combinaisonPrix = self::findByParam($idCombinaison, $fournisseur->getIdFour());
 
     // cette combinaison Prix n'existe pas
-//        if(!$combinaisonPrix->exist())
-//        {
+    //        if(!$combinaisonPrix->exist())
+    //        {
     // on met à jour les paramétre de la combinaison
-//            $combinaisonPrix->setIdCombinaison($idCombinaison);
-//            $combinaisonPrix->setIdFournisseur($fournisseur->getIdFour());
-//        }
+    //            $combinaisonPrix->setIdCombinaison($idCombinaison);
+    //            $combinaisonPrix->setIdFournisseur($fournisseur->getIdFour());
+    //        }
     // si cette combinaison existe déjà et que son prix à changer
-//        elseif($combinaisonPrix->getComPriPrix() != $prix && $combinaisonPrix->getComPriDateMaj() > $fournisseur->getFouDateValidCachePrice())
-//        {
-//            $date = new DateHeure();
+    //        elseif($combinaisonPrix->getComPriPrix() != $prix && $combinaisonPrix->getComPriDateMaj() > $fournisseur->getFouDateValidCachePrice())
+    //        {
+    //            $date = new DateHeure();
 
     // on met à jour la date du cache
-//            $fournisseur->setFouDateValidCachePrice($date->format(DateHeure::DATETIMEMYSQL))
-//                ->save();
-//        }
+    //            $fournisseur->setFouDateValidCachePrice($date->format(DateHeure::DATETIMEMYSQL))
+    //                ->save();
+    //        }
 
     // On met à jour le prix
-//        $combinaisonPrix->setComPriPrix($prix);
+    //        $combinaisonPrix->setComPriPrix($prix);
 
     // on sauvegarde les modification
-//        $combinaisonPrix->save();
+    //        $combinaisonPrix->save();
 
     // on retourne l'objet
-//        return $combinaisonPrix;
-//    }
+    //        return $combinaisonPrix;
+    //    }
 
-
-    /**
+    /*
      * purge les vieille combinaisonPrix qui ont plus d'un mois
      */
-//    static public function purgeOld()
-//    {
+    //    static public function purgeOld()
+    //    {
     // on créé une nouvelle date il y a un mois
-//        $date = new DateHeure();
-//        $dure = new Duree(-1, Duree::TYPE_MOIS);
-//        $date->addTime($dure);
+    //        $date = new DateHeure();
+    //        $dure = new Duree(-1, Duree::TYPE_MOIS);
+    //        $date->addTime($dure);
 
     // on supprime les vieux enregistrement
-//        DB::prepareDeleteAndExecute(self::$_SQL_TABLE_NAME, array(array('com_pri_date_maj', $date->format(DateHeure::DATETIMEMYSQL), 's', '<')));
-//    }
-
+    //        DB::prepareDeleteAndExecute(self::$_SQL_TABLE_NAME, array(array('com_pri_date_maj', $date->format(DateHeure::DATETIMEMYSQL), 's', '<')));
+    //    }
 }

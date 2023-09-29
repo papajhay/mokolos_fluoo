@@ -28,28 +28,26 @@ class TAProductHostCategory
     }
 
     /**
-     * Getter sous-objet TProduitHost
+     * Getter sous-objet TProduitHost.
      * @return TProduitHost
      */
     public function getTProductHost()
     {
-        if($this->tProductHost===NULL)
-        {
-            $this->tProductHost = TProductHost::findById(array($this->getIdProductHost()));
+        if (null === $this->tProductHost) {
+            $this->tProductHost = TProductHost::findById([$this->getIdProductHost()]);
         }
 
         return $this->tProductHost;
     }
 
-
     /**
-     * Setter du sous-objet TProduitHost
-     * @param TProduitHost $tProduitHost
+     * Setter du sous-objet TProduitHost.
      * @return TAProduitHostCategorie
      */
     public function setTProductHost($tProductHost)
     {
         $this->tProductHost = $tProductHost;
+
         return $this;
     }
 

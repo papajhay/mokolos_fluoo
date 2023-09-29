@@ -4,17 +4,17 @@ namespace App\Service;
 
 use App\Entity\TAHostCmsBloc;
 use App\Repository\TAHostCmsBlocRepository;
-use App\Repository\TCmsBlocRepository;
+
 class TAHostCmsBlocService
 {
     public function __construct(
         private TAHostCmsBlocRepository $taHostCmsBlocRepository
     ) {
     }
+
     /**
-     * Creer un nouvel objet "TAHostCmsBloc" et le retourner
-     * @param string $idHost        Identifiant du site
-     * @param int $idCmsBloc        Identifiant du bloc CMS
+     * Creer un nouvel objet "TAHostCmsBloc" et le retourner.
+     * @param  string        $idHost Identifiant du site
      * @return TAHostCmsBloc Nouvel objet insere en base
      */
     public function createNew($idHost, $id)
@@ -26,5 +26,4 @@ class TAHostCmsBlocService
 
         return $taHostCmsBloc;
     }
-
 }

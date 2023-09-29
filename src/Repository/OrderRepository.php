@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Order;
@@ -39,7 +40,6 @@ class OrderRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
 
     /**
      * @throws NonUniqueResultException

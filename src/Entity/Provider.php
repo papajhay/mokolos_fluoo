@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProviderRepository::class)]
 class Provider
 {
-
     /**
      * *************************************************************************
      * Constantes.
@@ -116,7 +115,7 @@ class Provider
     /**
      * constante pour le fournisseur actif.
      */
-     const SUPPLIER_ACTIVE = 1;
+    public const SUPPLIER_ACTIVE = 1;
 
     /**
      * constante pour le fournisseur inactif.
@@ -146,11 +145,11 @@ class Provider
     private ?int $masterId = null;
 
     #[ORM\Column(nullable: true)]
-//    $numberTva
+    //    $numberTva
     private ?int $numberVAT = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-//    $dirFactures
+    //    $dirFactures
     private ?string $dirInvoices = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -160,11 +159,11 @@ class Provider
     private ?string $comment = null;
 
     #[ORM\Column]
-//    $tauxTva
+    //    $tauxTva
     private ?float $VATRate = null;
 
     #[ORM\Column]
-//    $tvaRécupérable
+    //    $tvaRécupérable
     private ?int $recoverableVAT = null;
 
     #[ORM\Column(nullable: true)]
@@ -189,14 +188,14 @@ class Provider
     private ?int $salutation = null;
 
     #[ORM\Column(length: 255)]
-//    $payement
+    //    $payement
     private ?string $payment = null;
 
     #[ORM\Column]
     private ?int $orderSelection = null;
 
     #[ORM\Column(length: 255)]
-//    $fouSiteAdresse
+    //    $fouSiteAdresse
     private ?string $webSiteAddress = null;
 
     #[ORM\Column(length: 255)]
@@ -215,8 +214,8 @@ class Provider
     private ?string $countryCode = null;
 
     #[ORM\Column]
-//    $actif
-    private ?bool $active ;
+    //    $actif
+    private ?bool $active;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateValidCachePrice = null;
@@ -235,10 +234,10 @@ class Provider
     //  * ************************************************************************ */
 
     // To do : constant
-     /**
-      * liaison entre les id de Provider et leur classe spécifique
-      * @var array
-      */
+    /**
+     * liaison entre les id de Provider et leur classe spécifique.
+     * @var array
+     */
     // const classeDeFournisseur = array(
     // 	fournisseurPrint24::ID_FOUR_FR					 => 'fournisseurPrint24Api',
     // 	fournisseurPrint24::ID_FOUR_BE					 => 'fournisseurPrint24',
@@ -2148,109 +2147,109 @@ class Provider
      * liste des fournisseurs supplémentaire.
      * @var int[]
      */
-//    protected $_ADDITIONAL_SUPPLIER = ['ALIAS PIXART' => Provider::ID_SUPPLIER_PIXART,
-//        'ALIAS REDUC' => fournisseurPrint24::ID_FOUR_FR,
-//        'AUDRY' => 67,
-//        'AVL' => 45,
-//        'colissimo' => Provider::ID_SUPPLIER_LA_POSTE,
-//        'cusin' => 5,
-//        'crea' => Provider::ID_SUPPLIER_FLUOO_CREATION,
-//        'digit' => 17,
-//        'exa' => Provider::ID_SUPPLIER_EXAPRINT,
-//        'exeprint' => Provider::ID_SUPPLIER_EXAPRINT,
-//        'envelcolor.fr' => 71,
-//        'igraphy' => 73,
-//        'impressionsenligne' => 103,
-//        'indexit' => 20,
-//        'le-sac-publicitaire' => 75,
-//        'max' => 11,
-//        'magenta' => 45,
-//        'mursdimages' => Provider::ID_SUPPLIER_PIXART,
-//        'onelineprinters' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-//        'onlinp' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-//        'oneline' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-//        'online' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-//        'onlin' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
-//        'p24' => fournisseurPrint24::ID_FOUR_FR,
-//        'p24 be' => fournisseurPrint24::ID_FOUR_BE,
-//        'pixartprinting' => Provider::ID_SUPPLIER_PIXART,
-//        'pix' => Provider::ID_SUPPLIER_PIXART,
-//        'MULTISIGNE' => Provider::ID_SUPPLIER_PIXART,
-//        'Print 24 be' => fournisseurPrint24::ID_FOUR_BE,
-//        'Print 24 lu' => fournisseurPrint24::ID_FOUR_LU,
-//        'Print 24be' => fournisseurPrint24::ID_FOUR_BE,
-//        'print24' => fournisseurPrint24::ID_FOUR_FR,
-//        'print 27' => fournisseurPrint24::ID_FOUR_FR,
-//        'print 30' => fournisseurPrint24::ID_FOUR_FR,
-//        'print 31' => fournisseurPrint24::ID_FOUR_FR,
-//        'pc' => 1,
-//        'printoclok' => 29,
-//        'printforyou' => Provider::ID_SUPPLIER_PRINTFORYOU,
-//        'Printconcept (ex Aud' => 67,
-//        'carnet -liasse.com' => Provider::ID_SUPPLIER_REALISAPRINT,
-//        'realisa' => Provider::ID_SUPPLIER_REALISAPRINT,
-//        'smartlabel' => Provider::ID_SUPPLIER_ADESA,
-//        'saxo' => Provider::ID_SUPPLIER_SAXO,
-//        'ud' => Provider::ID_SUPPLIER_UD,
-//        'yp' => Provider::ID_SUPPLIER_YESPRINT];
+    //    protected $_ADDITIONAL_SUPPLIER = ['ALIAS PIXART' => Provider::ID_SUPPLIER_PIXART,
+    //        'ALIAS REDUC' => fournisseurPrint24::ID_FOUR_FR,
+    //        'AUDRY' => 67,
+    //        'AVL' => 45,
+    //        'colissimo' => Provider::ID_SUPPLIER_LA_POSTE,
+    //        'cusin' => 5,
+    //        'crea' => Provider::ID_SUPPLIER_FLUOO_CREATION,
+    //        'digit' => 17,
+    //        'exa' => Provider::ID_SUPPLIER_EXAPRINT,
+    //        'exeprint' => Provider::ID_SUPPLIER_EXAPRINT,
+    //        'envelcolor.fr' => 71,
+    //        'igraphy' => 73,
+    //        'impressionsenligne' => 103,
+    //        'indexit' => 20,
+    //        'le-sac-publicitaire' => 75,
+    //        'max' => 11,
+    //        'magenta' => 45,
+    //        'mursdimages' => Provider::ID_SUPPLIER_PIXART,
+    //        'onelineprinters' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+    //        'onlinp' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+    //        'oneline' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+    //        'online' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+    //        'onlin' => Provider::ID_SUPPLIER_ONLINE_PRINTERS,
+    //        'p24' => fournisseurPrint24::ID_FOUR_FR,
+    //        'p24 be' => fournisseurPrint24::ID_FOUR_BE,
+    //        'pixartprinting' => Provider::ID_SUPPLIER_PIXART,
+    //        'pix' => Provider::ID_SUPPLIER_PIXART,
+    //        'MULTISIGNE' => Provider::ID_SUPPLIER_PIXART,
+    //        'Print 24 be' => fournisseurPrint24::ID_FOUR_BE,
+    //        'Print 24 lu' => fournisseurPrint24::ID_FOUR_LU,
+    //        'Print 24be' => fournisseurPrint24::ID_FOUR_BE,
+    //        'print24' => fournisseurPrint24::ID_FOUR_FR,
+    //        'print 27' => fournisseurPrint24::ID_FOUR_FR,
+    //        'print 30' => fournisseurPrint24::ID_FOUR_FR,
+    //        'print 31' => fournisseurPrint24::ID_FOUR_FR,
+    //        'pc' => 1,
+    //        'printoclok' => 29,
+    //        'printforyou' => Provider::ID_SUPPLIER_PRINTFORYOU,
+    //        'Printconcept (ex Aud' => 67,
+    //        'carnet -liasse.com' => Provider::ID_SUPPLIER_REALISAPRINT,
+    //        'realisa' => Provider::ID_SUPPLIER_REALISAPRINT,
+    //        'smartlabel' => Provider::ID_SUPPLIER_ADESA,
+    //        'saxo' => Provider::ID_SUPPLIER_SAXO,
+    //        'ud' => Provider::ID_SUPPLIER_UD,
+    //        'yp' => Provider::ID_SUPPLIER_YESPRINT];
 
-/**
- * @return Collection<int, TCombinaisonPrice>
- */
-public function getTCombinaisonPrice(): Collection
-{
-    return $this->tCombinaisonPrice;
-}
-
-public function addTCombinaisonPrice(TCombinaisonPrice $tCombinaisonPrice): static
-{
-    if (!$this->tCombinaisonPrice->contains($tCombinaisonPrice)) {
-        $this->tCombinaisonPrice->add($tCombinaisonPrice);
-        $tCombinaisonPrice->setProvider($this);
+    /**
+     * @return Collection<int, TCombinaisonPrice>
+     */
+    public function getTCombinaisonPrice(): Collection
+    {
+        return $this->tCombinaisonPrice;
     }
 
-    return $this;
-}
-
-public function removeTCombinaisonPrice(TCombinaisonPrice $tCombinaisonPrice): static
-{
-    if ($this->tCombinaisonPrice->removeElement($tCombinaisonPrice)) {
-        // set the owning side to null (unless already changed)
-        if ($tCombinaisonPrice->getProvider() === $this) {
-            $tCombinaisonPrice->setProvider(null);
+    public function addTCombinaisonPrice(TCombinaisonPrice $tCombinaisonPrice): static
+    {
+        if (!$this->tCombinaisonPrice->contains($tCombinaisonPrice)) {
+            $this->tCombinaisonPrice->add($tCombinaisonPrice);
+            $tCombinaisonPrice->setProvider($this);
         }
+
+        return $this;
     }
 
-    return $this;
-}
-
-/**
- * @return Collection<int, TProduct>
- */
-public function getTproduct(): Collection
-{
-    return $this->tproduct;
-}
-
-public function addTproduct(TProduct $tproduct): static
-{
-    if (!$this->tproduct->contains($tproduct)) {
-        $this->tproduct->add($tproduct);
-        $tproduct->setProvider($this);
-    }
-
-    return $this;
-}
-
-public function removeTproduct(TProduct $tproduct): static
-{
-    if ($this->tproduct->removeElement($tproduct)) {
-        // set the owning side to null (unless already changed)
-        if ($tproduct->getProvider() === $this) {
-            $tproduct->setProvider(null);
+    public function removeTCombinaisonPrice(TCombinaisonPrice $tCombinaisonPrice): static
+    {
+        if ($this->tCombinaisonPrice->removeElement($tCombinaisonPrice)) {
+            // set the owning side to null (unless already changed)
+            if ($tCombinaisonPrice->getProvider() === $this) {
+                $tCombinaisonPrice->setProvider(null);
+            }
         }
+
+        return $this;
     }
 
-    return $this;
-}
+    /**
+     * @return Collection<int, TProduct>
+     */
+    public function getTproduct(): Collection
+    {
+        return $this->tproduct;
+    }
+
+    public function addTproduct(TProduct $tproduct): static
+    {
+        if (!$this->tproduct->contains($tproduct)) {
+            $this->tproduct->add($tproduct);
+            $tproduct->setProvider($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTproduct(TProduct $tproduct): static
+    {
+        if ($this->tproduct->removeElement($tproduct)) {
+            // set the owning side to null (unless already changed)
+            if ($tproduct->getProvider() === $this) {
+                $tproduct->setProvider(null);
+            }
+        }
+
+        return $this;
+    }
 }

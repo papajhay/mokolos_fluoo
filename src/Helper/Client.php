@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Helper;
 
@@ -15,7 +15,6 @@ class Client
     protected $httpMethod = 'POST';
     /**
      * url utilisé pour la requête curl.
-     * @var string
      */
     protected string $url;
     /**
@@ -28,6 +27,7 @@ class Client
      * @var string|null
      */
     protected $body;
+
     /**
      * Constructeur, créé la requête curl.
      */
@@ -35,7 +35,7 @@ class Client
         string $url,
         array $param = null
     ) {
-        $this->url=$url;
+        $this->url = $url;
         $this->client = HttpClient::create();
         if (null !== $param) {
             $this->setBody($param);
@@ -58,9 +58,8 @@ class Client
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function execute():string
+    public function execute(): string
     {
-
         $response = $this->client->request(
             $this->httpMethod,
             $this->url,
@@ -74,6 +73,5 @@ class Client
         $content = $response->getContent();
 
         return $content;
-
     }
 }

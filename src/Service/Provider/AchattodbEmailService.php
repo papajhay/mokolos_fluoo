@@ -32,21 +32,25 @@ class AchattodbEmailService
             case AchattodbEmail::STATUS_NOT_PROCESSED:
                 // on change le statut du mail pour le retraiter
                 $this->updateStatus($achattodbEmail, AchattodbEmail::STATUS_NEED_REPROCESSED_1);
+
                 // on est au 1er reretraitement
                 return true;
             case AchattodbEmail::STATUS_NEED_REPROCESSED_1:
                 // on change le statut du mail pour le retraiter
                 $this->updateStatus($achattodbEmail, AchattodbEmail::STATUS_NEED_REPROCESSED_2);
+
                 // on est au 2e retraitement
                 return true;
             case AchattodbEmail::STATUS_NEED_REPROCESSED_2:
                 // on change le statut du mail pour le retraiter
                 $this->updateStatus($achattodbEmail, AchattodbEmail::STATUS_NEED_REPROCESSED_3);
+
                 // on est au 3e retraitement
                 return true;
             case AchattodbEmail::STATUS_NEED_REPROCESSED_3:
                 // on change le statut du mai pour le mettre en erreur
                 $this->updateStatus($achattodbEmail, AchattodbEmail::STATUS_NEED_REPROCESSED_ERROR);
+
                 // on indique que l'on ne peux plus retraiter le mail
                 return false;
 

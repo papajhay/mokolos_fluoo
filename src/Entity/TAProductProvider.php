@@ -18,10 +18,10 @@ class TAProductProvider extends BaseEntity
     #[ORM\ManyToOne(inversedBy: 'tAProductProviders')]
     private ?Provider $provider;
 
-    #[ORM\Column(type:"integer",nullable:true)]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $idSource = null;
 
-    #[ORM\Column(type:"integer",nullable:true)]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $idGroup = null;
 
     #[ORM\Column(length: 255)]
@@ -32,6 +32,7 @@ class TAProductProvider extends BaseEntity
 
     #[ORM\ManyToMany(targetEntity: TProduct::class, inversedBy: 'tAProductProvider')]
     private Collection $tProducts;
+
     public function __construct()
     {
         $this->tProducts = new ArrayCollection();

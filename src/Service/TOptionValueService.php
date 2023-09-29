@@ -12,9 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
 class TOptionValueService
 {
     public function __construct(
-        private EntityManagerInterface          $entityManager,
+        private EntityManagerInterface $entityManager,
         private TAOptionValueProviderRepository $optionValueProviderRepository,
-        private ProviderRepository              $providerRepository,
+        private ProviderRepository $providerRepository,
         private TAOptionValueProviderService $optionValueProviderService
     ) {
     }
@@ -22,10 +22,10 @@ class TOptionValueService
     /**
      * créé un optionValue et le optionvaluefournisseur associé si il n'existe pas.
      * @param string  $idOptionValueSource id de l'optionValue chez le fournisseur
-     * @param TOption $tOption              tOption
-     * @param string  $nameOptionValue      libelle de l'option
-     * @param string $productAlias        product alias de l'optionvalue pour le fournisseur si applicable
-     * @param int  $elementId           elementId de l'optionvalue pour le fournisseur si applicable
+     * @param TOption $tOption             tOption
+     * @param string  $nameOptionValue     libelle de l'option
+     * @param string  $productAlias        product alias de l'optionvalue pour le fournisseur si applicable
+     * @param int     $elementId           elementId de l'optionvalue pour le fournisseur si applicable
      */
     public function createIfNotExist(string $idOptionValueSource, int $idProvider, TOption $tOption, string $nameOptionValue, int $elementId, string $productAlias = ''): TOptionValue
     {
@@ -74,7 +74,7 @@ class TOptionValueService
             $this->optionValueRepository->save($optionValue);
 
             // création de la liaison entre le fournisseur et l'option value
-            $this->optionValueProviderService->createNewTAOptionValueProvider( $optionValue, $this->providerRepository->find($idProvider), $idOptionValueSourceTrim, $nameOptionValue, $tOption, $productAlias, $elementId);
+            $this->optionValueProviderService->createNewTAOptionValueProvider($optionValue, $this->providerRepository->find($idProvider), $idOptionValueSourceTrim, $nameOptionValue, $tOption, $productAlias, $elementId);
         }
 
         // on renvoi l'optionValue

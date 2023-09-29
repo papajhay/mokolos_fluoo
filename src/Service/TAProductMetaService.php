@@ -11,17 +11,12 @@ class TAProductMetaService
     ) {
     }
 
-    /**
-     *
-     * @param type $proMetaIdParent
-     * @param type $proMetaIdChild
-     */
     public function createNew($idParent, $idChild, $idHost)
     {
-    // on créé un nouvel objet
+        // on créé un nouvel objet
         $productMeta = new TAProductMeta();
 
-    // on met à jour et on enregistre
+        // on met à jour et on enregistre
         $productMeta->setIdParent($idParent)
                     ->setIdChild($idChild)
                     ->setIdHost($idHost);

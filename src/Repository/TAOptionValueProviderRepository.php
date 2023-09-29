@@ -79,9 +79,8 @@ class TAOptionValueProviderRepository extends ServiceEntityRepository
             ->andWhere('t.idsource= :idsource')
             ->setParameter('idprovider', $idProvider)
             ->setParameter('idoption', $idOption)
-            ->setParameter('idsource',$idsource)
+            ->setParameter('idsource', $idsource)
             ->getQuery()
             ->getResult();
     }
-
 }

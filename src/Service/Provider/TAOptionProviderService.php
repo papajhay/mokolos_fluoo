@@ -18,22 +18,18 @@ class TAOptionProviderService
     }
 
     /** Retourne TRUE si ce TAOptionFournisseur existe. Certains paramétres supplémentaires existent pour certains fournisseurs.
-     * @param string $idOptionFourSrc id de l'option chez le fournisseur
-     * @param Provider $provider id du fournisseur
-     * @param TProduct|null $tProduct [=null] id du porduit
-     * @return bool
+     * @param string        $idOptionFourSrc id de l'option chez le fournisseur
+     * @param Provider      $provider        id du fournisseur
+     * @param TProduct|null $tProduct        [=null] id du porduit
      */
-    public function existByIdOptionSrc(string $idOptionFourSrc, Provider $provider, ?TProduct $tProduct = null): bool
+    public function existByIdOptionSrc(string $idOptionFourSrc, Provider $provider, TProduct $tProduct = null): bool
     {
         return $this->optionProviderRepository->existsBy($idOptionFourSrc, $provider, $tProduct);
     }
 
-
     /** Cré un nouvel objet "TAOptionFournisseur" et le retourne.
-     * @param Provider $provider le fournisseur
-     * @param TOption $option unsigned $idOption id de l'option
-     * @param string $idSource
-     * @param TProduct $tProduct
+     * @param  Provider         $provider le fournisseur
+     * @param  TOption          $option   unsigned $idOption id de l'option
      * @return TAOptionProvider Nouvel Objet inseré en base
      */
     public function createNewTAOptionProvider(Provider $provider, TOption $option, string $idSource, TProduct $tProduct): TAOptionProvider

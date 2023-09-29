@@ -199,14 +199,14 @@ class TSupplierOrderStatus
         return $this;
     }
 
-//    Todo: service
+    //    Todo: service
     /*
      * indique si le statut est actif
      * @return boolean true si le statut est actif et false sinon
      */
     //    public function isActive()
     //    {
-            // statut inactif
+    // statut inactif
     //        if($this->getSupOrdStaActive() == 0)
     //        {
     //            return false;

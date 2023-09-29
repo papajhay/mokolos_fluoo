@@ -5,11 +5,11 @@ namespace App\DataFixtures;
 use App\Entity\Provider;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+
 class ProviderFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-
         $provider = new Provider();
         $provider->setName('REALISAPRINT')
             ->setEmail('contact@realisaprint.com')
@@ -35,5 +35,3 @@ class ProviderFixtures extends Fixture
         $manager->flush();
     }
 }
-
-

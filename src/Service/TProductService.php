@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service;
 
@@ -15,9 +15,7 @@ class TProductService
     }
 
     /**
-     * Retourne l'id fournisseur du produit en cour
-     *
-     * @return int
+     * Retourne l'id fournisseur du produit en cour.
      */
     public function getIdProductSrc(TProduct $product): int
     {

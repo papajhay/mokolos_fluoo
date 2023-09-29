@@ -43,7 +43,6 @@ class TAOptionValueProvider
 
     /**
      * Option Value correspondante.
-     * @var TOptionValue|null
      */
     // private $_optionValue = null;
     #[ORM\ManyToOne(targetEntity: TOptionValue::class, inversedBy: 'tAOptionValueProviders')]
@@ -125,6 +124,7 @@ class TAOptionValueProvider
 
         return $this;
     }
+
     public function getSourceKey(): ?string
     {
         return $this->sourceKey;
@@ -139,8 +139,7 @@ class TAOptionValueProvider
 
     // TODO Repository
 
-
-    /**
+    /*
      * renvoi un optionValueFournieur à partir d'un idOption du fournisseur et un id fournisseur.
      * @return TAOptionValueFournisseur
      */
@@ -159,7 +158,7 @@ class TAOptionValueProvider
     //        return self::findBy($champs, $valeurs);
     //    }
 
-    /**
+    /*
      * supprime tous les enregistrement en base lié à un idOptionValue.
      */
     //    public static function deleteByIdOptionValue($idOptionValue)
@@ -167,7 +166,7 @@ class TAOptionValueProvider
     //        DB::prepareDeleteAndExecute(self::$_SQL_TABLE_NAME, array(array('id_option_value', $idOptionValue, 'i')));
     //    }
 
-    /**
+    /*
      * purge les lignes dans la base qui n'ont plus de raison d'être.
      */
     //    public static function purge(TLockProcess $lockProcess)
@@ -194,7 +193,7 @@ class TAOptionValueProvider
     //    }
 
     // TODO Service
-    /**
+    /*
      * extrait la valeur numérique d'une quantité enregistré dans optValFouIdSource.
      * @return string la valeur numérique (ex : "10" pour un optValFouIdSource contenant "10 exemplaires")
      */
@@ -210,5 +209,4 @@ class TAOptionValueProvider
     //            return '';
     //        }
     //    }
-
 }

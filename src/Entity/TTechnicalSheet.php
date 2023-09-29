@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TTechnicalSheetRepository::class)]
-//TFicheTechnique
+// TFicheTechnique
 class TTechnicalSheet
 {
     #[ORM\Id]
@@ -22,7 +22,7 @@ class TTechnicalSheet
     private ?string $technicalSheetParent = null;
 
     #[ORM\Column(length: 255)]
-//    $produitOptionValuelig
+    //    $produitOptionValuelig
     private ?string $productOptionValueLig = null;
 
     #[ORM\ManyToOne(inversedBy: 'tTechnicalSheets')]
@@ -31,9 +31,9 @@ class TTechnicalSheet
     #[ORM\ManyToOne(inversedBy: 'tTechnicalSheets')]
     private ?TOptionValue $optionValue = null;
 
-//    #[ORM\Column(length: 255)]
-//    $ficheTechParent
-//    private ?string $TechnicalSheetParent = null;
+    //    #[ORM\Column(length: 255)]
+    //    $ficheTechParent
+    //    private ?string $TechnicalSheetParent = null;
 
     public function getId(): ?int
     {
@@ -65,17 +65,17 @@ class TTechnicalSheet
     }
 
     /**
-     * Retourne l'objet Produit Option Value lié à cet objet
+     * Retourne l'objet Produit Option Value lié à cet objet.
      * @return TAProduitOptionValue
      */
     public function getProductOptionValueLig()
     {
         if (!isset($this->productOptionValueLig)) {
-            $this->productOptionValueLig = TAProductOptionValue::findById(array($this->getIdProduct(), $this->getIdOptionValue(), 'lig'));
+            $this->productOptionValueLig = TAProductOptionValue::findById([$this->getIdProduct(), $this->getIdOptionValue(), 'lig']);
         }
+
         return $this->produitOptionValueLig;
     }
-
 
     public function getProduct(): ?TProduct
     {
@@ -101,21 +101,21 @@ class TTechnicalSheet
         return $this;
     }
 
-    /**
+    /*
      * Retourne l'objet fiche technique parent de cette fiche technique
      * @return TFicheTechnique
      */
-//    public function getTechnicalSheetParent()
-//    {
-//        if(!isset($this->technicalSheetParent))
-//        {
-//            $this->technicalSheetParent = TTechnicalSheet::findById($this->getId());
-//        }
-//
-//        return $this->technicalSheetParent;
-//    }
+    //    public function getTechnicalSheetParent()
+    //    {
+    //        if(!isset($this->technicalSheetParent))
+    //        {
+    //            $this->technicalSheetParent = TTechnicalSheet::findById($this->getId());
+    //        }
+    //
+    //        return $this->technicalSheetParent;
+    //    }
 
-    /**
+    /*
      * renvoi tous les objets TFicheTechnique de permier niveau lié à un produit
      * @param int $idProduit id du produit
      * @return TFicheTechnique[]
@@ -129,131 +129,127 @@ class TTechnicalSheet
         return TFicheTechnique::findAllBy($whereField, $whereValue, array('pov.pro_opt_val_libelle'), 0, $join);
     }*/
 
-//    Todo : repository
-    /**
+    //    Todo : repository
+    /*
      * renvoi tous les objet TFicheTechnique fils de notre objet
      * @return TFicheTechnique
      */
-//    public function findAllChilds()
-//    {
-//        $whereField = array('t.id_produit', 't.id_fiche_technique_parent', 'pov.id_code_pays', 'pov.id_host');
-//        $whereValue = array($this->getIdProduit(), $this->getIdFicheTechnique(), 'fr_FR', 'lig');
-//        $join = array(array('table' => TAProduitOptionValue::$_SQL_LOCALIZATION_TABLE_NAME , 'alias' => 'pov', 'joinCondition' => 't.id_produit = pov.id_produit AND t.id_option_value = pov.id_option_value'));
-//
-//        return TTechnicalSheet::findAllBy($whereField, $whereValue, array('pov.pro_opt_val_libelle'), 0, $join);
-//    }
+    //    public function findAllChilds()
+    //    {
+    //        $whereField = array('t.id_produit', 't.id_fiche_technique_parent', 'pov.id_code_pays', 'pov.id_host');
+    //        $whereValue = array($this->getIdProduit(), $this->getIdFicheTechnique(), 'fr_FR', 'lig');
+    //        $join = array(array('table' => TAProduitOptionValue::$_SQL_LOCALIZATION_TABLE_NAME , 'alias' => 'pov', 'joinCondition' => 't.id_produit = pov.id_produit AND t.id_option_value = pov.id_option_value'));
+    //
+    //        return TTechnicalSheet::findAllBy($whereField, $whereValue, array('pov.pro_opt_val_libelle'), 0, $join);
+    //    }
 
-
-    /**
+    /*
      * renvoi toutes les fiche tecnique parraport à un id de parent et un id de produit
      * @param int $idParent id de la fiche technique parente
      * @param int $idProduct id du produit
      * @return TFicheTechnique[]
      */
-//    static public function findAllByParentAndProduct($idParent, $idProduct)
-//    {
-//        return TFicheTechnique::findAllBy(array('id_fiche_technique_parent', 'id_produit'), array($idParent, $idProduct));
-//    }
+    //    static public function findAllByParentAndProduct($idParent, $idProduct)
+    //    {
+    //        return TFicheTechnique::findAllBy(array('id_fiche_technique_parent', 'id_produit'), array($idParent, $idProduct));
+    //    }
 
-//     Todo : service
-    /**
+    //     Todo : service
+    /*
      * renvoi TRUE si la maquette en volume existe
      * @return boolean
      */
-//    public function maquetteEnVolumeExiste()
-//    {
+    //    public function maquetteEnVolumeExiste()
+    //    {
     // si on a pas de fiche technique
-//        if($this->getFicTecDescription() == '')
-//        {
-//            return FALSE;
-//        }
+    //        if($this->getFicTecDescription() == '')
+    //        {
+    //            return FALSE;
+    //        }
 
     // création d'un nouvel objet fichier
-//        $fichier = new Fichier();
-//        $fichier->setCheminComplet('/home/limprime/' . SUB_DOMAIN . '/assets/data/techniques/maquettes/' . $this->getFicTecDescription());
+    //        $fichier = new Fichier();
+    //        $fichier->setCheminComplet('/home/limprime/' . SUB_DOMAIN . '/assets/data/techniques/maquettes/' . $this->getFicTecDescription());
 
     // on renvoi TRUE si le fichier exist
-//        return $fichier->exist();
-//    }
+    //        return $fichier->exist();
+    //    }
 
-
-    /**
+    /*
      * renvoi TRUE si la maquette en volume existe
      * @return boolean
      */
-//    public function gabaritsExiste()
-//    {
+    //    public function gabaritsExiste()
+    //    {
     // si on a pas de fiche technique
-//        if($this->getFicTecDescription() == '')
-////        {
-////            return FALSE;
-////        }
+    //        if($this->getFicTecDescription() == '')
+    // //        {
+    // //            return FALSE;
+    // //        }
 
     // création d'un nouvel objet fichier
-//        $fichier = new Fichier();
-//        $fichier->setCheminComplet('/home/limprime/' . SUB_DOMAIN . '/assets/data/techniques/gabarits/' . str_replace('.jpg', '.zip', $this->getFicTecDescription()));
+    //        $fichier = new Fichier();
+    //        $fichier->setCheminComplet('/home/limprime/' . SUB_DOMAIN . '/assets/data/techniques/gabarits/' . str_replace('.jpg', '.zip', $this->getFicTecDescription()));
 
     // on renvoi TRUE si le fichier exist
-//        return $fichier->exist();
-//    }
+    //        return $fichier->exist();
+    //    }
 
-
-    /**
+    /*
      * renvoi un tableau des produitOptionValues qui sont présent dans $tabProduitOptionValue et pas présent dans $tabFicheTechnique
      * les seuls produitOptionValues renvoyé sont ceux correspondant à l'option des $tabFicheTechnique
      * @param TFicheTechnique $tabFicheTechnique les fiche technique
      * @param TAProduitOptionValue $tabProduitOptionValue les optionsValue
      * @return TAProduitOptionValue
      */
-//    static public function OptionsValuesAAjouter($tabFicheTechnique, $tabProduitOptionValue)
-//    {
+    //    static public function OptionsValuesAAjouter($tabFicheTechnique, $tabProduitOptionValue)
+    //    {
     // initialisation des tableaux de retour et d'id
-//        $retour = array();
-//        $tabIdOptionValueDansFicheTechnique = array();
+    //        $retour = array();
+    //        $tabIdOptionValueDansFicheTechnique = array();
 
     // pour chaque fiche technique
-//        foreach($tabFicheTechnique AS $ficheTech)
-//        {
+    //        foreach($tabFicheTechnique AS $ficheTech)
+    //        {
     // on récupére sont idOptionValue
-//            $tabIdOptionValueDansFicheTechnique[] = $ficheTech->getProductOptionValueLig()->getIdOptionValue();
-//        }
+    //            $tabIdOptionValueDansFicheTechnique[] = $ficheTech->getProductOptionValueLig()->getIdOptionValue();
+    //        }
 
     // pour chaque produit option value
-//        foreach($tabProductOptionValue AS $productOptionValue)
-//        {
+    //        foreach($tabProductOptionValue AS $productOptionValue)
+    //        {
     // si cette option n'est pas déjà présente dans la fiche technique et si on est dans l'option correspondant aux fiche technique
-//            if(!in_array($productOptionValue->getIdOptionValue(), $tabIdOptionValueDansFicheTechnique) && $productOptionValue->getOptionValue()->getIdOption() == $technicalSheet->getProduitOptionValueLig()->getOptionValue()->getIdOption())
-//            {
+    //            if(!in_array($productOptionValue->getIdOptionValue(), $tabIdOptionValueDansFicheTechnique) && $productOptionValue->getOptionValue()->getIdOption() == $technicalSheet->getProduitOptionValueLig()->getOptionValue()->getIdOption())
+    //            {
     // on ajoute au tableau de retour
-//                $retour[] = $productOptionValue;
-//            }
-//        }
-//
-//        return $retour;
-//    }
+    //                $retour[] = $productOptionValue;
+    //            }
+    //        }
+    //
+    //        return $retour;
+    //    }
 
-
-    /**
+    /*
      * renvoi la liste des produits options que l'on peux ajouter au niveau suivant de l'arbre
      * @return TAProduitOption
      */
-//    public function OptionsAAjouter()
-//    {
-//        $tabOptionUtilise = array();
+    //    public function OptionsAAjouter()
+    //    {
+    //        $tabOptionUtilise = array();
 
     // on met notre objet dans une nouvelle variable pour un traitement récursif
-//        $technicalSheetParent = $this;
+    //        $technicalSheetParent = $this;
 
     // on remonte notre arbre
-//        while($$technicalSheetParent->getId() !== NULL)
-//        {
+    //        while($$technicalSheetParent->getId() !== NULL)
+    //        {
     // on ajoute dans le tableau des options utilisé l'id d'option de cette banche
-//            $tabOptionUtilise[] = $technicalSheetParent->getProductOptionValueLig()->getOptionValue()->getIdOption();
+    //            $tabOptionUtilise[] = $technicalSheetParent->getProductOptionValueLig()->getOptionValue()->getIdOption();
 
     // pour traitement récursif
-//            $TechnicalSheetParent = $technicalSheetParent->getTechnicalSheetParent();
-//        }
-//
-//        return TAProductOption::findAllForFicheTech($this->getIdProduct(), $tabOptionUtilise);
-//    }
+    //            $TechnicalSheetParent = $technicalSheetParent->getTechnicalSheetParent();
+    //        }
+    //
+    //        return TAProductOption::findAllForFicheTech($this->getIdProduct(), $tabOptionUtilise);
+    //    }
 }

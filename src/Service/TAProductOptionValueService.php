@@ -21,14 +21,14 @@ class TAProductOptionValueService
 
     /**
      * créé un productOptionValue si il n'existe pas.
-     * @param TProduct $tProduct id du produit
-     * @param TOptionValue $optionValue optionValue
-     * @param Hosts $host id du site
-     * @param int $order order (100 par défaut)
-     * @return TAProductOptionValue le nouvel objet
+     * @param  TProduct                 $tProduct    id du produit
+     * @param  TOptionValue             $optionValue optionValue
+     * @param  Hosts                    $host        id du site
+     * @param  int                      $order       order (100 par défaut)
+     * @return TAProductOptionValue     le nouvel objet
      * @throws NonUniqueResultException
      */
-     public function createIfNotExist(TProduct $tProduct, TOptionValue $optionValue, Hosts $host, int $order = 100, StatusEnum $isActive = StatusEnum::STATUS_ACTIVE): TAProductOptionValue
+    public function createIfNotExist(TProduct $tProduct, TOptionValue $optionValue, Hosts $host, int $order = 100, StatusEnum $isActive = StatusEnum::STATUS_ACTIVE): TAProductOptionValue
     {
         $today = new \DateTimeImmutable();
         // on recherche notre TAProduitOptionValue
@@ -47,8 +47,8 @@ class TAProductOptionValueService
                 ->setStatus($isActive);
 
             // todo set localization
-              $this->entityManager->persist($tAProductOptionValue);
-              $this->entityManager->flush();
+            $this->entityManager->persist($tAProductOptionValue);
+            $this->entityManager->flush();
         }
         // si on a déjà ce produit et que la derniere vu et plus ancienne que le jour meme
         elseif ($tAProductOptionValue->lastSeenString() !== $today) {
