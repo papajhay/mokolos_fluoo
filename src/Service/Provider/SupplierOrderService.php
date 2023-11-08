@@ -433,14 +433,14 @@ class SupplierOrderService
     }
 
     /**
-     * Renvoi le nombre de commande lié à notre commande fournisseur
-     * @return int
+     * Renvoi le nombre de commande lié à notre commande fournisseur.
      */
     public function countOrder(TSupplierOrder $supplierOrder): int
     {
         // on compte le nombre de sous objet
         return count($supplierOrder->getAOrderSupplierOrder());
     }
+
     /**
      * Renvoi la 1er liaison commande/commande fournisseur lié à notre objet ou null si aucune commande n'est lié (théoriquement impossible).
      */
@@ -747,7 +747,7 @@ class SupplierOrderService
         // si on a un prix
         if (null !== $ordSupOrdPriceWithoutTax) {
             // on divise le prix par le nombre de commande
-            $ordSupOrdPriceWithoutTax = $ordSupOrdPriceWithoutTax / count($aIdOrder);
+            $ordSupOrdPriceWithoutTax /= count($aIdOrder);
         }
         // on n'a pas de prix
         else {

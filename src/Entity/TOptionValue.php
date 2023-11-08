@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
+use App\Enum\StatusEnum;
 use App\Repository\TOptionValueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\BaseEntity;
 
 #[ORM\Entity(repositoryClass: TOptionValueRepository::class)]
 class TOptionValue extends BaseEntity
 {
+    // Déplacé vers StatusEnum
     /**
      * Statut de cette valeur d'option : inactif.
      */
@@ -29,12 +30,8 @@ class TOptionValue extends BaseEntity
     #[ORM\Column(length: 255)]
     private string $libelle;
 
-    #[ORM\Column]
-    private ?int $isActif = null;
-
-    #[ORM\ManyToOne(inversedBy: 'tOptionValues')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TOption $TOption = null;
+    #[ORM\Column(type: 'integer', enumType: StatusEnum::class)]
+    private StatusEnum $status = StatusEnum::STATUS_ACTIVE;
 
     #[ORM\OneToMany(mappedBy: 'TOptionValue', targetEntity: TAProductOptionValue::class)]
     private Collection $tAProductOptionValues;
@@ -53,6 +50,9 @@ class TOptionValue extends BaseEntity
 
     #[ORM\OneToMany(mappedBy: 'optionValue', targetEntity: TTechnicalSheet::class)]
     private Collection $tTechnicalSheets;
+
+    #[ORM\ManyToOne(targetEntity: TOption::class, inversedBy: 'tOptionValue')]
+    private ?TOption $tOption = null;
 
     public function __construct()
     {
@@ -81,30 +81,6 @@ class TOptionValue extends BaseEntity
         return $this;
     }
 
-    public function getIsActif(): ?int
-    {
-        return $this->isActif;
-    }
-
-    public function setIsActif(int $isActif): static
-    {
-        $this->isActif = $isActif;
-
-        return $this;
-    }
-
-    public function getTOption(): ?TOption
-    {
-        return $this->TOption;
-    }
-
-    public function setTOption(?TOption $TOption): static
-    {
-        $this->TOption = $TOption;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, TAProductOptionValue>
      */
@@ -123,7 +99,7 @@ class TOptionValue extends BaseEntity
         return $this;
     }
 
-    public function removeTAProductOtionValue(TAProductOptionValue $tAProductOptionValue): static
+    public function removeTAProductOptionValue(TAProductOptionValue $tAProductOptionValue): static
     {
         if ($this->tAProductOptionValues->removeElement($tAProductOptionValue)) {
             // set the owning side to null (unless already changed)
@@ -281,6 +257,30 @@ class TOptionValue extends BaseEntity
                 $tTechnicalSheet->setOptionValue(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTOption(): ?TOption
+    {
+        return $this->tOption;
+    }
+
+    public function setTOption(?TOption $tOption): self
+    {
+        $this->tOption = $tOption;
+
+        return $this;
+    }
+
+    public function getStatus(): StatusEnum
+    {
+        return $this->status;
+    }
+
+    public function setStatus(StatusEnum $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

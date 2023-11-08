@@ -2,6 +2,11 @@
 
 namespace App\Service;
 
+use App\Entity\Hosts;
+use App\Entity\TAProductOption;
+use App\Entity\TOption;
+use App\Entity\TProduct;
+use App\Enum\StatusEnum;
 use App\Repository\TAProductOptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -14,55 +19,42 @@ class TAProductOptionService
     }
 
     /** créé un produitOption si il n'existe pas.
-     * @param TOption     $option        option
-     * @param string      $idHost        id du site
-     * @param string|null $defaultValue  [=NULL] valeur par défaut utilisé dans les option de type text
-     * @param int         $proOptIsActif [=TAProduitOption::STATUS_ACTIF] indique si cette option est active ou non
-     * @param string      $minValue      [=''] Valeur minimum pour les options de type texte si applicable
-     * @param string      $maxValue      [=''] Valeur maximum pour les options de type texte si applicable
+     * @param TOption      $option       option
+     * @param string|Hosts $host         id du site
+     * @param string|null  $defaultValue [=NULL] valeur par défaut utilisé dans les option de type text
+     * @param StatusEnum   $isActive     [=TAProduitOption::STATUS_ACTIF] indique si cette option est active ou non
+     * @param string       $minValue     [=''] Valeur minimum pour les options de type texte si applicable
+     * @param string       $maxValue     [=''] Valeur maximum pour les options de type texte si applicable
      */
-    public function createIfNotExist(int $idProduct, TOption $option, string $idHost, string $defaultValue = null, int $proOptIsActif = TAProduitOption::STATUS_ACTIF, string $minValue = '', string $maxValue = ''): void
+    public function createIfNotExist(TProduct $tProduct, TOption $option, string|Hosts $host, string $defaultValue = null, StatusEnum $isActive = StatusEnum::STATUS_ACTIVE, string $minValue = '', string $maxValue = ''): void
     {
         $today = new \DateTimeImmutable();
-        // on recherche notre TAProduitOption
-        $productOption = $this->productOptionRepository->findById($idProduct, $option->getIdOption(), $idHost);
-
+        // on recherche notre TAProduitOption;
+        $taProductOption = $this->productOptionRepository->findOneBy(['tProduct' => $tProduct, 'tOption' => $option, 'host' => $host]);
         // si notre produit option n'existe pas encore
-        if (null === $productOption->getIdProduct()) {
-            // on va donc créé ce produit option
-            $productOption = new TAProduitOption();
-            $productOption->setIdProduit($idProduct)
-                    ->setIdOption($option->getIdOption())
-                    ->setIdHost($idHost)
-                    ->setLibelle($option->getOptLibelle())
-                    ->setDefaultValue($defaultValue)
-                    ->setOptionMinValue($minValue)
-                    ->setOptionMaxValue($maxValue)
-                    ->setIsActif($proOptIsActif)
-                    ->setDateLastSeen($today);
-            $this->entityManager->persist($productOption);
-            $this->entityManager->flush();
+        if (null === $taProductOption) {
+            $hostName = $this->entityManager->getRepository(Hosts::class)->findOneBy(['name' => $host]);
 
-//            $objectId = $this->entityManager->getClassMetadata(get_class($productOption))->getIdentifierValues($productOption);
-//
-//            // si une ligne existe dans la table hors localisation
-//            // TODO existRow
-//            if ($productOption->existRow()) {
-//                //  TODO saveJustLocalization
-//                // on sauvegarde uniquement la localisation
-//                $productOption->saveJustLocalization();
-//            }
-//            // ce produit option value n'existe pas du tout
-//            else {
-//                // on le créé
-//                $this->productOptionRepository->save($productOption);
-//            }
+            // on va donc créé ce produit option
+            $taProductOption = new TAProductOption();
+            $taProductOption->setTProduct($tProduct)
+                             ->setTOption($option)
+                             ->setHost($hostName)
+                             ->setLabel($option->getLabel())
+                             ->setOptionMinValue($minValue)
+                             ->setOptionMaxValue($maxValue)
+                             ->setStatus($isActive)
+                             ->setDateHourLastSeen($today);
+
+            // on le créé
+            $this->entityManager->persist($taProductOption);
+            $this->entityManager->flush();
         }
         // si on a déjà ce produit option et que la derniere vu et plus ancienne que le jour meme
-        elseif ($productOption->lastSeenString() !== $today) {
+        elseif ($taProductOption->getDateHourLastSeen() !== $today) {
             // on met à jour la date de derniére vu
-            $productOption->setDateLastSeen($today);
-            $this->productOptionRepository->save($productOption);
+            $taProductOption->setDateHourLastSeen($today);
+            $this->entityManager->flush();
         }
     }
 }

@@ -2,20 +2,21 @@
 
 namespace App\Entity;
 
+use App\Enum\StatusEnum;
 use App\Repository\TAProductOptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TAProductOptionRepository::class)]
-class TAProductOption
+class TAProductOption extends BaseEntity
 {
     /*
     * *************************************************************************
     * CONSTANT
     * **************************************************************************
     */
-
+    // Deplacés vers StatusEnum
     /**
      * Statut de cette valeur d'option : inactif.
      */
@@ -44,36 +45,35 @@ class TAProductOption
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $libelle = null;
+    private ?string $label = null;
 
-    #[ORM\Column]
-    private ?int $isActif = null;
+    #[ORM\Column(type: 'integer', enumType: StatusEnum::class)]
+    private StatusEnum $status = StatusEnum::STATUS_ACTIVE;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $defaultValue = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $optionMinValue = '';
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $optionMaxValue = '';
 
     #[ORM\Column]
     private ?\DateTimeImmutable $dateHourLastSeen = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TProduct $product = null;
+    #[ORM\ManyToOne(targetEntity: TProduct::class, inversedBy: 'tAProductOptions')]
+    private ?TProduct $tProduct;
+
+    #[ORM\ManyToOne(targetEntity: TOption::class, inversedBy: 'tAProductOptions')]
+    private ?TOption $tOption;
 
     #[ORM\OneToMany(mappedBy: 'tAProductOption', targetEntity: TAProductOptionValue::class)]
     private Collection $tAProductOptionValues;
 
-    #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
-    private ?TOption $TOption = null;
-
-    #[ORM\ManyToOne(inversedBy: 'tAProductOptions')]
+    #[ORM\ManyToOne(targetEntity: Hosts::class, inversedBy: 'tAProductOptions')]
     // old: $idHost
-    private ?Hosts $host = null;
+    private Hosts $host;
 
     public function __construct()
     {
@@ -85,39 +85,14 @@ class TAProductOption
         return $this->id;
     }
 
-    public function getProduct(): ?TProduct
+    public function getLabel(): ?string
     {
-        return $this->product;
+        return $this->label;
     }
 
-    public function setProduct(?TProduct $product): static
+    public function setLabel(string $label): static
     {
-        $this->product = $product;
-
-        return $this;
-    }
-
-
-    public function getLibelle(): ?string
-    {
-        return $this->libelle;
-    }
-
-    public function setLibelle(string $libelle): static
-    {
-        $this->libelle = $libelle;
-
-        return $this;
-    }
-
-    public function getIsActif(): ?int
-    {
-        return $this->isActif;
-    }
-
-    public function setIsActif(int $isActif): static
-    {
-        $this->isActif = $isActif;
+        $this->label = $label;
 
         return $this;
     }
@@ -139,7 +114,7 @@ class TAProductOption
         return $this->optionMinValue;
     }
 
-    public function setMinValue(string $optionMinValue): static
+    public function setOptionMinValue(string $optionMinValue): static
     {
         $this->optionMinValue = $optionMinValue;
 
@@ -166,18 +141,6 @@ class TAProductOption
     public function setDateHourLastSeen(\DateTimeImmutable $dateHourLastSeen): static
     {
         $this->dateHourLastSeen = $dateHourLastSeen;
-
-        return $this;
-    }
-
-    public function getHost(): ?hosts
-    {
-        return $this->host;
-    }
-
-    public function setHost(?hosts $host): static
-    {
-        $this->host = $host;
 
         return $this;
     }
@@ -649,14 +612,50 @@ class TAProductOption
         return $this;
     }
 
-    public function getTOption(): ?TOption
+    public function getHost(): ?Hosts
     {
-        return $this->TOption;
+        return $this->host;
     }
 
-    public function setTOption(?TOption $TOption): static
+    public function setHost(Hosts $host): self
     {
-        $this->TOption = $TOption;
+        $this->host = $host;
+
+        return $this;
+    }
+
+    public function getTOption(): ?TOption
+    {
+        return $this->tOption;
+    }
+
+    public function setTOption(?TOption $tOption): self
+    {
+        $this->tOption = $tOption;
+
+        return $this;
+    }
+
+    public function getTProduct(): ?TProduct
+    {
+        return $this->tProduct;
+    }
+
+    public function setTProduct(?TProduct $tProduct): self
+    {
+        $this->tProduct = $tProduct;
+
+        return $this;
+    }
+
+    public function getStatus(): StatusEnum
+    {
+        return $this->status;
+    }
+
+    public function setStatus(StatusEnum $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

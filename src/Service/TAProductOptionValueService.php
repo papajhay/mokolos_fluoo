@@ -2,66 +2,61 @@
 
 namespace App\Service;
 
+use App\Entity\Hosts;
+use App\Entity\TAProductOptionValue;
+use App\Entity\TOptionValue;
+use App\Entity\TProduct;
+use App\Enum\StatusEnum;
 use App\Repository\TAProductOptionValueRepository;
-use App\Service\Provider\DateHeure;
-use App\Service\Provider\System;
-use App\Service\Provider\TAProduitOptionValue;
-use App\Service\Provider\TOptionValue;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 
 class TAProductOptionValueService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private TAProductOptionValueRepository $productOptionValueRepository
+        private TAProductOptionValueRepository $tAProductOptionValueRepository
     ) {
     }
 
     /**
-     * créé un produitOptionValue si il n'existe pas.
-     * @param  int                  $idProduct   id du produit
-     * @param  TOptionValue         $optionValue optionValue
-     * @param  string               $idHost      id du site
-     * @param  int                  $ordre       ordre (100 par défaut)
-     * @return TAProduitOptionValue le nouvel objet
+     * créé un productOptionValue si il n'existe pas.
+     * @param  TProduct                 $tProduct    id du produit
+     * @param  TOptionValue             $optionValue optionValue
+     * @param  Hosts                    $host        id du site
+     * @param  int                      $order       order (100 par défaut)
+     * @return TAProductOptionValue     le nouvel objet
+     * @throws NonUniqueResultException
      */
-    public function createIfNotExist(int $idProduct, TOptionValue $optionValue, string $idHost, int $ordre = 100): TAProduitOptionValue
+    public function createIfNotExist(TProduct $tProduct, TOptionValue $optionValue, Hosts $host, int $order = 100, StatusEnum $isActive = StatusEnum::STATUS_ACTIVE): TAProductOptionValue
     {
         $today = new \DateTimeImmutable();
         // on recherche notre TAProduitOptionValue
-        $produitOptionValue = $this->productOptionValueRepository->findById($idProduct, $optionValue->getIdOptionValue(), $idHost);
+        $tAProductOptionValue = $this->tAProductOptionValueRepository->findByProductOptionValueHost($tProduct, $optionValue, $host);
 
         // si notre produit option n'existe pas encore
-        if (null === $produitOptionValue->getIdProduit()) {
+        if (null === $tAProductOptionValue) {
             // on va donc créé ce produit optionValue
-            $produitOptionValue = new TAProduitOptionValue();
-            $produitOptionValue->setIdProduct($idProduct)
-                ->setIdOptionValue($optionValue->getIdOptionValue())
-                ->setIdHost($idHost)
+            $tAProductOptionValue = new TAProductOptionValue();
+            $tAProductOptionValue->setTProduct($tProduct)
+                ->setTOptionValue($optionValue)
+                ->setHost($host)
                 ->setLibelle($optionValue->getLibelle())
-                ->setProductOptionValueOrder($ordre)
+                ->setOrder($order)
                 ->setDateLastSeen($today)
-                ->setIsActif($optionValue->getIsActif())
-                ->reloadPrimaryValue();
+                ->setStatus($isActive);
 
-            // si une ligne existe dans la table hors localisation
-            if ($produitOptionValue->existRow()) {
-                // on sauvegarde uniquement la localisation
-                $produitOptionValue->saveJustLocalization();
-            }
-            // ce produit option value n'existe pas du tout
-            else {
-                // on le créé
-                $this->productOptionValueRepository->save($produitOptionValue);
-            }
+            // todo set localization
+            $this->entityManager->persist($tAProductOptionValue);
+            $this->entityManager->flush();
         }
         // si on a déjà ce produit et que la derniere vu et plus ancienne que le jour meme
-        elseif ($produitOptionValue->lastSeenString() !== $today) {
+        elseif ($tAProductOptionValue->lastSeenString() !== $today) {
             // on met à jour la date de derniére vu
-            $produitOptionValue->setProOptDateLastSeen($today);
-            $this->productOptionValueRepository->save($produitOptionValue);
+            $tAProductOptionValue->setDateLastSeen($today);
+            $this->entityManager->flush();
         }
 
-        return $produitOptionValue;
+        return $tAProductOptionValue;
     }
 }

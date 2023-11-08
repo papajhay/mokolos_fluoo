@@ -20,5 +20,4 @@ class TCmsBlocRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TCmsBloc::class);
     }
-
 }

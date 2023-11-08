@@ -13,14 +13,8 @@ class TCmsPageService
     }
 
     /**
-     * Cre un nouvel objet "TCmsPage" et le retourne
-     * @param string $idHost					Identifiant du site
-     * @param string $cmsPagUrl					Url de la page
-     * @param string $cmsPagMetaTitle			Meta titre
-     * @param string $cmsPagMetaDescription		Meta description
-     * @param string $cmsPagTitle				Titre de la page
-     * @param string $cmsPagContent				Contenu de la page
-     * @param int $cmsPagStatut					[=0] Statut de la page
+     * Cre un nouvel objet "TCmsPage" et le retourne.
+     * @param  string   $idHost Identifiant du site
      * @return TCmsPage Nouvel Objet insere en base
      */
     public function createNew($idHost, $url, $metaTitle, $metaDescription, $title, $content, $statut = 0)
@@ -36,5 +30,5 @@ class TCmsPageService
         $this->tCmsPageRepository->save($tCmsPage);
 
         return $tCmsPage;
-   }
+    }
 }

@@ -19,8 +19,8 @@ class TAOptionValueProvider
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idSource = null;
+    #[ORM\Column(length: 255)]
+    private ?string $sourceKey = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
@@ -29,9 +29,9 @@ class TAOptionValueProvider
     // product_alias pour les sous produit de p24
     private ?string $productAlias = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'integer')]
     // element_id pour les sous produit de p24
-    private ?string $elementId = null;
+    private ?int $elementId = null;
 
     #[ORM\ManyToOne(inversedBy: 'taOptionValueProviders')]
     #[ORM\JoinColumn(nullable: false)]
@@ -43,27 +43,14 @@ class TAOptionValueProvider
 
     /**
      * Option Value correspondante.
-     * @var TOptionValue|null
      */
     // private $_optionValue = null;
-    #[ORM\ManyToOne(inversedBy: 'tAOptionValueProviders')]
+    #[ORM\ManyToOne(targetEntity: TOptionValue::class, inversedBy: 'tAOptionValueProviders')]
     private ?TOptionValue $tOptionValue = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdSource(): ?int
-    {
-        return $this->idSource;
-    }
-
-    public function setIdSource(int $idSource): static
-    {
-        $this->idSource = $idSource;
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -90,12 +77,12 @@ class TAOptionValueProvider
         return $this;
     }
 
-    public function getElementId(): ?string
+    public function getElementId(): ?int
     {
         return $this->elementId;
     }
 
-    public function setElementId(string $elementId): static
+    public function setElementId(int $elementId): self
     {
         $this->elementId = $elementId;
 
@@ -138,25 +125,21 @@ class TAOptionValueProvider
         return $this;
     }
 
-    // TODO Getter Option Value
-    /**
-     * Retourne OptionValue Correspondante.
-     * @return TOptionValue
-     */
-    //    public function getOptionValue()
-    //    {
-    //        if($this->_optionValue == null)
-    //        {
-    //            $this->_optionValue = TOptionValue::findById($this->getIdOptionValue());
-    //        }
-    //
-    //        return $this->_optionValue;
-    //    }
+    public function getSourceKey(): ?string
+    {
+        return $this->sourceKey;
+    }
+
+    public function setSourceKey(?string $sourceKey): self
+    {
+        $this->sourceKey = $sourceKey;
+
+        return $this;
+    }
 
     // TODO Repository
 
-
-    /**
+    /*
      * renvoi un optionValueFournieur à partir d'un idOption du fournisseur et un id fournisseur.
      * @return TAOptionValueFournisseur
      */
@@ -175,7 +158,7 @@ class TAOptionValueProvider
     //        return self::findBy($champs, $valeurs);
     //    }
 
-    /**
+    /*
      * supprime tous les enregistrement en base lié à un idOptionValue.
      */
     //    public static function deleteByIdOptionValue($idOptionValue)
@@ -183,7 +166,7 @@ class TAOptionValueProvider
     //        DB::prepareDeleteAndExecute(self::$_SQL_TABLE_NAME, array(array('id_option_value', $idOptionValue, 'i')));
     //    }
 
-    /**
+    /*
      * purge les lignes dans la base qui n'ont plus de raison d'être.
      */
     //    public static function purge(TLockProcess $lockProcess)
@@ -210,7 +193,7 @@ class TAOptionValueProvider
     //    }
 
     // TODO Service
-    /**
+    /*
      * extrait la valeur numérique d'une quantité enregistré dans optValFouIdSource.
      * @return string la valeur numérique (ex : "10" pour un optValFouIdSource contenant "10 exemplaires")
      */
@@ -226,5 +209,4 @@ class TAOptionValueProvider
     //            return '';
     //        }
     //    }
-
 }

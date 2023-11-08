@@ -61,9 +61,8 @@ class TAOrderSupplierOrder
 
     /**
      * objet DateHeure de la livraison estimé.
-
+     *
      * @return DateHeure
-
      */
     // private $_deliveryDate = null;
 
@@ -146,7 +145,6 @@ class TAOrderSupplierOrder
 
     /**
      * getteur pour le sous objet de la commande.
-     * @return order
      */
     //    public function getOrder()
     //    {

@@ -16,7 +16,7 @@ class Ttransporter
     /**
      * id du transporteur DPD France.
      */
-    const ID_CARRIER_DPD_FRANCE = 1;
+    public const ID_CARRIER_DPD_FRANCE = 1;
 
     /**
      * id du transporteur CHRONOPOST.
@@ -76,12 +76,12 @@ class Ttransporter
     /**
      * id du transporteur GLS France.
      */
-    const ID_CARRIER_GLS = 17;
+    public const ID_CARRIER_GLS = 17;
 
     /**
      * id du transporteur France Express.
      */
-     const ID_CARRIER_FRANCE_EXPRESS = 18;
+    public const ID_CARRIER_FRANCE_EXPRESS = 18;
 
     /**
      * id du transporteur BRT (filiale italienne de DPD a priori).
@@ -91,7 +91,7 @@ class Ttransporter
     /**
      * id du transporteur Ciblex.
      */
-     const ID_CARRIER_CIBLEX = 20;
+    public const ID_CARRIER_CIBLEX = 20;
 
     /**
      * nombre de jour maximum pendant lequel le tracking est disponible. 0 car par défaut pas de tracking.
@@ -99,10 +99,10 @@ class Ttransporter
     // const MAX_TRACKING_DELAY = 0;
 
     /**
-     * tableau pour mettre en cache les transporteur avec leur objet enfant
+     * tableau pour mettre en cache les transporteur avec leur objet enfant.
      * @var TTransporteur|transporteurDPD[]
      */
-    public TTransporteur|array $_cacheFindAllWithChild = array();
+    public TTransporteur|array $_cacheFindAllWithChild = [];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -134,11 +134,11 @@ class Ttransporter
      * liaison entre les id de fournisseur et leur classe spécifique.
      * @var array
      */
-//        private array $_classeDeTransporteur = array(
-//            TTransporteur::ID_CARRIER_DPD_EUROPE => 'transporteurDPD',
-//            TTransporteur::ID_TRANSPORTEUR_DHL	 => 'transporteurDHL',
-//            TTransporteur::ID_CARRIER_COLISSIMO	 => 'transporteurColissimo'
-//        );
+    //        private array $_classeDeTransporteur = array(
+    //            TTransporteur::ID_CARRIER_DPD_EUROPE => 'transporteurDPD',
+    //            TTransporteur::ID_TRANSPORTEUR_DHL	 => 'transporteurDHL',
+    //            TTransporteur::ID_CARRIER_COLISSIMO	 => 'transporteurColissimo'
+    //        );
 
     public function getId(): ?int
     {

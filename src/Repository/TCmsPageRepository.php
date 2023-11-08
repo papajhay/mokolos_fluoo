@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -20,5 +20,4 @@ class TCmsPageRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TCmsPage::class);
     }
-
 }

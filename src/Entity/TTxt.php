@@ -15,12 +15,12 @@ class TTxt
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    //private $txtValue;
+    // private $txtValue;
     private ?string $value = null;
 
     #[ORM\ManyToOne(inversedBy: 'tTxts')]
     #[ORM\JoinColumn(nullable: false)]
-    //private ?SiteHost $_host = null;
+    // private ?SiteHost $_host = null;
     private ?Hosts $host = null;
 
     #[ORM\ManyToOne(inversedBy: 'tTxts')]
@@ -67,72 +67,71 @@ class TTxt
         return $this;
     }
 
-    //TODO repository
-    /**
+    // TODO repository
+    /*
      * Retourne tout les Txts d'un site
      * @param siteHost $host
      * @return TTxt[]
      */
-//    public static function findAllByHost(siteHost $host)
-//    {
-//        return self::findAllBy(array('id_host'), array($host->getHostId()));
-//    }
+    //    public static function findAllByHost(siteHost $host)
+    //    {
+    //        return self::findAllBy(array('id_host'), array($host->getHostId()));
+    //    }
 
-    /**
+    /*
      * Retourne le txt lié à un site et un produit
      * @param siteHost $host
      * @param TProduitHost $produit
      * @return TTxt
      */
-//    public static function findByHostAndProductHost(siteHost $host, TProductHost $product)
-//    {
-//        return self::findBy(array('id_host', 'id_product_host'), array($host->getHostId(), $product->getIdProductHost()));
-//    }
+    //    public static function findByHostAndProductHost(siteHost $host, TProductHost $product)
+    //    {
+    //        return self::findBy(array('id_host', 'id_product_host'), array($host->getHostId(), $product->getIdProductHost()));
+    //    }
 
     // TODO service
-    /**
+    /*
      * Retourne le tProduitHost
      * @return TProduitHost
      */
-//    public function getProductHost()
-//    {
-//
-//        if($this->productHost === null)
-//        {
-//            $this->productHost = TProductHost::findById(array($this->idProduitHost, $this->getHost()->getMasterHost()));
-//        }
-//
-//        return $this->productHost;
-//    }
+    //    public function getProductHost()
+    //    {
+    //
+    //        if($this->productHost === null)
+    //        {
+    //            $this->productHost = TProductHost::findById(array($this->idProduitHost, $this->getHost()->getMasterHost()));
+    //        }
+    //
+    //        return $this->productHost;
+    //    }
 
-    /**
+    /*
      * Retourne le siteHost
      * @return siteHost
      */
-//    public function getHost()
-//    {
-//
-//        if($this->_host === null)
-//        {
-//            $this->_host = siteHost::findById($this->idHost);
-//        }
-//
-//        return $this->_host;
-//    }
+    //    public function getHost()
+    //    {
+    //
+    //        if($this->_host === null)
+    //        {
+    //            $this->_host = siteHost::findById($this->idHost);
+    //        }
+    //
+    //        return $this->_host;
+    //    }
 
-
-    /**
+    /*
      * aprés enregistré on supprime notre objet si on a pas de texte
      */
-//    protected function _postSave()
-//    {
-//        parent::_postSave();
+    //    protected function _postSave()
+    //    {
+    //        parent::_postSave();
 
-        // si on a pas de texte
-//        if(trim($this->getTxtValue()) == '')
-//        {
-            // on supprime notre objet
-//            $this->delete();
-//        }
-//    }
+    // si on a pas de texte
+    //        if(trim($this->getTxtValue()) == '')
+    //        {
+    // on supprime notre objet
+    //            $this->delete();
+    //        }
+    //    }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -8,7 +8,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class BaseEntity
 {
-
     /**
      * @throws MappingException
      */
@@ -30,11 +29,11 @@ class BaseEntity
                 $associationMapping = $classMetadata->getAssociationMapping($propertyName);
 
                 // Exclude OneToMany relations
-                if ($associationMapping['type'] === ClassMetadata::ONE_TO_MANY) {
+                if (ClassMetadata::ONE_TO_MANY === $associationMapping['type']) {
                     continue;
                 }
 
-                if ($associationMapping['type'] === ClassMetadata::MANY_TO_ONE || $associationMapping['type'] === ClassMetadata::ONE_TO_ONE) {
+                if (ClassMetadata::MANY_TO_ONE === $associationMapping['type'] || ClassMetadata::ONE_TO_ONE === $associationMapping['type']) {
                     if (isset($associationMapping['joinColumns'][0]['name'])) {
                         $columnName = $associationMapping['joinColumns'][0]['name'];
                         $data[$columnName] = $propertyValue->getId();
@@ -51,5 +50,4 @@ class BaseEntity
 
         return $data;
     }
-
 }

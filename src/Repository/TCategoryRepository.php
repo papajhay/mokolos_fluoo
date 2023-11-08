@@ -20,5 +20,4 @@ class TCategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TCategory::class);
     }
-
 }

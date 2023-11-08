@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Provider;
 use App\Entity\TAOptionProvider;
+use App\Entity\TProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -53,18 +55,18 @@ class TAOptionProviderRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function existsBy(string $idSource, int $idProvider, ?int $idProduct = 0): bool
+    public function existsBy(string $sourceKey, Provider $provider, TProduct $tProduct = null): bool
     {
         $queryBuilder = $this->createQueryBuilder('t')
-            ->where('t.provider = :idProvider')
-            ->andWhere('t.optIdSource = :idSource')
-            ->setParameter('idProvider', $idProvider)
-            ->setParameter('idSource', $idSource);
+            ->where('t.provider = :provider')
+            ->andWhere('t.sourceKey= :sourceKey')
+            ->setParameter('provider', $provider)
+            ->setParameter('sourceKey', $sourceKey);
 
-        if ($idProduct !== null && $idProduct !== 0) {
+        if (null !== $tProduct) {
             $queryBuilder
-                ->andWhere('t.idProduct = :idProduct')
-                ->setParameter('idProduct', $idProduct);
+                ->andWhere('t.tProduct = :tProduct')
+                ->setParameter('tProduct', $tProduct);
         }
 
         $result = $queryBuilder
@@ -74,4 +76,27 @@ class TAOptionProviderRepository extends ServiceEntityRepository
         return !empty($result);
     }
 
+    /** Retourne un TAOptionFournisseur en fonction de l'id du fournissseur et de l'id de l'option chez le fournisseur ou null si rien n'a était trouvé. Certains paramétres supplémentaires existent pour certains fournisseurs.
+     * @param bool $likeSearch [=false] mettre TRUE si on veux chercher le opt_fou_id_source avec un like
+     */
+    public function findByIdOptionSrc(string $sourceKey, Provider $provider, TProduct $tProduct = null, bool $likeSearch = false): ?TAOptionProvider
+    {
+        $queryBuilder = $this->createQueryBuilder('t')
+            ->where('t.provider = :provider')
+            ->andWhere('t.sourceKey= :sourceKey')
+            ->setParameter('provider', $provider)
+            ->setParameter('sourceKey', $sourceKey)
+            ->setMaxResults(1)
+        ;
+
+        if (null !== $tProduct) {
+            $queryBuilder
+                ->andWhere('t.tProduct = :tProduct')
+                ->setParameter('tProduct', $tProduct);
+        }
+
+        return $queryBuilder
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

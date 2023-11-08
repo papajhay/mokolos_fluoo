@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\TAProductOption;
 use App\Entity\TAProductOptionValue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -23,18 +24,20 @@ class TAProductOptionValueRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return TAProductOption[] Returns an array of TAProductOption objects
+     * @return TAProductOption          Returns an array of TAProductOption objects
+     * @throws NonUniqueResultException
      */
-    public function findById($idProduct, $idOptionValue, $idHost): array
+    public function findByProductOptionValueHost($tProduct, $tOptionValue, $host): ?TAProductOption
     {
         return $this->createQueryBuilder('t')
-            ->where('t.idProduct= :idproduct')
-            ->andWhere('t.idOptionValue= :idoptionvalue')
-            ->andWhere('t.idHost= :idhost')
-            ->setParameter('idproduct', $idProduct)
-            ->setParameter('idoptionvalue', $idOptionValue)
-            ->setParameter('idhost', $idHost)
+            ->where('t.TProduct= :tProduct')
+            ->andWhere('t.TOptionValue= :tOptionValue')
+            ->andWhere('t.Host= :host')
+            ->setParameter('tProduct', $tProduct)
+            ->setParameter('tOptionValue', $tOptionValue)
+            ->setParameter('host', $host)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 }

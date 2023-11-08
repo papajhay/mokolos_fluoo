@@ -7,6 +7,7 @@ use App\Entity\TAOptionValueProvider;
 use App\Entity\TOption;
 use App\Entity\TOptionValue;
 use App\Repository\TAOptionValueProviderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TAOptionValueProviderService
 {
@@ -19,10 +20,10 @@ class TAOptionValueProviderService
     /**
      * renvoi un optionValueProvider[] à partir d'un idOption du fournisseur et un id fournisseur.
      */
-    public function findByIdOptionValueSrc($idOptionValueFourSrc, int $idProvider, int $idOption = null): array
+    public function findByIdOptionValueSrc($idOptionValueFourSrc, int $idProvider, int $idOption = null): array|TAOptionValueProvider
     {
         // si on cherche avec une id option
-        if (null !== $idOption) {
+        if (!isset($idOption)) {
             return $this->optionValueProviderRepository->findByIdProviderAndIdOptionAndIdSource($idProvider, $idOption, $idOptionValueFourSrc);
         } else {
             return $this->optionValueProviderRepository->findByIdProviderAndIdOption($idProvider, $idOption);
@@ -30,28 +31,29 @@ class TAOptionValueProviderService
     }
 
     /**
-     * créé un nouvel objet et le renvoi
-     * @param TOptionValue $optionValue id de l'option value chez nous
-     * @param Provider $provider id du fournisseur
-     * @param string $idOptionValueSource id de l'optionValue chez le fournisseur
-     * @param string $nameOptionValue nom de l'optionValue chez le fournisseur
-     * @param TOption $option
-     * @param string $productAlias product alias de l'optionvalue pour le fournisseur si applicable
-     * @param string $elementId elementId de l'optionvalue pour le fournisseur si applicable
+     * créé un nouvel objet et le renvoi.
+     * @param  TOptionValue          $optionValue         id de l'option value chez nous
+     * @param  Provider              $provider            id du fournisseur
+     * @param  string                $idOptionValueSource id de l'optionValue chez le fournisseur
+     * @param  string                $nameOptionValue     nom de l'optionValue chez le fournisseur
+     * @param  string                $productAlias        product alias de l'optionvalue pour le fournisseur si applicable
+     * @param  int                   $elementId           elementId de l'optionvalue pour le fournisseur si applicable
      * @return TAOptionValueProvider nouvel objet
      */
-    public function createNew(TOptionValue $optionValue, Provider $provider, string $idOptionValueSource, string $nameOptionValue, TOption $option, string $productAlias = '', string $elementId = ''): TAOptionValueProvider
+    public function createNewTAOptionValueProvider(TOptionValue $optionValue, Provider $provider, string $idOptionValueSource, string $nameOptionValue, TOption $option, string $productAlias, int $elementId): TAOptionValueProvider
     {
-        $newTAOptionValueProvider = new TAOptionValueProvider();
-        $newTAOptionValueProvider->setOptionValue($optionValue)
-            ->setProvider($provider)
-            ->setIdSource($idOptionValueSource)
-            ->setDescription($nameOptionValue)
-            ->setOption($option)
-            ->setProductAlias($productAlias)
-            ->setElementId($elementId)
-            ->save();
+        $TAOptionValueProvider = new TAOptionValueProvider();
+        $TAOptionValueProvider->setTOptionValue($optionValue)
+                              ->setProvider($provider)
+                              ->setSourceKey($idOptionValueSource)
+                              ->setDescription($nameOptionValue)
+                              ->setTOption($option)
+                              ->setProductAlias($productAlias)
+                              ->setElementId($elementId);
 
-        return $newTAOptionValueProvider;
+        $this->entityManager->persist($TAOptionValueProvider);
+        $this->entityManager->flush();
+
+        return $TAOptionValueProvider;
     }
 }

@@ -13,10 +13,8 @@ class TCmsBlocService
     }
 
     /**
-     * Crer un nouvel objet "TCmsBloc" et le retourner
-     * @param int(11) $idCmsBlocType    Identifiant du type de bloc CMS
-     * @param text $cmsBloHtml          Contenu HTML du bloc CMS
-     * @param int(11) $idCmsDiapo       [=0] Identifiant du diaporama du bloc CMS
+     * Crer un nouvel objet "TCmsBloc" et le retourner.
+     * @param  int(11)  $idCmsDiapo [=0] Identifiant du diaporama du bloc CMS
      * @return TCmsBloc Nouvel Objet insere en base
      */
     public function createNew($idType, $content, $idCmsDiapo = 0)

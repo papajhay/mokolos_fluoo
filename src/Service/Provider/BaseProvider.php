@@ -8,9 +8,6 @@ use App\Repository\OrderRepository;
 use App\Repository\ProviderRepository;
 use App\Repository\TSupplierOrderRepository;
 use App\Repository\TSupplierOrderStatusRepository;
-use App\Service\Provider\TAProduitOption;
-use App\Service\Provider\TOption;
-use App\Service\Provider\TOptionValueService;
 use App\Service\TAProductOptionService;
 use App\Service\TAProductOptionValueService;
 use App\Service\TOptionService;
@@ -27,7 +24,7 @@ class BaseProvider
         private AchattodbEmailService $achattodbEmailService,
         private OrderSupplierOrderService $orderSupplierOrderService,
         private TOptionService $toptionService,
-        //private TOptionValueService $optionValueService,
+        // private TOptionValueService $optionValueService,
         private TAProductOptionService $productOptionService,
         private TAProductOptionValueService $productOptionValueService
     ) {
@@ -61,27 +58,23 @@ class BaseProvider
     }
 
     /** créé une nouvelle option value pour ce fournisseur.
-     * @param TOption $option              l'option lié à notre option value
-     * @param string  $nomOptionValue      le nom de l'option value
-     * @param string  $idOptionValueSource l'id de l'option value chez le fournisseur
-     * @param string  $idHostFusion        id du site
      */
-//    public function createOptionValue(Provider $provider, TOption $option, string $nomOptionValue, string $idOptionValueSource, int $idProduct, string $idHostFusion = 'lig'): void
-//    {
-//        // création de l'option value si elle n'existe pas
-//        $optionValue = $this->optionValueService->createIfNotExist($idOptionValueSource, $provider->getId(), $option, $nomOptionValue);
-//
-//        // on charge notre objet produitOption ou on le créé si il n'existe pas
-//        $this->productOptionService->createIfNotExist($idProduct, $option, $idHostFusion, null, TAProduitOption::STATUS_ACTIF, '', '');
-//
-//        // liaison de l'option value avec le produit
-//        $produitOptionValue = $this->productOptionValueService->createIfNotExist($idProduct, $optionValue, $idHostFusion);
-//
-//        // modification de la date de derniére vue pour ne pas la supprimer automatiquement car elle n'est pas créé automatiquement
-//        $futur = new \DateTimeImmutable('01/01/2050');
-//        $produitOptionValue->setProOptDateLastSeen($futur)
-//            ->save();
-//    }
+    //    public function createOptionValue(Provider $provider, TOption $option, string $nomOptionValue, string $idOptionValueSource, int $idProduct, string $idHostFusion = 'lig'): void
+    //    {
+    //        // création de l'option value si elle n'existe pas
+    //        $optionValue = $this->optionValueService->createIfNotExist($idOptionValueSource, $provider->getId(), $option, $nomOptionValue);
+    //
+    //        // on charge notre objet produitOption ou on le créé si il n'existe pas
+    //        $this->productOptionService->createIfNotExist($idProduct, $option, $idHostFusion, null, TAProduitOption::STATUS_ACTIF, '', '');
+    //
+    //        // liaison de l'option value avec le produit
+    //        $produitOptionValue = $this->productOptionValueService->createIfNotExist($idProduct, $optionValue, $idHostFusion);
+    //
+    //        // modification de la date de derniére vue pour ne pas la supprimer automatiquement car elle n'est pas créé automatiquement
+    //        $futur = new \DateTimeImmutable('01/01/2050');
+    //        $produitOptionValue->setProOptDateLastSeen($futur)
+    //            ->save();
+    //    }
 
     /**
      * Recherche un id Provider par rapport a son nom.
@@ -199,21 +192,18 @@ class BaseProvider
     }
 
     /**
-     * fait un findById mais renvoi l'objet spécifique du fournisseur comme fournisseurPrint24 pour p24 ou renvoi un objet fournisseur par défaut
-     * @param int $idFour type de fournisseur
+     * fait un findById mais renvoi l'objet spécifique du fournisseur comme fournisseurPrint24 pour p24 ou renvoi un objet fournisseur par défaut.
      * @return fournisseur|fournisseurPrint24|FournisseurLgi|FournisseurOnline et de nombreux autres
      */
-    public static function findByIdWithChildObject(Provider $provider,int $idProvider):Provider
+    public static function findByIdWithChildObject(Provider $provider, int $idProvider): Provider
     {
         // si ce fournisseur à sa propre classe
-        if(isset($provider::$_classeDeFournisseur[$idProvider]))
-        {
+        if (isset($provider::$_classeDeFournisseur[$idProvider])) {
             // on renverra un objet de cette classe
             $classeName = $provider::$_classeDeFournisseur[$idProvider];
         }
         // pas de classe spécifique
-        else
-        {
+        else {
             // on renvoi un objet fournisseur
             $classeName = __CLASS__;
         }
@@ -221,15 +211,15 @@ class BaseProvider
         // on renvoi notre objet
         return $classeName::findById($idProvider);
     }
+
     /**
-     * indique si le fournisseur est actif
-     * @return boolean true si le fournisseur est actif et false sinon
+     * indique si le fournisseur est actif.
+     * @return bool true si le fournisseur est actif et false sinon
      */
     public function isActive(Provider $provider): bool
     {
         // fournisseur inactif
-        if($provider->getActive() < Provider::SUPPLIER_ACTIVE)
-        {
+        if ($provider->getActive() < Provider::SUPPLIER_ACTIVE) {
             return false;
         }
 

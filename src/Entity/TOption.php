@@ -3,17 +3,14 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\RealisaPrint\SpecialOptionEnum;
 use App\Repository\TOptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\MappingException;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use Doctrine\Common\Util\ClassUtils;
 
 #[ORM\Entity(repositoryClass: TOptionRepository::class)]
-#[ORM\Table(name: "toption")]
+#[ORM\Table(name: 'toption')]
 class TOption extends BaseEntity
 {
     /**
@@ -25,7 +22,7 @@ class TOption extends BaseEntity
     /**
      * type d'option : case à cocher.
      */
-    // const TYPE_OPTION_CHECKBOX = 3;
+    public const TYPE_OPTION_CHECKBOX = 3;
 
     /**
      * type d'option : menu déroulant.
@@ -40,14 +37,12 @@ class TOption extends BaseEntity
     /**
      * type d'option : text en lecture seul.
      */
-    // const TYPE_OPTION_READONLY = 2;
+    public const TYPE_OPTION_READONLY = 2;
 
     /**
      * option spécial : option standard.
      */
-
     public const SPECIAL_OPTION_STANDARD = 0;
-
 
     /**
      * option spécial : option des quantité.
@@ -62,7 +57,7 @@ class TOption extends BaseEntity
     /**
      * option spécial : option des pays de livraison.
      */
-    // const SPECIAL_OPTION_DELIVERY_COUNTRY = 3;
+    public const SPECIAL_OPTION_DELIVERY_COUNTRY = 3;
 
     /**
      * option spécial : option des pays de livraison.
@@ -102,9 +97,9 @@ class TOption extends BaseEntity
 
     #[ORM\Column(length: 255)]
     // libéllé de l'option
-    private ?string $libelle = null;
+    private ?string $label = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     // commentaire de l'option
     private ?string $comments = null;
 
@@ -117,15 +112,12 @@ class TOption extends BaseEntity
     private ?int $typeOption = null;
     // private $optTypeOption = TOption::TYPE_OPTION_SELECT;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer', enumType: SpecialOptionEnum::class)]
     // indique si il s'agit d'une option spécial (quantité, délai, pays de livraison, ...)
-    private ?int $specialOption = null;
+    private SpecialOptionEnum|null $specialOption = null;
 
     #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TAOptionValueProvider::class)]
     private Collection $taOptionValueProviders;
-
-    #[ORM\OneToMany(mappedBy: 'TOption', targetEntity: TOptionValue::class, orphanRemoval: true)]
-    private Collection $tOptionValues;
 
     #[ORM\OneToMany(mappedBy: 'TOption', targetEntity: TAProductOption::class)]
     private Collection $tAProductOptions;
@@ -133,12 +125,15 @@ class TOption extends BaseEntity
     #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TAOptionProvider::class)]
     private Collection $tAOptionProviders;
 
+    #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TOptionValue::class)]
+    private Collection $tOptionValue;
+
     public function __construct()
     {
         $this->taOptionValueProviders = new ArrayCollection();
-        $this->tOptionValues = new ArrayCollection();
         $this->tAProductOptions = new ArrayCollection();
         $this->tAOptionProviders = new ArrayCollection();
+        $this->tOptionValue = new ArrayCollection();
     }
     // private $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD;
 
@@ -147,14 +142,14 @@ class TOption extends BaseEntity
         return $this->id;
     }
 
-    public function getLibelle(): ?string
+    public function getLabel(): ?string
     {
-        return $this->libelle;
+        return $this->label;
     }
 
-    public function setLibelle(string $libelle): static
+    public function setLabel(string $label): static
     {
-        $this->libelle = $libelle;
+        $this->label = $label;
 
         return $this;
     }
@@ -195,16 +190,15 @@ class TOption extends BaseEntity
         return $this;
     }
 
-    public function getSpecialOption(): ?int
+    public function getSpecialOption(): ?SpecialOptionEnum
     {
         return $this->specialOption;
     }
 
-    public function setSpecialOption(int $specialOption): static
+    // Setter pour specialOption
+    public function setSpecialOption(?SpecialOptionEnum $specialOption): void
     {
         $this->specialOption = $specialOption;
-
-        return $this;
     }
 
     // TODO Repository
@@ -549,36 +543,6 @@ class TOption extends BaseEntity
     }
 
     /**
-     * @return Collection<int, TOptionValue>
-     */
-    public function getTOptionValues(): Collection
-    {
-        return $this->tOptionValues;
-    }
-
-    public function addTOptionValue(TOptionValue $tOptionValue): static
-    {
-        if (!$this->tOptionValues->contains($tOptionValue)) {
-            $this->tOptionValues->add($tOptionValue);
-            $tOptionValue->setTOption($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTOptionValue(TOptionValue $tOptionValue): static
-    {
-        if ($this->tOptionValues->removeElement($tOptionValue)) {
-            // set the owning side to null (unless already changed)
-            if ($tOptionValue->getTOption() === $this) {
-                $tOptionValue->setTOption(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, TAProductOption>
      */
     public function getTAProductOptions(): Collection
@@ -638,4 +602,33 @@ class TOption extends BaseEntity
         return $this;
     }
 
+    /**
+     * @return Collection<int, TOptionValue>
+     */
+    public function getTOptionValue(): Collection
+    {
+        return $this->tOptionValue;
+    }
+
+    public function addTOptionValue(TOptionValue $tOptionValue): static
+    {
+        if (!$this->tOptionValue->contains($tOptionValue)) {
+            $this->tOptionValue->add($tOptionValue);
+            $tOptionValue->setTOption($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTOptionValue(TOptionValue $tOptionValue): static
+    {
+        if ($this->tOptionValue->removeElement($tOptionValue)) {
+            // set the owning side to null (unless already changed)
+            if ($tOptionValue->getTOption() === $this) {
+                $tOptionValue->setTOption(null);
+            }
+        }
+
+        return $this;
+    }
 }

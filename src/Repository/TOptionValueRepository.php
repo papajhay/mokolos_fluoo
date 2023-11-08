@@ -3,9 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\TOptionValue;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Repository\BaseRepository;
 
 /**
  * @extends \App\Repository\BaseRepository
@@ -21,6 +19,7 @@ class TOptionValueRepository extends \App\Repository\BaseRepository
     {
         parent::__construct($registry, TOptionValue::class);
     }
+
     public function save(TOptionValue $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

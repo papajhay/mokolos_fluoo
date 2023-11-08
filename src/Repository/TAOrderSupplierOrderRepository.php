@@ -52,6 +52,4 @@ class TAOrderSupplierOrderRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-
-
 }
