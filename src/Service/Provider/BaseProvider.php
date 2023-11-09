@@ -4,29 +4,16 @@ declare(strict_types=1);
 namespace App\Service\Provider;
 
 use App\Entity\Provider;
-use App\Repository\OrderRepository;
 use App\Repository\ProviderRepository;
-use App\Repository\TSupplierOrderRepository;
-use App\Repository\TSupplierOrderStatusRepository;
 use App\Service\TAProductOptionService;
-use App\Service\TAProductOptionValueService;
 use App\Service\TOptionService;
-use Doctrine\ORM\EntityManagerInterface;
 
 class BaseProvider
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private OrderRepository $orderRepository,
-        private TSupplierOrderRepository $TSupplierOrderRepository,
         private ProviderRepository $providerRepository,
-        private TSupplierOrderStatusRepository $supplierOrderStatusRepository,
-        private AchattodbEmailService $achattodbEmailService,
-        private OrderSupplierOrderService $orderSupplierOrderService,
         private TOptionService $toptionService,
-        // private TOptionValueService $optionValueService,
-        private TAProductOptionService $productOptionService,
-        private TAProductOptionValueService $productOptionValueService
+        private TAProductOptionService $productOptionService
     ) {
     }
 
