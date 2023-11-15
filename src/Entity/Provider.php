@@ -145,13 +145,17 @@ class Provider
     // $masterFournisseurId
     private ?int $masterId = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     //    $numberTva
-    private ?int $numberVAT = null;
+    private ?string $numberVAT = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     //    $dirFactures
     private ?string $dirInvoices = null;
+
+    #[ORM\Column( nullable: true)]
+    //    $pourcentage remise
+    private ?int $discountPercentage = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $accessLogin = null;
@@ -227,7 +231,7 @@ class Provider
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $idHostForSelection = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $errorCode = null;
 
     // /*	 * *************************************************************************
@@ -437,12 +441,12 @@ class Provider
         return $this;
     }
 
-    public function getNumberVAT(): ?int
+    public function getNumberVAT(): ?string
     {
         return $this->numberVAT;
     }
 
-    public function setNumberVAT(int $numberVAT): static
+    public function setNumberVAT(string $numberVAT): static
     {
         $this->numberVAT = $numberVAT;
 
@@ -773,6 +777,20 @@ class Provider
     public function setErrorCode(int $errorCode): static
     {
         $this->errorCode = $errorCode;
+
+        return $this;
+    }
+
+
+
+    public function getDiscountPercentage(): ?int
+    {
+        return $this->discountPercentage;
+    }
+
+    public function setDiscountPercentage(?int $discountPercentage): static
+    {
+        $this->discountPercentage = $discountPercentage;
 
         return $this;
     }
