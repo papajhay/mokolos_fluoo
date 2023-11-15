@@ -18,8 +18,8 @@ class TAProductProvider extends BaseEntity
     #[ORM\ManyToOne(inversedBy: 'tAProductProviders')]
     private ?Provider $provider;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $idSource = null;
+    #[ORM\Column(length: 255)]
+    private ?string $idSource;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $idGroup = null;
@@ -119,14 +119,16 @@ class TAProductProvider extends BaseEntity
         return $this->tProduct;
     }
 
-    public function getIdSource(): ?int
+    public function getIdSource(): ?string
     {
         return $this->idSource;
     }
 
-    public function setIdSource(?int $idSource): void
+    public function setIdSource(?string $idSource):static
     {
         $this->idSource = $idSource;
+
+        return $this;
     }
 
     public function getIdGroup(): ?int
@@ -134,8 +136,10 @@ class TAProductProvider extends BaseEntity
         return $this->idGroup;
     }
 
-    public function setIdGroup(?int $idGroup): void
+    public function setIdGroup(?int $idGroup): static
     {
         $this->idGroup = $idGroup;
+
+        return $this;
     }
 }

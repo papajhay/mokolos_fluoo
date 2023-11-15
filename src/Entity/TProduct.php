@@ -148,7 +148,7 @@ class TProduct
 
     // TODO Repository
 
-    /*
+    /**
      * Retourne la requete sql tout les produits ordonnées par le champs ordres
      * @param string $idHhost Id du site
      * @param boolean $withInactif Est ce que l'on prend les produits inactifs?
@@ -247,7 +247,7 @@ class TProduct
         return $sql;
     }*/
 
-    /*
+    /**
      * Retourne un tableau avec toutes les options et les valeurs dispo pour celle ci en fonction de l'objet en cour
      * @param string $idHost id du site
      * @param type $dependance
@@ -489,7 +489,7 @@ class TProduct
         // on ajoute les option de type texte
         return $this->getOptionsText($idHost, $withFournisseurData, $opt, $getOnLyActif);
     }*/
-    /*
+    /**
      * Retourne un tableau avec toutes les options de type text
      * @param string $idHost id du site
      * @param bool $withFournisseurData =false mettre true pour avoir les information de fournisseur
@@ -595,7 +595,7 @@ class TProduct
         return $opt;
     }*/
 
-    /*
+    /**
      * Retourne une selection par defaut pour le produit en cour (une liste d'id value avec les clée print 24)
      * @param string $idHost id du site
      * @param bool $idProduitHostForVariant =null id de produit host si il s'agit d'un variant
@@ -714,7 +714,7 @@ class TProduct
         return implode('-', $return);
     }*/
 
-    /*
+    /**
      * Retourne le produit via un id chez le fournisseur et un fournisseur
      * @param string $supplierId id chez le fournisseur
      * @param int $idFour id du fournisseur
@@ -741,7 +741,7 @@ class TProduct
         return array_values($allProduct)[0];
     }*/
 
-    /*
+    /**
      * renvoi la liste des produits qui posséde des fiches techniques
      * @return TProduit[]
      */
@@ -774,7 +774,7 @@ class TProduct
         return TProduit::findAllSql($sql, true);
     }*/
 
-    /*
+    /**
      * renvoi la liste des produits de Produit Option Value selon une Site Hoste
      * @return TProduit[]
      */
@@ -802,7 +802,7 @@ class TProduct
         return $rep;
     }*/
 
-    /*
+    /**
      * renvoi la liste des produits de Produit Option selon une Site Hoste
      * @return TProduit[]
      */
@@ -828,7 +828,7 @@ class TProduct
         return $rep;
     }*/
 
-    /*
+    /**
      * supprime tous les vieux produits qui ne sont plus relié à aucun produit host
      * @param TLockProcess $lockProcess		Objet lockProcess pour les etapes
      */
@@ -863,7 +863,7 @@ class TProduct
     }*/
 
     // todo Service
-    /*
+    /**
      *  renvoi un objet TAProduitFournisseur correspondant à un fournisseur de ce produit
      * @return TAProduitFournisseur
      */
@@ -879,7 +879,7 @@ class TProduct
         return $this->_produitFournisseur;
     }*/
 
-    /*
+    /**
      * Retourne l'id fournisseur du produit en cour
      *
      * @return int
@@ -890,7 +890,7 @@ class TProduct
         return $this->getProduitFournisseur()->getProFouIdSource();
     }*/
 
-    /*
+    /**
      * Retourne l'id Group du fournisseur du produit en cour
      *
      * @return int
@@ -901,7 +901,7 @@ class TProduct
         return $this->getProduitFournisseur()->getProFouIdGroup();
     }*/
 
-    /*
+    /**
      * renvoi le nom du fournisseur ou meta produit
      * @return string
      */
@@ -919,7 +919,7 @@ class TProduct
         }
     }*/
 
-    /*
+    /**
      * Lors de la duplication d'un objet, on detruit son id
      */
     /*function __clone()
@@ -929,7 +929,7 @@ class TProduct
         $this->_primaryValue = array();
     }*/
 
-    /*
+    /**
      * renvoi le zip contenant les gabarit de ce produit par rapport à la selection ou renvoi null si elle n'xiste pas
      * @param string $selection la selection
      * @param string $idHost id du site pour les urls
@@ -951,7 +951,7 @@ class TProduct
         return $this->_chercheFicheTechEtMaquette($selection, 'fiches_techniques', $idHost, 'jpg');
     }*/
 
-    /*
+    /**
      * renvoi la maquette de ce produit par rapport à la selection ou renvoi null si elle n'xiste pas
      * @param string $selection la selection
      * @param string $idHost id du site pour les urls
@@ -962,7 +962,7 @@ class TProduct
         return $this->_chercheFicheTechEtMaquette($selection, 'maquettes', $idHost, 'jpg');
     }*/
 
-    /*
+    /**
      * renvoi la fiche technique ou la maquette de ce produit par rapport à la selection ou renvoi null si elle n'xiste pas
      * @param string $selection la selection
      * @param string $type fichTech pour la fiche technique et maquette pour la maquette
@@ -1031,7 +1031,7 @@ class TProduct
         return $fichier;
     }*/
 
-    /*
+    /**
      * renvoi la fiche technique de ce produit par rapport à la selection ou renvoi null si elle n'xiste pas
      * @param string $selection la selection
      * @param int $idProduit id du produit dont on cherche la fiche technique
@@ -1098,7 +1098,7 @@ class TProduct
         return null;
     }*/
 
-    /*
+    /**
      * force le pays de livraison en ne renvoyant que celui de notre site
      * @param array $optionCountry le tableau des pays de livraison
      * @return array le tableau réordonné
@@ -1123,7 +1123,7 @@ class TProduct
         return $optionCountry;
     }*/
 
-    /*
+    /**
      * Ajoute les valeur par défaut des options de type texte à un tableau
      * @param string $idHost id du site
      * @param array $return =array() Le tableau auquel on veux ajouter nos valeurs
@@ -1226,9 +1226,11 @@ class TProduct
         return $this->specialFormat;
     }
 
-    public function setSpecialFormat(?int $specialFormat): void
+    public function setSpecialFormat(?int $specialFormat): static
     {
         $this->specialFormat = $specialFormat;
+
+        return $this;
     }
 
     public function getAttachement(): ?self
@@ -1236,7 +1238,7 @@ class TProduct
         return $this->attachement;
     }
 
-    public function setAttachement(?self $attachement): static
+    public function setAttachement(?TProduct $attachement): static
     {
         $this->attachement = $attachement;
 
