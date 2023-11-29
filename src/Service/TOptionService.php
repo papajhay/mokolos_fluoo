@@ -7,6 +7,7 @@ use App\Entity\TAOptionProvider;
 use App\Entity\TOption;
 use App\Entity\TProduct;
 use App\Enum\RealisaPrint\SpecialOptionEnum;
+use App\Enum\RealisaPrint\TypeOptionEnum;
 use App\Repository\TAProductOptionRepository;
 use App\Repository\TOptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -103,10 +104,16 @@ class TOptionService
     }
 
     /**
-     * créé un option et le optionfournisseur associé si il n'existe pas.
-     * @return TOption
+     * créé un option et le optionfournisseur associé si il n'existe pas
+     * @param string $idOptionSource id de l'option chez le fournisseur
+     * @param Provider $provider id du fournisseur
+     * @param string $nameOption libelle de l'option
+     * @param int|NULL $order ordre de l'option
+     * @param TProduct $tProduct [optional=0] id du produit si applicable
+     * @param TypeOptionEnum $typeOption [optional=TOption::TYPE_OPTION_SELECT] Type d'option (menu déroulant ou texte)
+     * @param SpecialOptionEnum $optSpecialOption [optional=TOption::SPECIAL_OPTION_STANDARD] indique si il s'agit d'une option spécial (quantité, délai, pays de livraison, ...). Voir constante de classe
      */
-    public function createIfNotExist(string $idOptionSource, Provider $provider, string $nameOption, $order = 100, TProduct $tProduct, int $typeOption = TOption::TYPE_OPTION_SELECT, $optSpecialOption = TOption::SPECIAL_OPTION_STANDARD): TOption|int|null
+    public function createIfNotExist(string $idOptionSource, Provider $provider, string $nameOption, $order = 100, TProduct $tProduct,  int $typeOption = TOption::TYPE_OPTION_SELECT, SpecialOptionEnum $optSpecialOption = SpecialOptionEnum::SPECIAL_OPTION_STANDARD): TOption|int|null
     {
         // on fait un trim sur l'id option value source pour éviter des bugs avec des espaces qui pourrait être ajouter
         $idOptionSourceTrim = trim($idOptionSource);
@@ -143,7 +150,7 @@ class TOptionService
     public function isQuantity(TOption $option): bool
     {
         // si il s'agit d'une option de quantité
-        if (TOption::SPECIAL_OPTION_QUANTITY === $option->getOptSpecialOption()) {
+        if (SpecialOptionEnum::SPECIAL_OPTION_QUANTITY === $option->getOptSpecialOption()) {
             return true;
         }
 
@@ -157,7 +164,7 @@ class TOptionService
     public function isDelay(TOption $option): bool
     {
         // si il s'agit d'une option de quantité
-        if (TOption::SPECIAL_OPTION_DELAY === $option->getSpecialOption()) {
+        if (SpecialOptionEnum::SPECIAL_OPTION_DELAY === $option->getSpecialOption()) {
             return true;
         }
 
@@ -173,7 +180,7 @@ class TOptionService
     public function defaultValue(TOption $option, int $idProduct, string $idHost): bool|string
     {
         // si on a une option de type texte
-        if (TOption::TYPE_OPTION_TEXT === $this->getTypeOption()) {
+        if (TypeOptionEnum::TYPE_OPTION_TEXT === $this->getTypeOption()) {
             // on récupére le produit option
             $productOption = $this->productOptionRepository->findById($idProduct, $option->getId(), $idHost);
 

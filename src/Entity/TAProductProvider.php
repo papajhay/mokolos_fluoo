@@ -18,8 +18,8 @@ class TAProductProvider extends BaseEntity
     #[ORM\ManyToOne(inversedBy: 'tAProductProviders')]
     private ?Provider $provider;
 
-    #[ORM\Column(length: 255)]
-    private ?string $idSource;
+    #[ORM\Column(type: 'integer')]
+    private ?int $idSource;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $idGroup = null;
@@ -32,6 +32,9 @@ class TAProductProvider extends BaseEntity
 
     #[ORM\ManyToMany(targetEntity: TProduct::class, inversedBy: 'tAProductProvider')]
     private Collection $tProducts;
+
+//    #[ORM\OneToOne(mappedBy: 'tAProductProvider', cascade: ['persist', 'remove'])]
+//    private ?TProduct $tProduct = null;
 
     public function __construct()
     {
@@ -92,44 +95,56 @@ class TAProductProvider extends BaseEntity
         return $this->tProducts;
     }
 
-    public function addTProduct(TProduct $tProduct): static
-    {
-        if (!$this->tProducts->contains($tProduct)) {
-            $this->tProducts->add($tProduct);
-            $tProduct->addTAProductProvider($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTProduct(TProduct $tProduct): static
-    {
-        if ($this->tProducts->removeElement($tProduct)) {
-            $tProduct->removeTAProductProvider($this);
-        }
-
-        return $this;
-    }
+//    public function addTProduct(TProduct $tProduct): static
+//    {
+//        if (!$this->tProducts->contains($tProduct)) {
+//            $this->tProducts->add($tProduct);
+//            $tProduct->addTAProductProvider($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeTProduct(TProduct $tProduct): static
+//    {
+//        if ($this->tProducts->removeElement($tProduct)) {
+//            $tProduct->removeTAProductProvider($this);
+//        }
+//
+//        return $this;
+//    }
 
     /**
      * @return Collection<int, TProduct>
      */
-    public function getTProduct(): Collection
-    {
-        return $this->tProduct;
-    }
+//    public function getTProduct(): ?TProduct
+//    {
+//        return $this->tProduct;
+//    }
+//
+//    public function setTProduct(TProduct $tProduct): static
+//    {
+//        // set the owning side of the relation if necessary
+//        if ($tProduct->getTAProductProvider() !== $this) {
+//            $tProduct->setTAProductProvider($this);
+//        }
+//
+//        $this->tProduct = $tProduct;
+//
+//        return $this;
+//    }
 
-    public function getIdSource(): ?string
-    {
-        return $this->idSource;
-    }
-
-    public function setIdSource(?string $idSource):static
-    {
-        $this->idSource = $idSource;
-
-        return $this;
-    }
+//    public function getIdSource(): ?string
+//    {
+//        return $this->idSource;
+//    }
+//
+//    public function setIdSource(?string $idSource):static
+//    {
+//        $this->idSource = $idSource;
+//
+//        return $this;
+//    }
 
     public function getIdGroup(): ?int
     {
@@ -139,6 +154,18 @@ class TAProductProvider extends BaseEntity
     public function setIdGroup(?int $idGroup): static
     {
         $this->idGroup = $idGroup;
+
+        return $this;
+    }
+
+    public function getIdSource(): ?int
+    {
+        return $this->idSource;
+    }
+
+    public function setIdSource(?int $idSource): static
+    {
+        $this->idSource = $idSource;
 
         return $this;
     }
