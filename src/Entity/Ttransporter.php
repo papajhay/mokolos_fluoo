@@ -26,12 +26,12 @@ class Ttransporter
     /**
      * id du transporteur DHL.
      */
-    // const ID_TRANSPORTEUR_DHL = 5;
+    public const ID_TRANSPORTEUR_DHL = 5;
 
     /**
      * id du transporteur shenker.
      */
-    // const ID_TRANSPORTEUR_SHENKER = 6;
+    public const ID_TRANSPORTEUR_SHENKER = 6;
 
     /**
      * id du transporteur UPS.
@@ -41,7 +41,7 @@ class Ttransporter
     /**
      * id du transporteur DPD.
      */
-    // const ID_CARRIER_DPD_EUROPE = 8;
+    public const ID_CARRIER_DPD_EUROPE = 8;
 
     /**
      * id du transporteur DPD Mail.

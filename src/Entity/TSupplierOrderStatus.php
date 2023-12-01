@@ -28,7 +28,7 @@ class TSupplierOrderStatus
     /**
      * id du statut : erreur.
      */
-    // const ID_STATUS_ERROR = 10;
+    public const ID_STATUS_ERROR = 10;
 
     /**
      * id du statut : lancement auto.
@@ -43,17 +43,17 @@ class TSupplierOrderStatus
     /**
      * id du statut : commande en attente de fichier.
      */
-    // const ID_STATUS_FILE_WAITING = 6;
+    public  const ID_STATUS_FILE_WAITING = 6;
 
     /**
      * id du statut : commande en fichier reçu.
      */
-    // const ID_STATUS_FILE_RECEIVED = 7;
+    public const ID_STATUS_FILE_RECEIVED = 7;
 
     /**
      * id du statut : commande en fichier validé.
      */
-    // const ID_STATUS_FILE_VALID = 8;
+    public const ID_STATUS_FILE_VALID = 8;
 
     /**
      * id du statut : commande en production.
@@ -68,7 +68,7 @@ class TSupplierOrderStatus
     /**
      * id du statut : commande annulée.
      */
-    // const ID_STATUS_CANCELED = 9;
+    public const ID_STATUS_CANCELED = 9;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
