@@ -47,4 +47,20 @@ class TProductService
 
         return $tProduct;
     }
+
+    /**
+     *  renvoi un objet TAProduitFournisseur correspondant à un fournisseur de ce produit
+     * @return TAProduitFournisseur
+     */
+    public function getProduitFournisseur()
+    {
+        // si on a pas encore récupéré le produitFournisseur
+        if(!isset($this->_produitFournisseur))
+        {
+            // on recherche le produit fournisseur source
+            $this->_produitFournisseur = TAProduitFournisseur::findByIdProduit($this->getIdProduit());
+        }
+
+        return $this->_produitFournisseur;
+    }
 }

@@ -40,26 +40,6 @@ class TOption extends BaseEntity
     public const TYPE_OPTION_READONLY = 2;
 
     /**
-     * option spécial : option standard.
-     */
-    public const SPECIAL_OPTION_STANDARD = 0;
-
-    /**
-     * option spécial : option des quantité.
-     */
-    public const SPECIAL_OPTION_QUANTITY = 1;
-
-    /**
-     * option spécial : option des délais.
-     */
-    public const SPECIAL_OPTION_DELAY = 2;
-
-    /**
-     * option spécial : option des pays de livraison.
-     */
-    public const SPECIAL_OPTION_DELIVERY_COUNTRY = 3;
-
-    /**
      * option spécial : option des pays de livraison.
      */
     // const SPECIAL_OPTION_NUMBER_OF_MODELS = 4;
@@ -68,16 +48,6 @@ class TOption extends BaseEntity
      * option spécial : option des quantité par rouleaux.
      */
     // const SPECIAL_OPTION_QUANTITY_BY_ROLL = 5;
-
-    /**
-     * option spécial : option des format.
-     */
-    public const SPECIAL_OPTION_FORMAT = 6;
-
-    /**
-     * option spécial : option des supports (type de papier).
-     */
-    public const SPECIAL_OPTION_SUPPORT = 7;
 
     /**
      * option spécial : option de largeur.
@@ -110,11 +80,12 @@ class TOption extends BaseEntity
     #[ORM\Column]
     // Type d'option. 0 pour un menu dérulantselect et 1 pour un type texte
     private ?int $typeOption = null;
+//    private TypeOptionEnum|null $typeOption = null;
     // private $optTypeOption = TOption::TYPE_OPTION_SELECT;
 
     #[ORM\Column(type: 'integer', enumType: SpecialOptionEnum::class)]
     // indique si il s'agit d'une option spécial (quantité, délai, pays de livraison, ...)
-    private SpecialOptionEnum|null $specialOption = null;
+    private SpecialOptionEnum $specialOption ;
 
     #[ORM\OneToMany(mappedBy: 'tOption', targetEntity: TAOptionValueProvider::class)]
     private Collection $taOptionValueProviders;
@@ -178,6 +149,18 @@ class TOption extends BaseEntity
         return $this;
     }
 
+//    public function getTypeOption(): TypeOptionEnum
+//    {
+//        return $this->typeOption;
+//    }
+//
+//    public function setTypeOption(TypeOptionEnum $typeOption): static
+//    {
+//        $this->typeOption = $typeOption;
+//
+//        return $this;
+//    }
+
     public function getTypeOption(): ?int
     {
         return $this->typeOption;
@@ -196,9 +179,11 @@ class TOption extends BaseEntity
     }
 
     // Setter pour specialOption
-    public function setSpecialOption(?SpecialOptionEnum $specialOption): void
+    public function setSpecialOption(?SpecialOptionEnum $specialOption): static
     {
         $this->specialOption = $specialOption;
+
+        return $this;
     }
 
     // TODO Repository

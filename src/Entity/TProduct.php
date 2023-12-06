@@ -1302,9 +1302,11 @@ class TProduct
         return $this->tAProductProviders;
     }
 
-    public function setTAProductProviders(Collection $tAProductProviders): void
+    public function setTAProductProviders(Collection $tAProductProviders): static
     {
         $this->tAProductProviders = $tAProductProviders;
+
+        return $this;
     }
 
     /**

@@ -35,4 +35,20 @@ class TAProductProviderService
             $this->entityManager->flush();
         }
     }
+
+    /**
+     *  renvoi un objet TAProduitFournisseur correspondant à un fournisseur de ce produit
+     * @return TAProductProvider
+     */
+    public function getProductProvider(): TAProductProvider
+    {
+        // si on a pas encore récupéré le produitFournisseur
+        if(!isset($this->_productProvider))
+        {
+            // on recherche le produit fournisseur source
+            $this->_productProvider = TAProductProvider::findByIdProduit($this->getIdProduit());
+        }
+
+        return $this->_productProvider;
+    }
 }

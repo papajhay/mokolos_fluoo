@@ -11,9 +11,9 @@ use App\Service\TOptionService;
 class BaseProvider
 {
     public function __construct(
-        private ProviderRepository $providerRepository,
-        private TOptionService $toptionService,
-        private TAProductOptionService $productOptionService
+        private ProviderRepository     $providerRepository,
+        protected TOptionService       $toptionService,
+        protected TAProductOptionService $tAProductOptionService
     ) {
     }
 
@@ -38,7 +38,7 @@ class BaseProvider
         $option = $this->toptionService->createIfNotExist($idOptionSource, $provider->getId(), $nomOption);
 
         // on charge notre objet produitOption ou on le créé si il n'existe pas
-        $this->productOptionService->createIfNotExist($idProduit, $option, $idHostFusion, null, TAProduitOption::STATUS_ACTIF, '', '');
+        $this->tAProductOptionService->createIfNotExist($idProduit, $option, $idHostFusion, null, TAProduitOption::STATUS_ACTIF, '', '');
 
         // on renvoi l'option
         return $option;
