@@ -13,7 +13,10 @@ use App\Repository\OrderRepository;
 use App\Repository\TAOrderSupplierOrderRepository;
 use App\Repository\TSupplierOrderRepository;
 use App\Repository\TSupplierOrderStatusRepository;
+use DateTime;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 
 class SupplierOrderService
 {
@@ -24,7 +27,8 @@ class SupplierOrderService
         private TAOrderSupplierOrderRepository $TAOrderSupplierOrderRepository,
         private OrderRepository $orderRepository,
         private OrderSupplierOrderService $orderSupplierOrderService,
-        private BaseProvider $baseProvider
+        private BaseProvider $baseProvider,
+        private AchattodbEmailService $achattodbEmailService
     ) {
     }
 
@@ -560,7 +564,7 @@ class SupplierOrderService
      * Récupére la commande Provider ou la créé si elle n'existe pas puis la met à jour.
      * @param  int                  $supplierOrderId          id de la commande chez le Provider
      * @param  int                  $idSupplierOrderStatus    [=TSupplierOrderStatus::ID_STATUS_PRODUCTION] statut de la commande Provider
-     * @param  AchattodbEmail|null  $achattodbEmail           [=null] si on fournit un mail il sera mis à retraité en cas de probléme
+     * @param  AchattodbEmail|null  $achatToDbEmail           [=null] si on fournit un mail il sera mis à retraité en cas de probléme
      * @param  int|int[]|null       $idOrder                  [=null] id de la commande ou des commandes si on a un array (pour une eventuelle création)
      * @param  \DateTime|null       $deliveryDate             [=null] date de livraison de la commande Provider ou null pour ne pas la mettre à jour
      * @param  float|null           $ordSupOrdPriceWithoutTax [=null] prix d'achat HT de la commande Provider (pour une eventuelle création)
@@ -570,10 +574,10 @@ class SupplierOrderService
      * @param  array|null           $aDeliveryInformation     [=null] tableau des informations colis pour le passage de commande en livraison ou null si non applicable
      * @return TSupplierOrder|false la commande Provider ou FALSE si rien ne correspond
      */
-    public function updateOrderSupplier(Provider $provider, int $supplierOrderId, int $idSupplierOrderStatus = TSupplierOrderStatus::ID_STATUS_PRODUCTION, AchattodbEmail $achattodbEmail = null, array|int $idOrder = null, \DateTime $deliveryDate = null, float $ordSupOrdPriceWithoutTax = null, string $jobId = null, string $additionnalComment = '', int $idOrderStatus = null, array $aDeliveryInformation = null): TSupplierOrder|bool
+    public function updateOrderSupplier(Provider $provider, int $supplierOrderId, int $idSupplierOrderStatus = TSupplierOrderStatus::ID_STATUS_PRODUCTION, AchattodbEmail $achatToDbEmail = null, array|int $idOrder = null, \DateTime $deliveryDate = null, float $ordSupOrdPriceWithoutTax = null, string $jobId = null, string $additionnalComment = '', int $idOrderStatus = null, array $aDeliveryInformation = null): TSupplierOrder|bool
     {
         // on recherche la commande Provider
-        $supplierOrder = $this->orderSupplier($provider, $supplierOrderId, $achattodbEmail, $idOrder, $idSupplierOrderStatus, $deliveryDate, $ordSupOrdPriceWithoutTax, $jobId);
+        $supplierOrder = $this->orderSupplier($provider, $supplierOrderId, $achatToDbEmail, $idOrder, $idSupplierOrderStatus, $deliveryDate, $ordSupOrdPriceWithoutTax, $jobId);
 
         // si on n'a pas trouvé la commande Provider
         if (false === $supplierOrder) {
@@ -606,7 +610,7 @@ class SupplierOrderService
         }
 
         // on vériei si il y a bien des commande lié à notre commande Provider
-        if (!$this->checkOrderLinkedToSupplierOrderWithJob($supplierOrder, $jobId, $achattodbEmail)) {
+        if (!$this->checkOrderLinkedToSupplierOrderWithJob($supplierOrder, $jobId, $achatToDbEmail)) {
             // on quitte la fonction
             return false;
         }
@@ -645,8 +649,8 @@ class SupplierOrderService
         }
 
         // passage du mail en traité
-        $achattodbEmail->setStatus(AchattodbEmail::STATUS_PROCESSED);
-        $this->entityManager->persist($achattodbEmail);
+        $achatToDbEmail->setStatus(AchattodbEmail::STATUS_PROCESSED);
+        $this->entityManager->persist($achatToDbEmail);
         $this->entityManager->flush();
 
         // tout est bon
@@ -657,10 +661,10 @@ class SupplierOrderService
      * Vérifie qu'il y a bien des commandes lié à une commande fournisseur et un job.
      * @param  TSupplierOrder      $supplierOrder  la commande fournisseur
      * @param  string|null         $jobId          [=null] id du job
-     * @param  AchattodbEmail|null $achattodbEmail [=null] si on fournit un mail il sera mis à retraité
+     * @param  AchattodbEmail|null $achatToDbEmail [=null] si on fournit un mail il sera mis à retraité
      * @return bool                true si tout va bien et false si rien ne correspond
      */
-    public function checkOrderLinkedToSupplierOrderWithJob(TSupplierOrder $supplierOrder, string $jobId = null, AchattodbEmail $achattodbEmail = null): bool
+    public function checkOrderLinkedToSupplierOrderWithJob(TSupplierOrder $supplierOrder, string $jobId = null, AchattodbEmail $achatToDbEmail = null): bool
     {
         // rien ne correspond à notre job
         if (0 === count($supplierOrder->getAOrderSupplierOrder($jobId))) {
@@ -671,7 +675,7 @@ class SupplierOrderService
             //            $log->Erreur(var_export($jobId, true));
 
             // si on a un mail
-            if (is_a($achattodbEmail, 'AchattodbEmail')) {
+            if (is_a($achatToDbEmail, 'AchattodbEmail')) {
                 // on va retraité le mail
                 $this->achattodbEmailService->needReprocess();
             }
@@ -686,16 +690,18 @@ class SupplierOrderService
 
     /**
      * Récupére la commande Provider ou la créé si elle n'existe pas.
-     * @param  int                  $supplierOrderId          id de la commande chez le Provider
-     * @param  AchattodbEmail|null  $achattodbEmail           [=null] si on fournit un mail il sera mis à retraité
-     * @param  int|int[]|null       $idOrder                  [=null] id de la commande ou des commandes si on a un array (pour une eventuelle création)
-     * @param  int                  $idSupplierOrderStatus    [=TSupplierOrderStatus::ID_STATUS_PRODUCTION] statut de la commande Provider (pour une eventuelle création)
-     * @param  \DateTime|null       $deliveryDate             [=null] date de livraison de la commande Provider (pour une eventuelle création)
-     * @param  float                $ordSupOrdPriceWithoutTax [=null] prix d'achat HT TOTAL de la commande Provider (pour une eventuelle création)
-     * @param  type|null            $jobId                    [=null] id du job (pour une eventuelle création)
+     * @param Provider $provider
+     * @param AchattodbEmail|null $supplierOrderId id de la commande chez le Provider
+     * @param AchattodbEmail|null $achatToDbEmail [=null] si on fournit un mail il sera mis à retraité
+     * @param int|int[]|null $idOrder [=null] id de la commande ou des commandes si on a un array (pour une eventuelle création)
+     * @param int $idSupplierOrderStatus [=TSupplierOrderStatus::ID_STATUS_PRODUCTION] statut de la commande Provider (pour une eventuelle création)
+     * @param DateTime|null $deliveryDate [=null] date de livraison de la commande Provider (pour une eventuelle création)
+     * @param float|null $ordSupOrdPriceWithoutTax [=null] prix d'achat HT TOTAL de la commande Provider (pour une eventuelle création)
+     * @param type|null $jobId [=null] id du job (pour une eventuelle création)
      * @return TSupplierOrder|false la commande Provider ou FALSE si rien ne correspond
+     * @throws NonUniqueResultException
      */
-    public function orderSupplier(Provider $provider, int $supplierOrderId, AchattodbEmail $achattodbEmail = null, array|int $idOrder = null, int $idSupplierOrderStatus = TSupplierOrderStatus::ID_STATUS_PRODUCTION, \DateTime $deliveryDate = null, float $ordSupOrdPriceWithoutTax = null, type $jobId = null): ?TSupplierOrder
+    public function orderSupplier(Provider $provider, ?\App\Entity\AchattodbEmail $supplierOrderId, AchattodbEmail $achatToDbEmail = null, array|int $idOrder = null, int $idSupplierOrderStatus = TSupplierOrderStatus::ID_STATUS_PRODUCTION, \DateTime $deliveryDate = null, float $ordSupOrdPriceWithoutTax = null, type $jobId = null): ?TSupplierOrder
     {
         // si le numéro de commande n'est pas sous forme de tableau
         if (!is_array($idOrder)) {
@@ -735,9 +741,9 @@ class SupplierOrderService
             //     		$log->Erreur('Commande "' . $aIdOrder[0] . '" introuvable.');
 
             // si on a un mail
-            if (is_a($achattodbEmail, 'AchattodbEmail')) {
+            if (is_a($achatToDbEmail, 'AchattodbEmail')) {
                 // on va retraité le mail
-                $this->achattodbEmailService->needReprocess($achattodbEmail);
+                $this->achattodbEmailService->needReprocess($achatToDbEmail);
             }
 
             // on quitte la fonction
