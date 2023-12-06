@@ -19,7 +19,7 @@ class BaseProvider
         private ProviderRepository     $providerRepository,
         protected TOptionService       $toptionService,
         protected TAProductOptionService $tAProductOptionService,
-        private SupplierOrderService $supplierOrderService,
+        private SupplierOrderService $supplierOrderService
     ) {
     }
 
